@@ -1,8 +1,11 @@
-var application = require('application');
+var application = require("application");
+application.mainModule = "views/main/main";
+application.cssFile = "./app.css";
 
-application.mainModule = 'navigation/navigation';
-// START_CUSTOM_CODE_nativeScriptApp
-// Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
+global.APP_ID = "jh6l7mvc6x6g8966";
+global.API_MASTER = "sCd6pXEfML7DQem3TMXDPfE4pfssdMOq";
+global.BS_SCHEME = "http";
+global.EVERLIVE = null;
+global.EVERLIVEQ = null;
 
-// END_CUSTOM_CODE_nativeScriptApp
 application.start();

@@ -1,0 +1,30 @@
+<Page xmlns="http://www.nativescript.org/tns.xsd" loaded="loaded" actionBarHidden="false">
+    <Page.actionBar>
+        <ActionBar title="Orçamento">
+          <ActionBar.actionItems>
+            <ActionItem text="Voltar" ios.position="right" link="signUp" />
+            <ActionItem text="Redefinir" ios.position="right" link="signUp" />
+          </ActionBar.actionItems>
+        </ActionBar>
+    </Page.actionBar>
+    <GridLayout rows="auto,*,*,*,*,*,*,*,*,*,*" columns="2*, *">
+        <Label text="1ª Semana" row="0" colspan="2"/>
+        <Slider id="firstWeekSlider" row="1" col="0"/>
+       	<Label text="{{ firstWeekLabel }}" row="1" col="1"/>
+        <Label text="2ª Semana" row="2" colspan="2"/>
+        <Slider id="secondWeekSlider" row="3" col="0"/>
+       	<Label text="{{ secondWeekLabel }}" row="3" col="1"/>
+        <Label text="3ª Semana" row="4" colspan="2"/>
+        <Slider id="thirdWeekSlider" row="5" col="0"/>
+       	<Label text="{{ thirdWeekLabel }}" row="5" col="1"/>
+        <Label text="4ª Semana" row="6" colspan="2"/>
+        <Slider id="fourthWeekSlider" row="7" col="0"/>
+       	<Label text="{{ fourthWeekLabel }}" row="7" col="1"/>
+        <Label text="Orçamento disponível" textWrap="title" row="8" colspan="2"/>
+        <Label text="{{ budgetLeft }}" textWrap="title" row="9" colspan="2"/>
+        <GridLayout row="10" colspan="2" rows="auto" columns="*">
+            <Button text="{{ buttontext }}" tap="next" row="0" col="1"/>
+        </GridLayout>
+    </GridLayout>
+
+</Page>

@@ -3,14 +3,13 @@
   "ProjectGuid": "9cc761c9-2cfd-45da-9c78-e5d24dfb0c12",
   "projectVersion": 1,
   "AppIdentifier": "com.telerik.wone",
-  "DisplayName": "wone",
-  "Author": "",
-  "Description": "wone",
+  "DisplayName": "W1 Expense Manager",
+  "Author": "Agência ZWD",
+  "Description": "Expense Manager",
   "BundleVersion": "1.0",
   "AndroidVersionCode": "1",
   "iOSDeviceFamily": [
-    "1",
-    "2"
+    "1"
   ],
   "iOSBackgroundMode": [],
   "ProjectTypeGuids": "{F0A65104-D4F4-4012-B799-F612D75820F6}",
@@ -18,8 +17,7 @@
     "android.permission.INTERNET"
   ],
   "DeviceOrientations": [
-    "Portrait",
-    "Landscape"
+    "Portrait"
   ],
   "AndroidHardwareAcceleration": "false",
   "iOSStatusBarStyle": "Default",

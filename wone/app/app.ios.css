@@ -1,0 +1,90 @@
+@import url("~/app-common.css");
+
+RadPieChart {
+    background-color: transparent;
+}
+
+TextView {
+    font-size: 16;
+    margin: -3 -6;
+}
+
+.text-button {
+    margin: 8 0 0 16;
+}
+
+.primary-button {
+    margin-top: 20;
+    height: 44;
+    color: #007AFF;
+    background-color: #FFFFFF;
+    border-color: #E0E0E0;
+    border-width: 1;
+    font-size: 19;
+    font-weight: bold;
+}
+
+.secondary-button {
+    margin-top: 10;
+    height: 44;
+    color: #007AFF;
+    background-color: #FFFFFF;
+    border-color: #E0E0E0;
+    border-width: 1;
+    font-size: 19;
+    font-weight: bold;
+}
+
+.delete-button {
+    margin-top: 30;
+    height: 44;
+    color: #FF0000;
+    background-color: #FFFFFF;
+    border-color: #E0E0E0;
+    border-width: 1;
+    font-size: 19;
+    font-weight: bold;
+}
+
+.categories-chart {
+    width: 140;
+    height: 140;
+}
+
+.block {
+    padding: 8 16 8 16;
+    margin: 10 0 10 0;
+    height: 38;
+    vertical-align: center;
+}
+
+.reports-grid {
+    padding: 16 8 8 8;
+}
+
+.repeater-container {
+    margin-top: 10;
+}
+
+.expense-details-container {
+    margin: 8 16 8 11;
+}
+
+.picker-value {
+    color: #737373;
+    horizontal-align: right;
+    margin-right: 16;
+}
+
+.image-button {
+    margin-top: 10;
+    padding: 8 16 8 16;
+    color: #007AFF;
+    background-color: #FFFFFF;
+    border-color: #E0E0E0;
+    border-width: 1;
+}
+
+.image-button-icon {
+    margin-right: 8;
+}

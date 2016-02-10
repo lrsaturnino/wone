@@ -1,0 +1,115 @@
+@import url("~/app-common.css");
+
+TextView {
+    height: 80;
+}
+
+.primary-button {
+    margin: 30 16 16 16;
+    color: #FFFFFF;
+    background-color: #007AFF;
+    font-size: 14;
+}
+
+.secondary-button {
+    margin: 30 16 16 16;
+    color: #007AFF;
+    background-color: #FFFFFF;
+    font-size: 14;
+}
+
+
+.delete-button {
+    margin: 30 16 16 16;
+    color: #FF0000;
+    background-color: #FFFFFF;
+}
+
+.text-button {
+    margin-left: 6;
+    height: 48;
+}
+
+.fab {
+    vertical-align: bottom;
+    horizontal-align: right;
+    margin: 0 16 16 0;
+}
+
+.header {
+    margin: 16;
+}
+
+.categories-chart {
+    width: 100;
+    height: 100;
+    margin: 16;
+}
+
+.item-header {
+}
+
+.item-content {
+}
+
+.block {
+    padding: 8 16 8 16;
+    margin-bottom: 8;
+    height: 38;
+    vertical-align: center;
+}
+
+.label {
+    margin: 8 0 8 0;
+    color: #000000;
+}
+
+.switch {
+    margin: 8 0 8 0;
+}
+
+.expense-details-container {
+    margin: 8 16 8 11;
+}
+
+.picker-header {
+    color: #828282;
+    font-size: 12;
+}
+
+.picker-container {
+    margin-bottom: 8;
+}
+
+.picker-value {
+    font-size: 16;
+    color: #000000;
+}
+
+.picker {
+    margin: 0 5 5 5;
+}
+
+.clear-icon {
+    vertical-align: center;
+    padding: 8;
+}
+
+.reports-grid {
+    padding: 0 8 8 8;
+}
+
+.image-button {
+    padding: 8 16 0 16;
+    margin: 8 0 0 5;
+    color: #007AFF;
+}
+
+.image-button-icon {
+    margin-right: 16;
+    vertical-align: center;
+}
+
+.image-button-text {
+    text-transform: uppercase;
+}

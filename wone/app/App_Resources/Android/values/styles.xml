@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+  <style name="AppThemeBase" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="toolbarStyle">@style/NativeScriptToolbarStyle</item>
+    <item name="android:colorPrimary">@color/ColorPrimary</item>
+    <item name="android:colorPrimaryDark">@color/ColorPrimaryDark</item>
+    <item name="android:colorControlActivated">@color/ColorAccent</item>
+    <item name="android:textColorPrimary">@color/ColorPrimaryText</item>
+    <item name="actionMenuTextColor">@color/ColorMenuText</item>
+  </style>
+
+  <style name="AppTheme" parent="AppThemeBase">
+  </style>
+
+  <style name="NativeScriptToolbarStyleBase" parent="Widget.AppCompat.Toolbar">
+    <item name="theme">@style/ThemeOverlay.AppCompat.ActionBar</item>
+    <item name="popupTheme">@style/ThemeOverlay.AppCompat</item>
+  </style>
+
+  <style name="NativeScriptToolbarStyle" parent="NativeScriptToolbarStyleBase">
+    <item name="android:background">@color/ColorPrimary</item>
+    <item name="android:elevation">5dp</item>
+  </style>
+</resources>

@@ -1,0 +1,28 @@
+<Page xmlns="http://www.nativescript.org/tns.xsd" loaded="loaded" actionBarHidden="false">
+    <Page.actionBar>
+        <ActionBar title="Orçamento">
+            <ActionBar.actionItems>
+            	<ActionItem text="Salvar" icon="res://ic_submit" ios.position="right" tap="save" />
+            </ActionBar.actionItems>
+		</ActionBar>
+    </Page.actionBar>
+    <GridLayout rows="auto, *, *, *, *, *, *" columns="auto, *, *">
+        <Label text="{{ CategoryName }}" class="message" textWrap="title" row="0" colSpan="3"/>
+        <Label text="Categoria" class="message" textWrap="title" row="1" col="0"/>
+        <Label text="R$" class="message" textWrap="title" row="1" col="1"/>
+        <TextField id="SubCategoryNameInput" text="{{ SubCategoryNameInput }}" hint="{{ HintText }}" row="2" col="0" />
+        <TextField id="SubCategoryBudgetInput" text="{{ SubCategoryBudgetInput }}" keyboardType="number" hint="R$ 0,00" row="2" col="1" />
+        <Image src="~/images/icons/add.png" row="2" col="2" tap="addSubCat" />
+        <ListView id="SubCategoryList" items="{{ SubCategoryList }}" row="3" colSpan="3">
+            <ListView.itemTemplate>
+                <GridLayout columns="*, *, auto">
+                    <Label text="{{ SubCategoryName }}" col="0"/>
+                    <TextField text="{{ SubCategoryBudget }}" col="1" returnPress="sumTotalBudget" />
+                    <Image src="res://ic_menu_delete" col="2" tap="delSubCat" />
+                </GridLayout>
+            </ListView.itemTemplate>
+        </ListView>
+        <Label text="Orçamento mensal total" class="message" textWrap="title" row="4" colSpan="3"/>
+        <Label text="{{ TotalBudget }}" class="message" textWrap="title" row="5" colSpan="3" />
+    </GridLayout>
+</Page>

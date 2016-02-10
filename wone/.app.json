@@ -1,15 +1,6 @@
 {
   "type": "NativeScript",
-  "views": [
-    {
-      "type": "NativeScript:view",
-      "name": "homeView",
-      "components": [],
-      "title": "Home View",
-      "addToNavigation": true,
-      "icon": "home"
-    }
-  ],
+  "views": [],
   "dataProviders": [],
   "name": "nativeScriptApp",
   "navigation": "listmenu",

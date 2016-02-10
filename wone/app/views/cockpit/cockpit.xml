@@ -1,0 +1,53 @@
+<Page loaded="loaded" xmlns:drawer="nativescript-telerik-ui/sidedrawer" xmlns:chart="nativescript-telerik-ui/chart" xmlns="http://www.nativescript.org/tns.xsd" >
+    <Page.actionBar>
+        <ActionBar title="Cockpit">
+            <android>
+                <NavigationButton icon="~/images/icons/menu.png" tap="toggleSideDrawer" />
+            </android>
+            <ActionBar.actionItems>
+            	<ios>
+                	<ActionItem icon="~/images/icons/menu.png" ios.position="left" tap="toggleSideDrawer" />
+            	</ios>
+                <ActionItem text="Histórico" ios.position="right" link="signUp" />
+            </ActionBar.actionItems>
+    	</ActionBar>
+    </Page.actionBar>
+    <drawer:RadSideDrawer id="sideDrawer">
+        <drawer:RadSideDrawer.mainContent>
+            <StackLayout>
+                <Label text="{{ cockpitMessage }}"/>
+                <chart:RadCartesianChart id="cartesianChart" cssClass="report-chart">
+                    <chart:RadCartesianChart.series>
+                        <chart:BarSeries items="{{ categoryDataChart }}" categoryProperty="Categoria" valueProperty="Amount" stackMode="Stack100">
+                            <chart:BarSeries.verticalAxis>
+                                <chart:CategoricalAxis/>
+                            </chart:BarSeries.verticalAxis>
+                            <chart:BarSeries.horizontalAxis>
+                                <chart:LinearAxis/>
+                            </chart:BarSeries.horizontalAxis>
+                        </chart:BarSeries>
+                    </chart:RadCartesianChart.series>
+                </chart:RadCartesianChart>
+                <Button text="fav1" tap="addFav1"/>
+                <Button text="fav2" tap="addFav2"/>
+                <Button text="fav3" tap="addFav3"/>
+                <Button text="Outros" tap="addOther"/>
+            </StackLayout> 
+        </drawer:RadSideDrawer.mainContent>
+        <drawer:RadSideDrawer.drawerContent>
+            <StackLayout cssClass="drawerContent">
+                <StackLayout cssClass="headerContent">
+                    <Label text="Header"/>
+                </StackLayout>
+                <StackLayout cssClass="drawerMenuContent">
+                    <Label text="Item 1"/>
+                    <Label text="Item 2"/>
+                    <Label text="Item 3"/>
+                    <Label text="Item 4"/>
+                </StackLayout>
+            </StackLayout>
+        </drawer:RadSideDrawer.drawerContent>
+	</drawer:RadSideDrawer>
+</Page>
+ 
+
