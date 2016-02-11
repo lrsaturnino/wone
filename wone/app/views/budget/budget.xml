@@ -6,9 +6,9 @@
             </ActionBar.actionItems>
 		</ActionBar>
     </Page.actionBar>
-    <GridLayout rows="auto, auto, *, auto, auto" columns="3*, *, *">
+    <GridLayout rows="auto, auto, *, auto, auto" columns="*, *, *">
         <Label text="{{ CategoryName }}" className="title" row="0" colSpan="3"/>
-        <GridLayout rows="auto, auto" columns="3*, *, *" row="1" colspan="3" className="child-grid">
+        <GridLayout rows="auto, auto" columns="2*, *, auto" row="1" colspan="3" className="child-grid">
             <Label text="Categoria" className="subtitle" row="0" col="0"/>
             <Label text="R$" className="subtitle" row="0" col="1"/>
             <TextField id="SubCategoryNameInput" text="{{ SubCategoryNameInput }}" hint="{{ HintText }}" row="1" col="0" />
