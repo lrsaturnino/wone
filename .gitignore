@@ -1,3 +1,8 @@
 */bin
 */obj
 *.user-settings.xml
+lib/
+node_modules/
+platforms/
+tmp/
+*.json
