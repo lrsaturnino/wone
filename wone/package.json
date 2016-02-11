@@ -1,7 +1,8 @@
-{     "dependencies": {        
+{     
+    "dependencies": {        
         "tns-core-modules": "1.4.0",        
         "nativescript-telerik-ui": "0.2.3",        
         "everlive-sdk": "1.6.3"    
-      },    
-      "devDependencies": {}
+    },    
+	"devDependencies": {}
 }
