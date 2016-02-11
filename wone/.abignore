@@ -56,3 +56,4 @@ obj/**/*
 platforms/**/*
 node_modules/**/*
 typings/**/*
+.*.json
