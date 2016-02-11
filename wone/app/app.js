@@ -7,5 +7,4 @@ global.API_MASTER = "sCd6pXEfML7DQem3TMXDPfE4pfssdMOq";
 global.BS_SCHEME = "https";
 global.EVERLIVE = null;
 global.EVERLIVEQ = null;
-//teste
 application.start();
