@@ -8,3 +8,4 @@ global.BS_SCHEME = "https";
 global.EVERLIVE = null;
 global.EVERLIVEQ = null;
 application.start();
+//test
