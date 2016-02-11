@@ -5,4 +5,4 @@ lib/
 node_modules/
 platforms/
 tmp/
-*.json
+*.package.json
