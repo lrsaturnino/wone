@@ -51,16 +51,16 @@ var fourthWeekSlider = function(data){
 };
 
 function resetApportionment() {
-    firstWeekSliderProp.value = 25;
-    secondWeekSliderProp.value = 25;
-    thirdWeekSliderProp.value = 25;
-    fourthWeekSliderProp.value = 25;
-    
     firstWeekSliderProp.maxValue = 25;
     secondWeekSliderProp.maxValue = 25;
     thirdWeekSliderProp.maxValue = 25;
     fourthWeekSliderProp.maxValue = 25;
     
+    firstWeekSliderProp.value = 25;
+    secondWeekSliderProp.value = 25;
+    thirdWeekSliderProp.value = 25;
+    fourthWeekSliderProp.value = 25;
+
     pageData.set('firstWeekLabel', 0.25 * budget.totalbudget);
    	pageData.set('secondWeekLabel', 0.25 * budget.totalbudget);
    	pageData.set('thirdWeekLabel', 0.25 * budget.totalbudget);
@@ -88,15 +88,8 @@ exports.loaded = function(args) {
 	
     resetApportionment();
     
-   	pageData.set('actcat', categories.count - categoryCount);
     pageData.set('budgetLeft', 0);  
 
-    if (categoryCount != 0){
-        pageData.set('buttontext', "Próxima Categoria (" + (categories.count - categoryCount) + "/" + categories.count + ")");
-    }else{
-        pageData.set('buttontext', "Pronto");        
-    };
-    
     firstWeekSliderProp.on(observable.Observable.propertyChangeEvent, function(data){
 		if (data.propertyName != 'maxValue'){
         	firstWeekSlider(data);
@@ -156,6 +149,10 @@ exports.next = function() {
             okButtonText: "OK"
         });             		        
     };
+};
+
+exports.back = function(){
+    frameModule.topmost().goBack();
 };
 
 

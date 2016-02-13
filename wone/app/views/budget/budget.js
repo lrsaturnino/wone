@@ -130,7 +130,7 @@ exports.save = function() {
         .then(function(data){
             budget.addAll(subCategories)
             .then(function(data){
-                var budgetObj = {idcategory: categories[countCategories]['Id'],totalbudget: sumTotalBudget(), weeklybudget: {1: 0, 2: 0, 3: 0, 4: 0}}; 
+                var budgetObj = {idcategory: categories[countCategories]['Id'],totalbudget: sumTotalBudget(), weeklybudget: {1: 0, 2: 0, 3: 0, 4: 0}};
                 frameModule.topmost().navigate({
                     moduleName: "views/apportionment/apportionment", 
                     context: {

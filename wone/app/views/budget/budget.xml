@@ -13,7 +13,7 @@
             <Label text="R$" className="subtitle" row="0" col="1"/>
             <TextField id="SubCategoryNameInput" text="{{ SubCategoryNameInput }}" hint="{{ HintText }}" row="1" col="0" />
             <TextField id="SubCategoryBudgetInput" text="{{ SubCategoryBudgetInput }}" keyboardType="number" hint="R$ 0,00" row="1" col="1" />
-            <Image src="~/images/icons/mostrecent.png" row="1" col="2" tap="addSubCat" className="image-icon"/>
+            <Image src="~/images/icons/add.png" row="1" col="2" tap="addSubCat" className="image-icon"/>
         </GridLayout>
         <ListView id="SubCategoryList" items="{{ SubCategoryList }}" row="2" colSpan="3" className="list-view">
             <ListView.itemTemplate>
