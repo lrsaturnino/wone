@@ -1,2 +1,38 @@
 @import url("~/app-common.css");
 
+.fab-button {
+    height: 70;
+    horizontal-align: center;
+    vertical-align: bottom;
+    margin: 15;
+}
+
+.progress-categories-blue{
+    color:#0080ff;
+}
+
+.progress-categories-red{
+    color:#ff0000;
+}
+
+
+.progress-hp{
+    color:#ffffff;
+    background-color: #ff0000;
+}
+
+.report-chart {
+    height: 200;
+    width: auto;
+
+}
+
+.haxis-char{
+    visibility: collapse;
+    height: 200;
+
+}
+
+.drawerContent{
+    background-color: white;
+}

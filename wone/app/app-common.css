@@ -71,14 +71,9 @@ textfield,
     color: #4d4d4d ;
 }
 
-.report-chart {
-    width: 200;
-    height: 200;
-}
-
 .message {
-    color: #000000;
-    font-size: 16;
+    color: #4d4d4d;
+    font-size: 18;
     horizontal-align: center;
 }
 
@@ -97,6 +92,12 @@ textfield,
     horizontal-align: center;
 }
 
+.field-title{
+    margin-top: -10;	
+    font-size: 16;
+    color: #4d4d4d ;
+    horizontal-align: center;
+}
 
 .separator {
     height: 2;

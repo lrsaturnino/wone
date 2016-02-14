@@ -20,6 +20,15 @@ Object.defineProperty(appSettings, "keyselect", {
 	}
 });
 
+Object.defineProperty(appSettings, "userid", {
+	get: function() {
+		return appSettingsModule.getString("userid");
+	},
+	set: function(data) {
+		return appSettingsModule.setString("userid", data);
+	}
+});
+
 Object.defineProperty(appSettings, "username", {
 	get: function() {
 		return appSettingsModule.getString("username");
@@ -53,15 +62,6 @@ Object.defineProperty(appSettings, "token", {
 	},
 	set: function(data) {
 		return appSettingsModule.setString("token", data);
-	}
-});
-
-Object.defineProperty(appSettings, "userid", {
-	get: function() {
-		return appSettingsModule.getString("userid");
-	},
-	set: function(data) {
-		return appSettingsModule.setString("userid", data);
 	}
 });
 

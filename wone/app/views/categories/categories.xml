@@ -1,9 +1,12 @@
 <Page xmlns="http://www.nativescript.org/tns.xsd">
     <Page.actionBar>
-        <ActionBar title="Histórico de Gastos">
+        <ActionBar title="Categorias">
             <android>
                 <NavigationButton icon="~/images/icons/ic_arrow_back.png" tap="back" />
             </android>
+            <ActionBar.actionItems>
+                <ActionItem text="Lançar Gasto" icon="res://ic_submit" ios.position="right" tap="inputexpense" />
+            </ActionBar.actionItems>
         </ActionBar>
     </Page.actionBar>
     <GridLayout rows="auto, auto, auto" columns="*">

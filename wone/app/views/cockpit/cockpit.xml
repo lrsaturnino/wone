@@ -1,49 +1,70 @@
-<Page loaded="loaded" xmlns:drawer="nativescript-telerik-ui/sidedrawer" xmlns:chart="nativescript-telerik-ui/chart" xmlns="http://www.nativescript.org/tns.xsd" >
+<Page loaded="loaded" xmlns:drawer="nativescript-telerik-ui/sidedrawer" xmlns:chart="nativescript-telerik-ui/chart" xmlns="http://www.nativescript.org/tns.xsd" xmlns:FAB="nativescript-floatingactionbutton" >
     <Page.actionBar>
         <ActionBar title="Cockpit">
             <android>
-                <NavigationButton icon="~/images/icons/menu.png" tap="toggleSideDrawer" />
+                <NavigationButton icon="~/images/icons/menu.png" tap="toggleSideDrawer" className="image-icon" />
             </android>
             <ActionBar.actionItems>
             	<ios>
-                	<ActionItem icon="~/images/icons/menu.png" ios.position="left" tap="toggleSideDrawer" />
+                	<ActionItem icon="~/images/icons/menu.png" ios.position="left" tap="toggleSideDrawer" className="image-icon" />
             	</ios>
-                <ActionItem text="Histórico" ios.position="right" link="signUp" />
+                <ActionItem text="Histórico" ios.position="right" tap="goToHistory" />
             </ActionBar.actionItems>
     	</ActionBar>
     </Page.actionBar>
     <drawer:RadSideDrawer id="sideDrawer">
         <drawer:RadSideDrawer.mainContent>
-            <StackLayout>
-                <Label text="{{ cockpitMessage }}"/>
-                <chart:RadCartesianChart id="cartesianChart" cssClass="report-chart">
+            
+                <!--<chart:RadCartesianChart id="cartesianChart" className="report-chart">
                     <chart:RadCartesianChart.series>
-                        <chart:BarSeries items="{{ categoryDataChart }}" categoryProperty="Categoria" valueProperty="Amount" stackMode="Stack100">
-                            <chart:BarSeries.verticalAxis>
-                                <chart:CategoricalAxis/>
-                            </chart:BarSeries.verticalAxis>
-                            <chart:BarSeries.horizontalAxis>
-                                <chart:LinearAxis/>
-                            </chart:BarSeries.horizontalAxis>
-                        </chart:BarSeries>
+                        <chart:BarSeries items="{{ categoryDataChart }}" stackMode="Stack100" categoryProperty="Categoria" valueProperty="Gasto" showLabels="false"/>
+                        <chart:BarSeries items="{{ categoryDataChart }}" stackMode="Stack100" categoryProperty="Categoria" valueProperty="Resto" showLabels="false"/>
                     </chart:RadCartesianChart.series>
-                </chart:RadCartesianChart>
-                <Button text="fav1" tap="addFav1"/>
-                <Button text="fav2" tap="addFav2"/>
-                <Button text="fav3" tap="addFav3"/>
-                <Button text="Outros" tap="addOther"/>
-            </StackLayout> 
+                    <chart:RadCartesianChart.horizontalAxis >
+                        <chart:LinearAxis  className="haxis-chart"/>
+                    </chart:RadCartesianChart.horizontalAxis>
+                    <chart:RadCartesianChart.verticalAxis>
+                        <chart:CategoricalAxis/>
+                    </chart:RadCartesianChart.verticalAxis>
+                </chart:RadCartesianChart> -->
+                
+                <GridLayout rows="auto, auto, *,auto,auto,auto,auto,auto,auto, auto" columns="4*,*">
+                    <Label text="Sua Energia Financeira" className="" textWrap="false" row="0" colspan="2"/>
+                    <Progress value=" {{ hpBar }}" className="progress-hp" row="1" colspan="2"/>
+                    <Label text="{{ cockpitMessage }}" className="message" textWrap="true" row="2" colspan="2"/>
+                    <Label text="Gastos Básicos" className="" textWrap="false" row="3" colspan="2"/>
+                    <Progress value="{{ basicCategoryBar }}" className="progress-categories-blue" row="4" col="0" />
+                    <Label text="{{ basicCategoryLabel }}" className="" textWrap="false" row="4" col="1"/>
+                    <Label text="Gastos Extras" className="" textWrap="false" row="5" colspan="2"/>
+                    <Progress value="{{ extraCategoryBar }}" className="progress-categories-blue" row="6" col="0"/>
+                    <Label text="{{ extraCategoryLabel }}" className="" textWrap="false" row="6" col="1"/>
+                    <Label text="Investimentos" className="" textWrap="false" row="7" colspan="2"/>
+                    <Progress value="{{ investimentCategoryBar }}" className="progress-categories-blue" row="8" col="0"/>
+                    <Label text="{{ investimentCategoryLabel }}" className="" textWrap="false" row="8" col="1"/>
+                    <GridLayout rows="*, auto" columns="*,*,*,*" row="9" colspan="2">
+                        <FAB:fab tap="addFav1Expense" icon="~/images/icons/add.png" backColor="#D32F2F" rippleColor="#f1f1f1" className="fab-button" row="0" col="0" />
+                        <FAB:fab tap="addFav2Expense" icon="~/images/icons/add.png" backColor="#FBC02D" rippleColor="#f1f1f1" className="fab-button" row="0" col="1" />
+                        <FAB:fab tap="addFav3Expense" icon="~/images/icons/add.png" backColor="#1976D2" rippleColor="#f1f1f1" className="fab-button" row="0" col="2" />
+                        <FAB:fab tap="addOtherExpense" icon="~/images/icons/add.png" backColor="#4CAF50" rippleColor="#f1f1f1" className="fab-button" row="0" col="3" />
+                        <Label row="1" col="0" text="{{ fab1Label }}" className="field-title"/>
+                        <Label row="1" col="1" text="{{ fab2Label }}" className="field-title"/>
+                        <Label row="1" col="2" text="{{ fab3Label }}" className="field-title"/>
+                        <Label row="1" col="3" text="Outros" className="field-title"/>
+                    </GridLayout>
+                </GridLayout>
+                
         </drawer:RadSideDrawer.mainContent>
         <drawer:RadSideDrawer.drawerContent>
-            <StackLayout cssClass="drawerContent">
-                <StackLayout cssClass="headerContent">
-                    <Label text="Header"/>
+            <StackLayout className="drawerContent">
+                <StackLayout className="headerContent">
+                    <Label text="Menu"/>
                 </StackLayout>
-                <StackLayout cssClass="drawerMenuContent">
-                    <Label text="Item 1"/>
-                    <Label text="Item 2"/>
-                    <Label text="Item 3"/>
-                    <Label text="Item 4"/>
+                <StackLayout className="drawerMenuContent">
+                    <Label text="Orçamento"/>
+                    <Label text="Gastos Favoritos"/>
+                    <Label text="Login e Registro"/>
+                    <Label text="Cartões de Crédtio"/>
+                    <Label text="Sobre nós"/>
                 </StackLayout>
             </StackLayout>
         </drawer:RadSideDrawer.drawerContent>

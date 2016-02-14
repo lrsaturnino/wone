@@ -19,13 +19,8 @@ exports.loaded = function(){
                     //alert('appset_user: ' + appsettings.username + '\nappset_pass: ' + appsettings.password + '\n\ntoken: ' 
                     //+ appsettings.token + '\n\nuserid: ' + appsettings.userid + '\n\ncounter: ' + appsettings.accesscounter);
 
-                    //frameModule.topmost().navigate({
-                    //    moduleName: "views/cockpit/cockpit", 
-					//	clearHistory: true   
-                    //});
-                    
                 	frameModule.topmost().navigate({
-                        moduleName: "views/budget/budget", 
+                        moduleName: "views/cockpit/cockpit", 
 						clearHistory: true   
                     });
                 }, 
