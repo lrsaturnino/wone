@@ -4,7 +4,7 @@
     height: 70;
     horizontal-align: center;
     vertical-align: bottom;
-    margin: 15;
+    margin-top: 10;
 }
 
 .progress-categories-blue{
@@ -34,5 +34,12 @@
 }
 
 .drawerContent{
-    background-color: white;
+    background-color: #ffffff;
+}
+
+.headerContent{
+    background-color: #1976D2;
+    height: 50;
+    text-align: center;
+    vertical-align: center
 }

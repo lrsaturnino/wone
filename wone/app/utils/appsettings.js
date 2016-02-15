@@ -128,30 +128,30 @@ Object.defineProperty(appSettings, "categories", {
 	}
 });
 
-Object.defineProperty(appSettings, "firstbudget", {
+Object.defineProperty(appSettings, "basicCategoryBudget", {
 	get: function() {
-		return appSettingsModule.getString("firstbudget");
+		return appSettingsModule.getString("basicCategoryBudget");
 	},
 	set: function(data) {
-		return appSettingsModule.setString("firstbudget", data);
+		return appSettingsModule.setString("basicCategoryBudget", data);
 	}
 });
 
-Object.defineProperty(appSettings, "secondbudget", {
+Object.defineProperty(appSettings, "extraCategoryBudget", {
 	get: function() {
-		return appSettingsModule.getString("secondbudget");
+		return appSettingsModule.getString("extraCategoryBudget");
 	},
 	set: function(data) {
-		return appSettingsModule.setString("secondbudget", data);
+		return appSettingsModule.setString("extraCategoryBudget", data);
 	}
 });
 
-Object.defineProperty(appSettings, "thirdbudget", {
+Object.defineProperty(appSettings, "investimentCategoryBudget", {
 	get: function() {
-		return appSettingsModule.getString("thirdbudget");
+		return appSettingsModule.getString("investimentCategoryBudget");
 	},
 	set: function(data) {
-		return appSettingsModule.setString("thirdbudget", data);
+		return appSettingsModule.setString("investimentCategoryBudget", data);
 	}
 });
 

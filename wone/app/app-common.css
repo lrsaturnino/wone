@@ -93,7 +93,8 @@ textfield,
 }
 
 .field-title{
-    margin-top: -10;	
+    margin-top: 0;
+    margin-bottom: 5;
     font-size: 16;
     color: #4d4d4d ;
     horizontal-align: center;

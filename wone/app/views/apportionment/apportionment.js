@@ -121,13 +121,13 @@ exports.next = function() {
         budget.weeklybudget['4'] = pageData.get('fourthWeekLabel');
         switch (categoryCount){
             case 0:
-                appsettings.thirdbudget = JSON.stringify(budget);
+                appsettings.investimentCategoryBudget = JSON.stringify(budget);
                 break;
             case 1:
-                appsettings.secondbudget = JSON.stringify(budget);
+                appsettings.extraCategoryBudget = JSON.stringify(budget);
                 break; 
             case 2:
-                appsettings.firstbudget = JSON.stringify(budget);
+                appsettings.basicCategoryBudget = JSON.stringify(budget);
                 break;
         };
         if (categoryCount != 0){
