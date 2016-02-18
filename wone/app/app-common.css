@@ -37,9 +37,9 @@ textfield,
     border-color: #cccccc;
     border-width: 1;
     padding: 7;
-    margin-left: 5;
-    margin-right: 5;
-    margin-bottom: 15;
+    margin-left: 10;
+    margin-right: 10;
+    margin-bottom: 10;
 }
 
 .image-icon{
@@ -47,6 +47,19 @@ textfield,
     height: auto;
 }
 
+.message-label{
+    background-color: #ffffff;
+    color: #4d4d4d;
+    font-size: 18;
+    width: auto;
+    height: auto;
+    text-align: center;
+    horizontal-align: center;
+    border-color: #cccccc;
+    border-width: 2;
+    padding: 10;
+    margin: 10;
+}
 
 .info-label{
     background-color: #ffffff;
@@ -86,10 +99,19 @@ textfield,
 }
 
 .subtitle {
-    margin-bottom: 7;
+    margin: 10;
     font-size: 18;
     color: #4d4d4d ;
     horizontal-align: center;
+}
+
+.subtitle-left {
+    margin-left: 10;
+    margin-top: 5;
+    margin-bottom: 5;
+    font-size: 16;
+    color: #4d4d4d ;
+    horizontal-align: left;
 }
 
 .field-title{

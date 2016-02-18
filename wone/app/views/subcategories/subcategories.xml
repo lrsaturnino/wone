@@ -1,36 +1,33 @@
-<Page xmlns="http://www.nativescript.org/tns.xsd" loaded=loaded>
+<Page xmlns="http://www.nativescript.org/tns.xsd" loaded="loaded">
     <Page.actionBar>
-        <ActionBar title="Categorias">
+        <ActionBar title="Selecione a Categoria">
             <android>
-                <NavigationButton icon="~/images/icons/ic_arrow_back.png" tap="back" />
+                <NavigationButton icon="~/images/icons/ic_arrow_back.png" tap="goBack" />
             </android>
-            <ActionBar.actionItems>
-                <ActionItem text="Lançar Gasto" icon="res://ic_submit" ios.position="right" tap="inputexpense" />
-            </ActionBar.actionItems>
         </ActionBar>
     </Page.actionBar>
-    <GridLayout rows="auto, auto, auto, auto, auto, auto" columns="*">
-        <Label text="Gastos Básicos" row="0" />
+    <GridLayout rows="auto, *, auto, *, auto, *" columns="*">
+        <Label text="Gastos Básicos" row="0" className="subtitle-left"/>
         <ListView items="{{ basicSubCategoryList }}" row="1" className="list-view">
             <ListView.itemTemplate>
                 <GridLayout columns="*">
-                    <Label text="{{ basicSubCategoryName }}" col="0"/>
+                    <Label text="{{ SubCategoryName }}" col="0" tap="selectSubCategory"/>
                 </GridLayout>
             </ListView.itemTemplate>
         </ListView>
-        <Label text="Gastos Extras" row="2" />
+        <Label text="Gastos Extras" row="2" className="subtitle-left"/>
         <ListView items="{{ extraSubCategoryList }}" row="3" className="list-view">
             <ListView.itemTemplate>
                 <GridLayout columns="*">
-                    <Label text="{{ extraSubCategoryName }}" col="0"/>
+                    <Label text="{{ SubCategoryName }}" col="0" tap="selectSubCategory"/>
                 </GridLayout>
             </ListView.itemTemplate>
         </ListView>
-        <Label text="Investimentos" row="4" />
+        <Label text="Investimentos" row="4" className="subtitle-left"/>
         <ListView items="{{ investimentSubCategoryList }}" row="5" className="list-view">
             <ListView.itemTemplate>
                 <GridLayout columns="*">
-                    <Label text="{{ investimentSubCategoryName }}" col="0"/>
+                    <Label text="{{ SubCategoryName }}" col="0" tap="selectSubCategory"/>
                 </GridLayout>
             </ListView.itemTemplate>
         </ListView>

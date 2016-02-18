@@ -1,6 +1,6 @@
 var appsettings = require("../../utils/appsettings");
 var dialogsModule = require("ui/dialogs");
-var observable = require("data/observable");
+var observable = require("data/observable").Observable;
 var viewModule = require("ui/core/view");
 var viewModel = require("./budget-view-model");
 var budget = new viewModel([]);
@@ -10,7 +10,7 @@ var subCategories;
 var countCategories;
 var categories;
 
-var pageData = new observable.Observable({
+var pageData = new observable({
     SubCategoryList: budget,
     SubCategoryNameInput: "",
     SubCategoryBudgetInput: "",
@@ -130,16 +130,53 @@ exports.save = function() {
         .then(function(data){
             budget.addAll(subCategories)
             .then(function(data){
-                var budgetObj = {idcategory: categories[countCategories]['Id'],totalbudget: sumTotalBudget(), weeklybudget: {1: 0, 2: 0, 3: 0, 4: 0}};
-                frameModule.topmost().navigate({
-                    moduleName: "views/apportionment/apportionment", 
-                    context: {
-                        id_category: categories[countCategories]['Id'],
-                        count_category: countCategories,
-                        budget: budgetObj
-                    },
-                    clearHistory: false
-                });
+                
+                var budgetObj = {
+                    idCategory: categories[countCategories]['Id'], 
+                    totalBudget: sumTotalBudget(), 
+                    weeklyBudget: {
+                        1: 0, 
+                        2: 0, 
+                        3: 0, 
+                        4: 0
+                    }, 
+                    subCategories: subCategories
+                };
+
+                if (subCategories.length){
+                    frameModule.topmost().navigate({
+                        moduleName: "views/apportionment/apportionment", 
+                        context: {
+                            count_category: countCategories,
+                            budget: budgetObj
+                        },
+                        clearHistory: false
+                    });
+                }else{
+                    switch (countCategories){
+                        case 0:
+                            appsettings.investimentCategoryBudget = JSON.stringify(budgetObj);
+                            break;
+                        case 1:
+                            appsettings.extraCategoryBudget = JSON.stringify(budgetObj);
+                            break; 
+                        case 2:
+                            appsettings.basicCategoryBudget = JSON.stringify(budgetObj);
+                            break;
+                    };
+                    if (countCategories != 0){
+                        appsettings.countcategory = countCategories;
+                        frameModule.topmost().navigate({
+                            moduleName: "views/budget/budget", 
+                        });
+                    }else{
+                        appsettings.countcategory = categories.length;                      
+                        frameModule.topmost().navigate({
+                            moduleName: "views/cockpit/cockpit", 
+                            clearHistory: true
+                        });
+                    };                    
+                };
             }, 
             function(error){
                 dialogsModule.alert({

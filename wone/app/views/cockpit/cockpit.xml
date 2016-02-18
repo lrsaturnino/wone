@@ -1,4 +1,4 @@
-<Page loaded="loaded" xmlns:drawer="nativescript-telerik-ui/sidedrawer" xmlns:chart="nativescript-telerik-ui/chart" xmlns="http://www.nativescript.org/tns.xsd" xmlns:FAB="nativescript-floatingactionbutton" >
+<Page loaded="loaded" xmlns:drawer="nativescript-telerik-ui/sidedrawer" xmlns:chart="nativescript-telerik-ui/chart" xmlns="http://www.nativescript.org/tns.xsd" xmlns:FAB="nativescript-floatingactionbutton" navigatingTo="onNavigatedTo" >
     <Page.actionBar>
         <ActionBar title="Cockpit">
             <android>
@@ -28,20 +28,24 @@
                     </chart:RadCartesianChart.verticalAxis>
                 </chart:RadCartesianChart> -->
                 
-                <GridLayout rows="auto, auto, *,auto,auto,auto,auto,auto,auto, auto" columns="4*,*">
-                    <Label text="Sua Energia Financeira" className="" textWrap="false" row="0" colspan="2"/>
-                    <Progress value=" {{ hpBar }}" className="progress-hp" row="1" colspan="2"/>
-                    <Label text="{{ cockpitMessage }}" className="message" textWrap="true" row="2" colspan="2"/>
-                    <Label text="Gastos Básicos" className="" textWrap="false" row="3" colspan="2"/>
-                    <Progress value="{{ basicCategoryBar }}" className="progress-categories-blue" row="4" col="0" />
-                    <Label text="{{ basicCategoryLabel }}" className="" textWrap="false" row="4" col="1"/>
-                    <Label text="Gastos Extras" className="" textWrap="false" row="5" colspan="2"/>
-                    <Progress value="{{ extraCategoryBar }}" className="progress-categories-blue" row="6" col="0"/>
-                    <Label text="{{ extraCategoryLabel }}" className="" textWrap="false" row="6" col="1"/>
-                    <Label text="Investimentos" className="" textWrap="false" row="7" colspan="2"/>
-                    <Progress value="{{ investimentCategoryBar }}" className="progress-categories-blue" row="8" col="0"/>
-                    <Label text="{{ investimentCategoryLabel }}" className="" textWrap="false" row="8" col="1"/>
-                    <GridLayout rows="*, auto" columns="*,*,*,*" row="9" colspan="2">
+                <GridLayout rows="auto, auto, *,*, auto" columns="*">
+                    <Label text="Sua Energia Financeira Semanal" className="subtitle" textWrap="false" row="0"/>
+                    <Progress value=" {{ hpBar }}" className="progress-hp" row="1" />
+                    <Label text="{{ cockpitMessage }}" className="message-label" textWrap="true" row="2" />
+                    
+                    <GridLayout rows="auto, auto, auto, auto, auto, auto" columns="4*,*" row="3">
+                        <Label text="Gastos Básicos" className="subtitle-left" textWrap="false" row="0" colspan="2"/>
+                        <Progress value="{{ basicCategoryBar }}" className="progress-categories-blue" row="1" col="0" />
+                        <Label text="{{ basicCategoryLabel }}" className="" textWrap="false" row="1" col="1"/>
+                        <Label text="Gastos Extras" className="subtitle-left" textWrap="false" row="2" colspan="2"/>
+                        <Progress value="{{ extraCategoryBar }}" className="progress-categories-blue" row="3" col="0"/>
+                        <Label text="{{ extraCategoryLabel }}" className="" textWrap="false" row="3" col="1"/>
+                        <Label text="Investimentos" className="subtitle-left" textWrap="false" row="4" colspan="2"/>
+                        <Progress value="{{ investimentCategoryBar }}" className="progress-categories-red" row="5" col="0"/>
+                        <Label text="{{ investimentCategoryLabel }}" className="" textWrap="false" row="5" col="1"/>
+                    </GridLayout>
+
+                    <GridLayout rows="*, auto" columns="*,*,*,*" row="4" colspan="2">
                         <FAB:fab tap="addFav1Expense" icon="~/images/icons/add.png" backColor="#D32F2F" rippleColor="#f1f1f1" className="fab-button" row="0" col="0" />
                         <FAB:fab tap="addFav2Expense" icon="~/images/icons/add.png" backColor="#FBC02D" rippleColor="#f1f1f1" className="fab-button" row="0" col="1" />
                         <FAB:fab tap="addFav3Expense" icon="~/images/icons/add.png" backColor="#1976D2" rippleColor="#f1f1f1" className="fab-button" row="0" col="2" />
@@ -49,7 +53,7 @@
                         <Label row="1" col="0" text="{{ fab1Label }}" className="field-title"/>
                         <Label row="1" col="1" text="{{ fab2Label }}" className="field-title"/>
                         <Label row="1" col="2" text="{{ fab3Label }}" className="field-title"/>
-                        <Label row="1" col="3" text="Outros" className="field-title"/>
+                        <Label row="1" col="3" text="Mais" className="field-title"/>
                     </GridLayout>
                 </GridLayout>
                 
@@ -57,14 +61,13 @@
         <drawer:RadSideDrawer.drawerContent>
             <StackLayout className="drawerContent">
                 <StackLayout className="headerContent">
-                    <Label text="Menu"/>
+                    <Label text="Acesso rápido"/>
                 </StackLayout>
                 <StackLayout className="drawerMenuContent">
-                    <Label text="Orçamento"/>
-                    <Label text="Gastos Favoritos"/>
-                    <Label text="Login e Registro"/>
+                    <Label text="Orçamento" tap="goToBudget"/>
                     <Label text="Cartões de Crédtio"/>
-                    <Label text="Sobre nós"/>
+                    <Label text="Minha Conta"/>
+                    <Label text="Sobre Nós"/>
                 </StackLayout>
             </StackLayout>
         </drawer:RadSideDrawer.drawerContent>

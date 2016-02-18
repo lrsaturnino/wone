@@ -9,16 +9,25 @@
 
 .progress-categories-blue{
     color:#0080ff;
+    width: auto;
+    margin-left: 10;
+    margin-right: 10;
 }
 
 .progress-categories-red{
     color:#ff0000;
+    width: auto;
+    margin-left: 10;
+    margin-right: 10;
 }
 
 
 .progress-hp{
     color:#ffffff;
     background-color: #ff0000;
+    width: auto;
+    margin-left: 10;
+    margin-right: 10;
 }
 
 .report-chart {

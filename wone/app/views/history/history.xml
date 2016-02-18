@@ -2,7 +2,7 @@
     <Page.actionBar>
         <ActionBar title="Histórico de Gastos">
             <android>
-                <NavigationButton icon="~/images/icons/ic_arrow_back.png" tap="back" />
+                <NavigationButton icon="~/images/icons/ic_arrow_back.png" tap="goBack" />
             </android>
         </ActionBar>
     </Page.actionBar>

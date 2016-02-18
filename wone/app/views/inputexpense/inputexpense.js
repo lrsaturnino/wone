@@ -7,22 +7,22 @@ var appsettings = require("../../utils/appsettings");
 var viewmodel = require("./input-expense-view-model");
 var expense = new viewmodel([]);
 var page;
+var expenseActNper = 1;
 
 var pageData = new Observable({
     expenseValue: "",
     expenseOrigin: "Pagto. à vista",
-    expenseActNper: 1,
     expenseTotNPer: 1,
     expenseDate: new Date(),
     expenseLgDesc: "",
     expenseSmDesc: "",
-    expenseSubCat: '',
     expenseCat: ''
 });
 
 exports.loaded = function(args) {
     page = args.object;
-    pageData.set('expenseSubCat',page.navigationContext)
+    pageData.set('expenseSubCat', page.navigationContext.subCategoryID)
+    
     page.bindingContext = pageData;
 };
 
@@ -30,20 +30,21 @@ exports.add = function() {
     if (pageData.get("expenseValue").trim() !== "") {
         viewModule.getViewById(page, "expenseValue").dismissSoftInput();
         expense.add([{
+            'CategoryID' : page.navigationContext.categoryID,
+            'SubCategoryID' : page.navigationContext.subCategoryID,
             'ExpenseValue' : pageData.get("expenseValue"),
             'ExpenseOrigin' : pageData.get("expenseOrigin"),
-            'ActualNPer' : pageData.get("expenseActNper"),
+            'ActualNPer' : expenseActNper,
             'TotalNPer' : pageData.get("expenseTotNPer"),
             'EventDate' : pageData.get("expenseDate"),
             'LongDescription' : pageData.get("expenseLgDesc"),
             'SmallDescription' : pageData.get("expenseSmDesc")
         }])
         .then(function(data) {
-        	dialogsModule.alert({
-            	message: JSON.stringify(data),
-                okButtonText: "OK"
+            frameModule.topmost().navigate({
+                moduleName: "views/cockpit/cockpit",
+                clearHistory: true
             });
-            frameModule.topmost().navigate("views/cockpit/cockpit");
         }, 
        	function(error) {
         	dialogsModule.alert({
@@ -60,5 +61,9 @@ exports.add = function() {
             okButtonText: "OK"
         });
     };
+};
+
+exports.goBack = function(){
+    frameModule.topmost().goBack();
 };
 

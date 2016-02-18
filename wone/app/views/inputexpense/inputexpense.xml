@@ -1,15 +1,21 @@
 <Page xmlns="http://www.nativescript.org/tns.xsd" loaded="loaded">
-  	<Page.actionBar>
-    	<ActionBar title="Adicionar Gasto"></ActionBar>
-  	</Page.actionBar>
+    <Page.actionBar>
+        <ActionBar title="Adicionar Gasto">
+            <android>
+                <NavigationButton icon="~/images/icons/ic_arrow_back.png" tap="goBack" />
+            </android>
+            <ActionBar.actionItems>
+            	<ActionItem text="Salvar" icon="res://ic_submit" ios.position="right" tap="add" />
+            </ActionBar.actionItems>
+        </ActionBar>
+    </Page.actionBar>
   	<GridLayout rows="*,*,*,*,*" columns="2*, *">
     	
         <TextField id="expenseSmDesc" text="{{ expenseSmDesc }}" hint="Título do gasto" row="0" colspan="2" />
         <TextField id="expenseValue" text="{{ expenseValue }}" hint="Informe o valor do gasto" row="1" colspan="2" />
         <Switch id="expenseOrigin" checked="{{ expenseOrigin }}" row="2" colspan="2" />
         <TextView id="expenseLgDesc" text="{{ expenseLgDesc }}" hint="Notas sobre o gasto" row="3" colspan="2" />
-    	<Button text="Add" tap="add" row="4" colspan="2" />
-        
+    
 	</GridLayout>
 </Page>
 

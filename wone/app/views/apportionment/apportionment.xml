@@ -2,7 +2,7 @@
     <Page.actionBar>
         <ActionBar title="Proporção do Orçamento">
             <android>
-                <NavigationButton icon="~/images/icons/ic_arrow_back.png" tap="back" />
+                <NavigationButton icon="~/images/icons/ic_arrow_back.png" tap="goBack" />
             </android>
             <ActionBar.actionItems>
                 <ActionItem text="Próximo" icon="res://ic_submit" ios.position="right" tap="next" />

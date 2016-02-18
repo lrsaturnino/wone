@@ -21,7 +21,7 @@ exports.loaded = function(){
 
                 	frameModule.topmost().navigate({
                         moduleName: "views/cockpit/cockpit", 
-						clearHistory: true   
+						clearHistory: true
                     });
                 }, 
                 function(error){
