@@ -1,0 +1,21 @@
+<Page xmlns="http://www.nativescript.org/tns.xsd" loaded="loaded">
+    <Page.actionBar>
+        <ActionBar title="Conta">
+            <android>
+                <NavigationButton icon="res://ic_arrow_back" tap="goBack" />
+            </android>
+            <ActionBar.actionItems>
+                <ActionItem text="Conta diferente" ios.position="right" tap="goToLogin" />
+            </ActionBar.actionItems>
+        </ActionBar>
+    </Page.actionBar>
+    <GridLayout rows="auto, *">
+        <StackLayout>
+            <TextField id="email" text="{{ email }}" keyboardType="email" autocapitalizationType="none" hint="E-mail" />
+            <TextField id="oldPassword" text="{{ oldPassword }}" secure="true" hint="Senha atual" />
+            <TextField id="newPassword" text="{{ newPassword }}" secure="true" hint="{{ newPasswordHint }}" />
+            <TextField id="confirmNewPassword" text="{{ confirmNewPassword }}" secure="true" hint="{{ confirmNewPasswordHint }}" />
+            <Button text="{{ buttonText }}" tap="updateUser" cssClass="primary-button" />
+        </StackLayout>
+    </GridLayout>
+</Page>

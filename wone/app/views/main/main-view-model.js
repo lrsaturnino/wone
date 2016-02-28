@@ -7,8 +7,6 @@ var everliveOptions = {
 	appId: APP_ID,
     scheme: BS_SCHEME,
     tokenType: 'bearer',
-    offline: true,
-    token: appsettings.token,
     authentication: {
         persist: true,
         onAuthenticationRequired: function() {
@@ -24,67 +22,60 @@ var UserViewModel = function(data){
     data = data || {};
 
     var viewModel = new Observable({
-        email: data.email || appsettings.username,
-		password: data.password || appsettings.password
+        id: appsettings.userid,
+        username: appsettings.username,
+        email: appsettings.registered ? appsettings.username : data.email,
+		password: data.password || appsettings.password,
+        oldPassword: "",
+        previousPassword: "",
+        previousUsername: "",
+        newPassword: data.newPassword,
+        buttonText: "",
+        newPasswordHint: "",
+        confirmNewPasswordHint: ""
 	});	
 
 	viewModel.register = function(){     
         var _this = this;
         return new Promise(function (resolve, reject) {
-            EVERLIVE.Users.get()
-            .then(function(data){
-                if (data.count === 0){
-                    _this.set('email', '1000');
-                    _this.set('password','w0RlD_On&');
-                    var attrs = {
-                        Email: '',
-                        DisplayName: ''
-                    };
-                }else{
-                    var obj = data.result;
-                    obj.sort(function(a,b){
-                        if(a.Username == b.Username)
-                            return 0;
-                        if(a.Username < b.Username)
-                            return -1;
-                        if(a.Username > b.Username)
-                            return 1;                	    
-                    });
-                    obj = obj[obj.length - 1];
-                    _this.set('email',(Number(obj["Username"]) + 1).toString());
-                    _this.set('password','w0RlD_On&');
-                    var attrs = {
-                        Email: '',
-                        DisplayName: ''
-                    };
-                };
-                EVERLIVE.Users.register(_this.get("email"),_this.get("password"),attrs,
-                function(data){
-                    appsettings.username = _this.get("email");
-                    appsettings.password = _this.get("password");
-                    
-                    EVERLIVE.authentication.login(appsettings.username,appsettings.password)
-                    .then(function (data) {
-                        resolve(data);
-                    },
-                    function(error) { 
-                        reject(error);
-                    });
-                },
-                function(error){
-                    reject(error);
-                });
+            _this.set('username', (parseInt(Math.random() * 1000) + "" + new Date().getTime()).toString());
+            _this.set('password',' w0RlD_On&');
+            var attrs = {
+                Email: '',
+                DisplayName: ''
+            };
+            EVERLIVE.Users.register(_this.get("username"), _this.get("password"), attrs)
+            .then(function(data) {
+                resolve(data);
             },
             function(error){
                 reject(error);
             });
-       }); 
+        }); 
    };
     
    viewModel.login = function(){
         var _this = this;
    		return new Promise(function (resolve, reject) {
-            EVERLIVE.authentication.login(_this.get("email"), _this.get("password"))
+            EVERLIVE.authentication.login(_this.get("previousUsername") !== "" ? _this.get("previousUsername") : _this.get("username"), _this.get('previousPassword') !== "" ? _this.get('previousPassword') : _this.get("password"))
+            .then(function (data) {
+                appsettings.username = _this.get("previousUsername") !== "" ? _this.get("previousUsername") : _this.get("username");
+                appsettings.password = _this.get('previousPassword') !== "" ? _this.get('previousPassword') : _this.get("password");
+                var i = appsettings.accesscounter;
+                i++;
+                appsettings.accesscounter = i;
+                resolve(data);
+            },
+            function(error) { 
+                reject(error);
+            });
+        });
+   };
+    
+   viewModel.current = function(){
+        var _this = this;
+   		return new Promise(function (resolve, reject) {
+            EVERLIVE.Users.currentUser()
             .then(function (data) {
                 resolve(data);
             },
@@ -94,6 +85,29 @@ var UserViewModel = function(data){
         });
    };
 
+   viewModel.update = function(){
+        var _this = this;
+        var _email = _this.get('email').toLowerCase();
+        return new Promise(function (resolve, reject) {
+            EVERLIVE.Users.updateSingle({'Id' : _this.get('id'), 'Email' : _email, 'Username' : _email})
+            .then(function (data) {
+                appsettings.username = _email;
+                EVERLIVE.Users.changePassword(_email, appsettings.registered ? _this.get('oldPassword') : _this.get('password'), _this.get('newPassword'), true)
+                .then(function (data){
+                    appsettings.password = _this.get('newPassword');
+                    appsettings.registered = true;
+                    resolve(data);
+                },
+                function(error){
+                    reject(error);
+                });
+            },
+            function(error) { 
+                reject(error);
+            });
+        });
+   };    
+    
    return viewModel;
 };
 
@@ -114,7 +128,6 @@ var CategoryViewModel = function(){
     };
     
    return viewModel;
-
 };
 
 exports.UserViewModel = UserViewModel;

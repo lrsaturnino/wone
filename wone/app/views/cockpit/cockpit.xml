@@ -29,8 +29,14 @@
                 </chart:RadCartesianChart> -->
                 
                 <GridLayout rows="auto, auto, *,*, auto" columns="*">
-                    <Label text="Sua Energia Financeira Semanal" className="subtitle" textWrap="false" row="0"/>
-                    <Progress value=" {{ hpBar }}" className="progress-hp" row="1" />
+                    <Label text="Energia Financeira" className="subtitle" textWrap="false" row="0"/>
+                    <StackLayout row="1">
+                        <Progress value=" {{ hpBar }}" className="progress-hp" />
+                        <Progress value=" {{ hpBar }}" className="progress-hp" />
+                        <Progress value=" {{ hpBar }}" className="progress-hp" />
+                        <Progress value=" {{ hpBar }}" className="progress-hp" />
+
+                    </StackLayout>        
                     <Label text="{{ cockpitMessage }}" className="message-label" textWrap="true" row="2" />
                     
                     <GridLayout rows="auto, auto, auto, auto, auto, auto" columns="4*,*" row="3">
@@ -41,20 +47,28 @@
                         <Progress value="{{ extraCategoryBar }}" className="progress-categories-blue" row="3" col="0"/>
                         <Label text="{{ extraCategoryLabel }}" className="" textWrap="false" row="3" col="1"/>
                         <Label text="Investimentos" className="subtitle-left" textWrap="false" row="4" colspan="2"/>
-                        <Progress value="{{ investimentCategoryBar }}" className="progress-categories-red" row="5" col="0"/>
+                        <Progress value="{{ investimentCategoryBar }}" className="progress-categories-green" row="5" col="0"/>
                         <Label text="{{ investimentCategoryLabel }}" className="" textWrap="false" row="5" col="1"/>
                     </GridLayout>
+                        <GridLayout rows="*, auto" columns="*,*,*,*" row="4" colspan="2">
+                            <android>
+                                <FAB:fab id="favButton1" tap="addFav1Expense" icon="~/images/icons/add.png" backColor="#D32F2F" rippleColor="#f1f1f1" className="fab-button" row="0" col="0" />
+                                <FAB:fab id="favButton2" tap="addFav2Expense" icon="~/images/icons/add.png" backColor="#FBC02D" rippleColor="#f1f1f1" className="fab-button" row="0" col="1" />
+                                <FAB:fab id="favButton3" tap="addFav3Expense" icon="~/images/icons/add.png" backColor="#1976D2" rippleColor="#f1f1f1" className="fab-button" row="0" col="2" />
+                                <FAB:fab tap="addOtherExpense" icon="~/images/icons/add.png" backColor="#4CAF50" rippleColor="#f1f1f1" className="fab-button" row="0" col="3" />
+                                <Label row="1" col="0" text="{{ fab1Label }}" className="field-title"/>
+                                <Label row="1" col="1" text="{{ fab2Label }}" className="field-title"/>
+                                <Label row="1" col="2" text="{{ fab3Label }}" className="field-title"/>
+                                <Label row="1" col="3" text="Mais" className="field-title"/>
+                            </android>
+                            <ios>
+                                <Button id="favButton1" text="{{ fab1Label }}" tap="addFav1Expense" row="0" col="0"/>
+                                <Button id="favButton2" text="{{ fab2Label }}" tap="addFav2Expense" row="0" col="1"/>
+                                <Button id="favButton3" text="{{ fab3Label }}" tap="addFav3Expense" row="0" col="2"/>
+                                <Button text="Mais" tap="addOtherExpense" row="0" col="3"/>
+                            </ios>
 
-                    <GridLayout rows="*, auto" columns="*,*,*,*" row="4" colspan="2">
-                        <FAB:fab tap="addFav1Expense" icon="~/images/icons/add.png" backColor="#D32F2F" rippleColor="#f1f1f1" className="fab-button" row="0" col="0" />
-                        <FAB:fab tap="addFav2Expense" icon="~/images/icons/add.png" backColor="#FBC02D" rippleColor="#f1f1f1" className="fab-button" row="0" col="1" />
-                        <FAB:fab tap="addFav3Expense" icon="~/images/icons/add.png" backColor="#1976D2" rippleColor="#f1f1f1" className="fab-button" row="0" col="2" />
-                        <FAB:fab tap="addOtherExpense" icon="~/images/icons/add.png" backColor="#4CAF50" rippleColor="#f1f1f1" className="fab-button" row="0" col="3" />
-                        <Label row="1" col="0" text="{{ fab1Label }}" className="field-title"/>
-                        <Label row="1" col="1" text="{{ fab2Label }}" className="field-title"/>
-                        <Label row="1" col="2" text="{{ fab3Label }}" className="field-title"/>
-                        <Label row="1" col="3" text="Mais" className="field-title"/>
-                    </GridLayout>
+                        </GridLayout>
                 </GridLayout>
                 
         </drawer:RadSideDrawer.mainContent>
@@ -65,8 +79,8 @@
                 </StackLayout>
                 <StackLayout className="drawerMenuContent">
                     <Label text="Orçamento" tap="goToBudget"/>
-                    <Label text="Cartões de Crédtio"/>
-                    <Label text="Minha Conta"/>
+                    <Label text="Cartões de Crédito" tap="goToCreditCard"/>
+                    <Label text="Minha Conta" tap="goToAccount"/>
                     <Label text="Sobre Nós"/>
                 </StackLayout>
             </StackLayout>

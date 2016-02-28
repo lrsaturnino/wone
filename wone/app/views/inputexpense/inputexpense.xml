@@ -2,20 +2,30 @@
     <Page.actionBar>
         <ActionBar title="Adicionar Gasto">
             <android>
-                <NavigationButton icon="~/images/icons/ic_arrow_back.png" tap="goBack" />
+                <NavigationButton icon="res://ic_arrow_back" tap="goBack" />
             </android>
             <ActionBar.actionItems>
             	<ActionItem text="Salvar" icon="res://ic_submit" ios.position="right" tap="add" />
             </ActionBar.actionItems>
         </ActionBar>
     </Page.actionBar>
-  	<GridLayout rows="*,*,*,*,*" columns="2*, *">
-    	
-        <TextField id="expenseSmDesc" text="{{ expenseSmDesc }}" hint="Título do gasto" row="0" colspan="2" />
-        <TextField id="expenseValue" text="{{ expenseValue }}" hint="Informe o valor do gasto" row="1" colspan="2" />
-        <Switch id="expenseOrigin" checked="{{ expenseOrigin }}" row="2" colspan="2" />
-        <TextView id="expenseLgDesc" text="{{ expenseLgDesc }}" hint="Notas sobre o gasto" row="3" colspan="2" />
-    
-	</GridLayout>
+  	<GridLayout rows="auto,auto,auto,auto,auto,auto,auto,auto,auto" columns="*, *, *">
+        <Label text="{{ expenseSubCategory }}" className="" row="0" colspan="3"/>
+        <TextField id="expenseSmDesc" className="" text="{{ expenseSmDesc }}" hint="Qual foi o gasto?" row="1" colspan="3" />
+        <TextField id="expenseValue" className="" text="{{ expenseValue }}" keyboardType="number" hint="R$ 0,00" row="2" colspan="3" />
+        <Label text="Data do Gasto" className="" row="3" colspan="3"/>
+        <Label text="{{ expenseDate }}" className="" row="4" colspan="3" tap="goDatePicker" />
+        <SegmentedBar id="expenseOrigin" row="5" colspan="3">
+            <SegmentedBar.items>
+              <SegmentedBarItem title="Pagamento à vista" />
+              <SegmentedBarItem title="Pagamento à prazo" />
+            </SegmentedBar.items>
+        </SegmentedBar>        
+        <Label id="expenseCreditCardLabel" text="Cartão de Crédito" className="" visibility="collapsed" row="6" col="0"/>
+        <Label id="expenseCreditCard" text="{{ expenseCreditCard }}" className="" visibility="collapsed" row="6" col="1" colspan="2" tap="goCreditCard" />
+        <Label id="expenseInstallmentLabel" text="Parcelas" className="" visibility="collapsed" row="7" col="0"/>
+        <Label id="expenseInstallment" text="{{ expenseInstallment }}" className="" visibility="collapsed" row="7" col="1" colspan="2" tap="goInstallment"/>
+        <TextView id="expenseLgDesc" className="" text="{{ expenseLgDesc }}" hint="Notas complementares (opcional)" row="8" colspan="3" />
+ 	</GridLayout>
 </Page>
 

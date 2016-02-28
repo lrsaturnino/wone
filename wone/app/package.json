@@ -10,7 +10,9 @@
         "Budget",
         "W1",
         "World one",
-        "Manager"
+        "Manager",
+        "Controle",
+        "Gastos"
     ],
     "repository": {
         "url": ""

@@ -3,22 +3,29 @@ var frameModule = require("ui/frame");
 var observable = require("data/observable").Observable;
 var viewModule = require("ui/core/view");
 var page;
-var basicSubCategoryList = JSON.parse(appsettings.basicCategoryBudget);
-var extraSubCategoryList = JSON.parse(appsettings.extraCategoryBudget);
-var investimentSubCategoryList = JSON.parse(appsettings.investimentCategoryBudget);
+var basicSubCategoryList; 
+var extraSubCategoryList; 
+var investimentSubCategoryList;
 
 var pageData = new observable({
-    basicSubCategoryList: basicSubCategoryList.subCategories,
-    extraSubCategoryList: extraSubCategoryList.subCategories,
-    investimentSubCategoryList: investimentSubCategoryList.subCategories    
+    basicSubCategoryList: '',
+    extraSubCategoryList: '',
+    investimentSubCategoryList: ''    
 });
 
 
 exports.loaded = function(args) {
     page = args.object;
     page.bindingContext = pageData;
+
+    basicSubCategoryList = JSON.parse(appsettings.basicCategoryBudget);
+    extraSubCategoryList = JSON.parse(appsettings.extraCategoryBudget);
+    investimentSubCategoryList = JSON.parse(appsettings.investimentCategoryBudget);
     
-}
+    pageData.set('basicSubCategoryList', basicSubCategoryList.subCategories);
+    pageData.set('extraSubCategoryList', extraSubCategoryList.subCategories);
+    pageData.set('investimentSubCategoryList', investimentSubCategoryList.subCategories);    
+};
 
 exports.goBack = function(){
     frameModule.topmost().goBack();
@@ -48,7 +55,9 @@ exports.selectSubCategory = function(args) {
             moduleName: "views/inputexpense/inputexpense",
             context: {
                 categoryID: item.CategoryID,
-                subCategoryID: item.Id
+                subCategoryID: item.Id,
+                subCategoryName: item.SubCategoryName,
+                new: true
             }
         });
     };

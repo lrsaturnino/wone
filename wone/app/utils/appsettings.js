@@ -65,12 +65,12 @@ Object.defineProperty(appSettings, "token", {
 	}
 });
 
-Object.defineProperty(appSettings, "inputexpensecounter", {
+Object.defineProperty(appSettings, "expensecounter", {
 	get: function() {
-		return appSettingsModule.getString("inputexpensecounter");
+		return appSettingsModule.getNumber("expensecounter");
 	},
 	set: function(data) {
-		return appSettingsModule.setString("inputexpensecounter", data);
+		return appSettingsModule.setNumber("expensecounter", data);
 	}
 });
 
@@ -107,6 +107,15 @@ Object.defineProperty(appSettings, "registered", {
 	},
 	set: function(data) {
 		return appSettingsModule.setBoolean("registered", data);
+	}
+});
+
+Object.defineProperty(appSettings, "registerdate", {
+	get: function() {
+		return appSettingsModule.getNumber("registerdate");
+	},
+	set: function(data) {
+		return appSettingsModule.setNumber("registerdate", data);
 	}
 });
 
@@ -152,6 +161,24 @@ Object.defineProperty(appSettings, "investimentCategoryBudget", {
 	},
 	set: function(data) {
 		return appSettingsModule.setString("investimentCategoryBudget", data);
+	}
+});
+
+Object.defineProperty(appSettings, "expenses", {
+	get: function() {
+		return appSettingsModule.getString("expenses");
+	},
+	set: function(data) {
+		return appSettingsModule.setString("expenses", data);
+	}
+});
+
+Object.defineProperty(appSettings, "creditcards", {
+	get: function() {
+		return appSettingsModule.getString("creditcards");
+	},
+	set: function(data) {
+		return appSettingsModule.setString("creditcards", data);
 	}
 });
 

@@ -1,20 +1,18 @@
 <Page xmlns="http://www.nativescript.org/tns.xsd" loaded="loaded">
-  <Page.actionBar>
-    <ActionBar title="Login">
-      <ActionBar.actionItems>
-        <ActionItem text="Registrar" ios.position="right" link="signUp" />
-      </ActionBar.actionItems>
-    </ActionBar>
-  </Page.actionBar>
-  <GridLayout rows="auto, *, auto">
-    <ScrollView row="1">
-      <StackLayout>
-	      <TextField text="{{ username }}" autocorrect="false" autocapitalizationType="none" hint="email" keyboardType="email" />
-          <TextField text="{{ password }}" secure="true" hint="senha" />
-	      <Button text="Esqueceu senha?" link="passwordRecovery" cssClass="text-button" />
-          <Button text="Acessar" tap="{{ login }}" cssClass="primary-button" />
-      </StackLayout>
-    </ScrollView>
-    <ActivityIndicator rowspan="3" busy="{{ isLoading }}" />
-  </GridLayout>
+    <Page.actionBar>
+        <ActionBar title="Acessar Conta">
+            <android>
+                <NavigationButton icon="res://ic_arrow_back" tap="goBack" />
+            </android>
+            <ActionBar.actionItems>
+                <ActionItem text="Acessar" icon="res://ic_submit" ios.position="right" tap="login" />
+            </ActionBar.actionItems>
+        </ActionBar>
+    </Page.actionBar>
+    <GridLayout rows="*">
+        <StackLayout>
+            <TextField text="{{ previousUsername }}" autocorrect="false" autocapitalizationType="none" hint="E-mail" keyboardType="email" />
+            <TextField text="{{ previousPassword }}" secure="true" hint="Senha" />
+        </StackLayout>
+    </GridLayout>
 </Page>

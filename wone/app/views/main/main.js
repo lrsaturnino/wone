@@ -1,65 +1,97 @@
+var connectivity = require("connectivity");
+var connectionType = connectivity.getConnectionType();
+var observable = require("data/observable").Observable;
 var appsettings = require("../../utils/appsettings");
 var frameModule = require("ui/frame");
 var viewModel = require("./main-view-model");
-var user = new viewModel.UserViewModel({});
+var user = new viewModel.UserViewModel();
 var categories = new viewModel.CategoryViewModel();
+var page;
 
-exports.loaded = function(){
+var pageData = new observable({});
+
+exports.loaded = function(args){
+    page = args.object;
+    page.bindingContext = pageData;
+    
+    pageData.set('isLoading', true);
+    
     appsettings.keyselect = 'accesscounter';
     if (appsettings.haskey){
-        if(appsettings.token){
-            user.login()
+        switch (connectionType) {
+            case undefined:
+            case connectivity.connectionType.none:
+                if (appsettings.basicCategoryBudget !== undefined && appsettings.extraCategoryBudget !== undefined && appsettings.investimentCategoryBudget !== undefined && appsettings.basicCategoryBudget !== "" && appsettings.extraCategoryBudget !== "" && appsettings.investimentCategoryBudget !== ""){
+                    frameModule.topmost().navigate({
+                            moduleName: "views/cockpit/cockpit", 
+                            clearHistory: true
+                    });
+                }else{
+                    pageData.set('isLoading', false);
+                    pageData.set('splashMessage', 'Ops! Sem conexão :(');    
+                };
+                break;         
+            default: 
+                user.login()
                 .then(function(data){
-                    var i = appsettings.accesscounter;
-                    i++;
-                    appsettings.accesscounter = i;
-                    appsettings.token = data.result.access_token;
-                    appsettings.userid = data.result.principal_id;
-
-                    //alert('appset_user: ' + appsettings.username + '\nappset_pass: ' + appsettings.password + '\n\ntoken: ' 
-                    //+ appsettings.token + '\n\nuserid: ' + appsettings.userid + '\n\ncounter: ' + appsettings.accesscounter);
-
-                	frameModule.topmost().navigate({
-                        moduleName: "views/cockpit/cockpit", 
-						clearHistory: true
+                    if (appsettings.basicCategoryBudget !== "" && appsettings.extraCategoryBudget !== "" && appsettings.investimentCategoryBudget !== "" && appsettings.basicCategoryBudget !== undefined && appsettings.extraCategoryBudget !== undefined && appsettings.investimentCategoryBudget !== undefined){
+                        frameModule.topmost().navigate({
+                                moduleName: "views/cockpit/cockpit", 
+                                clearHistory: true
+                        });
+                    }else{
+                        frameModule.topmost().navigate({
+                                moduleName: "views/budget/budget", 
+                                clearHistory: true
+                        });                    
+                    };
+                }, 
+                function(error){
+                    pageData.set('isLoading', false);
+                    pageData.set('splashMessage', 'Ops! Tivemos um problema. (Cod.' + JSON.stringify(error) + ')'); 
+                });
+        };        
+    }else{
+        switch (connectionType) {
+            case undefined:
+            case connectivity.connectionType.none:
+                pageData.set('isLoading', false);
+                pageData.set('splashMessage', 'Ops! Sem conexão :(');             
+            break;
+            default:
+                user.register()
+                .then(function(data) {
+                    appsettings.accesscounter = 0;
+                    appsettings.expensecounter = 0;
+                    appsettings.registered = false;
+                    appsettings.registerdate = Number(new Date());
+                    appsettings.userid = data.result.Id;
+                    user.login()
+                    .then(function(data){
+                        categories.fetch()
+                        .then(function(data){
+                            appsettings.categories = JSON.stringify(data);
+                            appsettings.countcategory = Number(data.count);
+                            frameModule.topmost().navigate({
+                                moduleName: "views/budget/budget", 
+                                clearHistory: true
+                            });            
+                        },     
+                        function(error){
+                            pageData.set('isLoading', false);
+                            pageData.set('splashMessage', 'Ops! Tivemos um problema. (Cod.' + JSON.stringify(error) + ')'); 
+                        });                
+                    }, 
+                    function(error){
+                        pageData.set('isLoading', false);
+                        pageData.set('splashMessage', 'Ops! Tivemos um problema. (Cod.' + JSON.stringify(error) + ')');             
                     });
                 }, 
                 function(error){
-                    alert(JSON.stringify(error));
-                });
-        }else{
-            frameModule.topmost().navigate({
-                moduleName: "views/login/login", 
-            	clearHistory: true   
-            });
+                    pageData.set('isLoading', false);
+                    pageData.set('splashMessage', 'Ops! Tivemos um problema. (Cod.' + JSON.stringify(error) + ')'); 
+                });        
         };
-    }else{
-    	user.register()
-        .then(function(data){
-			appsettings.accesscounter = 1;
-            appsettings.registered = true;
-            appsettings.token = data.result.access_token;
-            appsettings.userid = data.result.principal_id;
-			categories.fetch()
-            .then(function(data){
-                appsettings.categories = JSON.stringify(data);
-                appsettings.countcategory = Number(data.count);
-                
-                //alert('appset_user: ' + appsettings.username + '\nappset_pass: ' + appsettings.password + '\n\ntoken: ' 
-                //+ appsettings.token + '\nuserid: ' + appsettings.userid + '\n\ncounter: ' + appsettings.accesscounter);
-                
-                frameModule.topmost().navigate({
-                    moduleName: "views/budget/budget", 
-                    clearHistory: true   
-                });
-            },     
-            function(error){
-                alert(JSON.stringify(error));	    
-            });
-        }, 
-       	function(error){
-			alert(JSON.stringify(error));
-        });
     }; 	
 };
 

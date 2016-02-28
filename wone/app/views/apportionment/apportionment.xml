@@ -2,14 +2,14 @@
     <Page.actionBar>
         <ActionBar title="Proporção do Orçamento">
             <android>
-                <NavigationButton icon="~/images/icons/ic_arrow_back.png" tap="goBack" />
+                <NavigationButton icon="res://ic_arrow_back" tap="goBack" />
             </android>
             <ActionBar.actionItems>
                 <ActionItem text="Próximo" icon="res://ic_submit" ios.position="right" tap="next" />
             </ActionBar.actionItems>
         </ActionBar>
     </Page.actionBar>
-    <GridLayout rows="auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto" columns="2*, *">
+    <GridLayout rows="auto, auto, auto, auto, auto, auto, auto, auto, auto, auto" columns="2*, *">
         <Label text="1ª Semana" row="0" colspan="2"/>
         <Slider id="firstWeekSlider" row="1" col="0"/>
        	<Label text="{{ firstWeekLabel }}" row="1" col="1"/>
@@ -24,9 +24,6 @@
        	<Label text="{{ fourthWeekLabel }}" row="7" col="1"/>
         <Label text="Orçamento disponível" className="subtitle" row="8" colspan="2"/>
         <Label text="{{ budgetLeft }}" className="info-label" row="9" colspan="2"/>
-        <GridLayout row="10" colspan="2" rows="auto" columns="*">
-            <Button text="{{ buttontext }}" tap="next" row="0" col="1"/>
-        </GridLayout>
     </GridLayout>
 
 </Page>

@@ -21,6 +21,13 @@
     margin-right: 10;
 }
 
+.progress-categories-green{
+    color:#4CAF50;
+    width: auto;
+    margin-left: 10;
+    margin-right: 10;
+}
+
 
 .progress-hp{
     color:#ffffff;
@@ -28,6 +35,8 @@
     width: auto;
     margin-left: 10;
     margin-right: 10;
+    margin-top: -7;
+    margin-bottom: -7
 }
 
 .report-chart {

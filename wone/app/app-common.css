@@ -15,8 +15,7 @@ button {
     horizontal-align: stretch;
 }
 
-image,
-activityindicator {
+image{
     horizontal-align: center;
     vertical-align: center;
 }
@@ -25,6 +24,17 @@ label,
 textfield,
 {
     vertical-align: center;
+}
+
+.splash-logo{
+    width: 192;
+    height: 192;
+    margin: 10;
+}
+
+.splash-message{
+    horizontal-align: center;
+    margin: 10;
 }
 
 .date-picker {
@@ -153,4 +163,6 @@ textfield,
     background-position: center center;
     background-size: 50% 50%;
 }
+
+
 

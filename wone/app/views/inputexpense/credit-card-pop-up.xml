@@ -1,0 +1,12 @@
+<Page xmlns="http://www.nativescript.org/tns.xsd" loaded="loaded">
+    <Page.actionBar>
+        <ActionBar title="Selecione o cartão de crédito">
+            <ActionBar.actionItems>
+            	<ActionItem text="Pronto" ios.position="right" tap="goBack" />
+            </ActionBar.actionItems>
+        </ActionBar>
+    </Page.actionBar>
+  	<GridLayout rows="*" columns="*">
+        <ListPicker id="creditCardList" items="{{ creditCardList() }}" selectedIndex="0" row="0" />    
+ 	</GridLayout>
+</Page>

@@ -2,7 +2,7 @@
     <Page.actionBar>
         <ActionBar title="Selecione a Categoria">
             <android>
-                <NavigationButton icon="~/images/icons/ic_arrow_back.png" tap="goBack" />
+                <NavigationButton icon="res://ic_arrow_back" tap="goBack" />
             </android>
         </ActionBar>
     </Page.actionBar>

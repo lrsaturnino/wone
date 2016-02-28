@@ -1,0 +1,30 @@
+<Page xmlns="http://www.nativescript.org/tns.xsd" loaded="loaded" actionBarHidden="false">
+    <Page.actionBar>
+        <ActionBar title="Cartões de Crédito">
+            <android>
+                <NavigationButton icon="res://ic_arrow_back" tap="goBack" />
+            </android>            
+            <ActionBar.actionItems>
+            	<ActionItem text="Salvar" icon="res://ic_submit" ios.position="right" tap="save" />
+            </ActionBar.actionItems>
+		</ActionBar>
+    </Page.actionBar>
+    <GridLayout rows="auto, auto, *" columns="*">
+        <GridLayout rows="auto, auto" columns="2*, *, auto" row="1" colspan="3" className="child-grid">
+            <Label text="Cartão de Crédito" className="" row="0" col="0"/>
+            <Label text="Dia do Vencimento" className="" row="0" col="1"/>
+            <TextField id="inputCreditCardName" text="{{ inputCreditCardName }}" hint="ex. Visa, Mastercard" row="1" col="0" />
+            <TextField id="inputCreditCardDueDay" text="{{ inputCreditCardDueDay }}" keyboardType="number" hint="15" row="1" col="1" />
+            <Image src="~/images/icons/add.png" row="1" col="2" tap="addCreditCard" className="image-icon"/>
+        </GridLayout>
+        <ListView id="creditCardList" items="{{ creditCardList }}" row="2" colSpan="3" className="list-view">
+            <ListView.itemTemplate>
+                <GridLayout columns="*, *, auto">
+                    <Label text="{{ creditCardName }}" col="0"/>
+                    <Label text="{{ creditCardDueDay }}" col="1"/>
+                    <Image src="res://ic_menu_delete" col="2" tap="delCreditCard" />
+                </GridLayout>
+            </ListView.itemTemplate>
+        </ListView>
+    </GridLayout>
+</Page>

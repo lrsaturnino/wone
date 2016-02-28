@@ -1,2 +1,9 @@
 @import url("~/app-common.css");
 
+.progress-hp{
+    color:#ffffff;
+    background-color: #ff0000;
+    width: auto;
+    margin-left: 10;
+    margin-right: 10;
+}
