@@ -13,6 +13,7 @@
         <StackLayout>
             <TextField text="{{ previousUsername }}" autocorrect="false" autocapitalizationType="none" hint="E-mail" keyboardType="email" />
             <TextField text="{{ previousPassword }}" secure="true" hint="Senha" />
+            <Label text="{{ message }}" className="message" />
         </StackLayout>
     </GridLayout>
 </Page>

@@ -1,3 +1,5 @@
+var connectivity = require("connectivity");
+var connectionType;
 var dialogsModule = require("ui/dialogs");
 var appsettings = require("../../utils/appsettings");
 var frameModule = require("ui/frame");
@@ -11,40 +13,63 @@ var page;
 exports.loaded = function(args) {
     page = args.object;
     page.bindingContext = user;
-}
+    user.set('message', '');
+};
 
 exports.goBack = function(){
     frameModule.topmost().goBack();
+    user.set('previousUsername', '');
+    user.set('previousPassword', '');
 };
 
 exports.login = function(){
-    user.login()
-    .then(function(data){
-        user.current()
-        .then(function(data){
-            appsettings.registerdate = Number(new Date(data.result.CreatedAt));
-            appsettings.userid = data.result.Id;
-            appsettings.registered = true;
-            appsettings.favsubcat1 = "";
-            appsettings.favsubcat2 = "";
-            appsettings.favsubcat3 = "";
-            appsettings.basicCategoryBudget = "";
-            appsettings.extraCategoryBudget = "";
-            appsettings.investimentCategoryBudget = "";
-            appsettings.expenses = "";
-            appsettings.creditcards = "";            
-            user.set('previousUsername', "");
-            user.set('previousPassword', "");
-            frameModule.topmost().navigate({
-                moduleName: "views/budget/budget", 
-                clearHistory: true
-            });            
-        },
-        function(erroe){
-            alert(JSON.stringify(error));
-        });
-    }, 
-    function(error){
-        alert(JSON.stringify(error));
-    });
+    connectionType = connectivity.getConnectionType();
+    switch (connectionType){
+        case undefined:
+        case connectivity.connectionType.none:
+            user.set('message', 'Ops! Sem conexão :(');
+        break;
+        default:
+            user.set('message', '');
+            if (user.get('previousUsername').trim() !== "" && user.get('previousPassword').trim() !== "") {
+                user.login()
+                .then(function(data){
+                    user.current()
+                    .then(function(data){
+                        appsettings.registerdate = Number(new Date(data.result.CreatedAt));
+                        appsettings.userid = data.result.Id;
+                        appsettings.registered = true;
+                        appsettings.favsubcat1 = "";
+                        appsettings.favsubcat2 = "";
+                        appsettings.favsubcat3 = "";
+                        appsettings.basicCategoryBudget = "";
+                        appsettings.extraCategoryBudget = "";
+                        appsettings.investimentCategoryBudget = "";
+                        appsettings.expenses = "";
+                        appsettings.creditcards = "";            
+                        user.set('previousUsername', "");
+                        user.set('previousPassword', "");
+                        frameModule.topmost().navigate({
+                            moduleName: "views/budget/budget", 
+                            clearHistory: true
+                        });            
+                    },
+                    function(error){
+                        alert('Ops! Tivemos um problema. (Cod.: ' + JSON.stringify(error) + ')');
+                    });
+                }, 
+                function(error){
+                    if (error.code == 205){
+                        alert('Ops! Usuário ou senha incorretos.');
+                    }else{
+                        alert('Ops! Tivemos um problema. (Cod.: ' + JSON.stringify(error) + ')');
+                    };
+                });
+            }else{
+                dialogsModule.alert({
+                    message: "Existem informações não preenchidas.",
+                    okButtonText: "OK"
+                });            
+            };
+    };
 };

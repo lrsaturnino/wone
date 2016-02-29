@@ -1,5 +1,5 @@
 var connectivity = require("connectivity");
-var connectionType = connectivity.getConnectionType();
+var connectionType;
 var dialogsModule = require("ui/dialogs");
 var appsettings = require("../../utils/appsettings");
 var frameModule = require("ui/frame");
@@ -13,7 +13,8 @@ var page;
 exports.loaded = function(args) {
     page = args.object;
     page.bindingContext = user;
-    
+    user.set('message', '');
+
     if (appsettings.registered){
         viewModule.getViewById(page, 'oldPassword').visibility = 'visible';
         user.set('email', appsettings.username);
@@ -29,36 +30,49 @@ exports.loaded = function(args) {
 };
 
 exports.updateUser = function(){
-    if (String(user.get("email")).trim() !== "" && appsettings.registered ? String(user.get("oldPassword")).trim() !== "" : true && String(user.get("newPassword")).trim() !== "" && String(user.get("confirmNewPassword")).trim() !== "") {    
-        if (user.get("newPassword") === user.get("confirmNewPassword")) {   
-            user.update()
-            .then(function(data){
+    connectionType = connectivity.getConnectionType();
+    switch (connectionType){
+        case undefined:
+        case connectivity.connectionType.none:
+            user.set('message', 'Ops! Sem conexão :(');
+        break;
+        default:
+            user.set('message', '');
+            if (user.get('email').trim() !== "" && user.get('newPassword').trim() !== "" && (appsettings.registered ? user.get("oldPassword").trim() !== "" : true)) {    
+                if (user.get("newPassword") === user.get("confirmNewPassword")) {   
+                    user.update()
+                    .then(function(data){
+                        dialogsModule.alert({
+                            message: "Sua conta foi atualizada com sucesso!",
+                            okButtonText: "OK"
+                        });
+                        user.set('oldPassword', "");
+                        user.set('newPassword', "");
+                        user.set('confirmNewPassword', "");
+                        frameModule.topmost().navigate({
+                            moduleName: "views/cockpit/cockpit", 
+                            clearHistory: true
+                        });
+                    },
+                    function(error){
+                        if (error.code == 205){
+                            alert('Ops! Usuário ou senha incorretos.');
+                        }else{
+                            alert('Ops! Tivemos um problema. (Cod.: ' + JSON.stringify(error) + ')');
+                        };
+                    });
+                }else{
+                    dialogsModule.alert({
+                        message: "As senhas não são iguais.",
+                        okButtonText: "OK"
+                    });            
+                }
+            }else{
                 dialogsModule.alert({
-                    message: "Sua conta foi atualizada com sucesso!",
+                    message: "Existem informações não preenchidas.",
                     okButtonText: "OK"
-                });
-                user.set('oldPassword', "");
-                user.set('newPassword', "");
-                user.set('confirmNewPassword', "");
-                frameModule.topmost().navigate({
-                    moduleName: "views/cockpit/cockpit", 
-                    clearHistory: true
-                });
-            },
-            function(error){
-                alert(JSON.stringify(error));
-            });
-        }else{
-            dialogsModule.alert({
-                message: "As senhas não são iguais.",
-                okButtonText: "OK"
-            });            
-        }
-    }else{
-        dialogsModule.alert({
-            message: "Existem infromações não preenchidas.",
-            okButtonText: "OK"
-        });    
+                });    
+            };        
     };
 };
 

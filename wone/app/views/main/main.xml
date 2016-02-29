@@ -1,7 +1,7 @@
 <Page xmlns="http://www.nativescript.org/tns.xsd" loaded="loaded" actionBarHidden="true">
     <StackLayout>
         <Image src="~/images/icons/logo_nobg_192.png" className="splash-logo" />
-        <Label text="{{ splashMessage }}" className="splash-message" />
+        <Label text="{{ splashMessage }}" className="message" />
         <ActivityIndicator busy="{{ isLoading }}" />
     </StackLayout>
 </Page>

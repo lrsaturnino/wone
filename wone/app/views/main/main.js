@@ -6,6 +6,7 @@ var frameModule = require("ui/frame");
 var viewModel = require("./main-view-model");
 var user = new viewModel.UserViewModel();
 var categories = new viewModel.CategoryViewModel();
+var expenses = new viewModel.ExpenseListViewModel();
 var page;
 
 var pageData = new observable({});
@@ -18,7 +19,7 @@ exports.loaded = function(args){
     
     appsettings.keyselect = 'accesscounter';
     if (appsettings.haskey){
-        switch (connectionType) {
+        switch (connectionType){
             case undefined:
             case connectivity.connectionType.none:
                 if (appsettings.basicCategoryBudget !== undefined && appsettings.extraCategoryBudget !== undefined && appsettings.investimentCategoryBudget !== undefined && appsettings.basicCategoryBudget !== "" && appsettings.extraCategoryBudget !== "" && appsettings.investimentCategoryBudget !== ""){
@@ -34,6 +35,22 @@ exports.loaded = function(args){
             default: 
                 user.login()
                 .then(function(data){
+                    if (appsettings.expenses){
+                        expenses.add(JSON.parse(appsettings.expenses))
+                        .then(function(data) {
+                            appsettings.expenses = "";    
+                        }, 
+                        function(error) {
+                            console.log(error);
+                        });
+                    };
+                    expenses.fetch()
+                    .then(function(data) {
+                        console.log(JSON.stringify(data));
+                    }, 
+                    function(error) {
+                        console.log(error);
+                    });                    
                     if (appsettings.basicCategoryBudget !== "" && appsettings.extraCategoryBudget !== "" && appsettings.investimentCategoryBudget !== "" && appsettings.basicCategoryBudget !== undefined && appsettings.extraCategoryBudget !== undefined && appsettings.investimentCategoryBudget !== undefined){
                         frameModule.topmost().navigate({
                                 moduleName: "views/cockpit/cockpit", 
@@ -48,11 +65,11 @@ exports.loaded = function(args){
                 }, 
                 function(error){
                     pageData.set('isLoading', false);
-                    pageData.set('splashMessage', 'Ops! Tivemos um problema. (Cod.' + JSON.stringify(error) + ')'); 
+                    pageData.set('splashMessage', 'Ops! Tivemos um problema. (Cod.: ' + JSON.stringify(error) + ')'); 
                 });
         };        
     }else{
-        switch (connectionType) {
+        switch (connectionType){
             case undefined:
             case connectivity.connectionType.none:
                 pageData.set('isLoading', false);
@@ -79,17 +96,17 @@ exports.loaded = function(args){
                         },     
                         function(error){
                             pageData.set('isLoading', false);
-                            pageData.set('splashMessage', 'Ops! Tivemos um problema. (Cod.' + JSON.stringify(error) + ')'); 
+                            pageData.set('splashMessage', 'Ops! Tivemos um problema. (Cod.: ' + JSON.stringify(error) + ')'); 
                         });                
                     }, 
                     function(error){
                         pageData.set('isLoading', false);
-                        pageData.set('splashMessage', 'Ops! Tivemos um problema. (Cod.' + JSON.stringify(error) + ')');             
+                        pageData.set('splashMessage', 'Ops! Tivemos um problema. (Cod.: ' + JSON.stringify(error) + ')');             
                     });
                 }, 
                 function(error){
                     pageData.set('isLoading', false);
-                    pageData.set('splashMessage', 'Ops! Tivemos um problema. (Cod.' + JSON.stringify(error) + ')'); 
+                    pageData.set('splashMessage', 'Ops! Tivemos um problema. (Cod.: ' + JSON.stringify(error) + ')'); 
                 });        
         };
     }; 	

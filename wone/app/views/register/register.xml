@@ -15,7 +15,8 @@
             <TextField id="oldPassword" text="{{ oldPassword }}" secure="true" hint="Senha atual" />
             <TextField id="newPassword" text="{{ newPassword }}" secure="true" hint="{{ newPasswordHint }}" />
             <TextField id="confirmNewPassword" text="{{ confirmNewPassword }}" secure="true" hint="{{ confirmNewPasswordHint }}" />
-            <Button text="{{ buttonText }}" tap="updateUser" cssClass="primary-button" />
+            <Button id="registerbtn" text="{{ buttonText }}" tap="updateUser" cssClass="primary-button" />
+            <Label text="{{ message }}" className="message" />
         </StackLayout>
     </GridLayout>
 </Page>

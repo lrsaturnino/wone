@@ -32,11 +32,6 @@ textfield,
     margin: 10;
 }
 
-.splash-message{
-    horizontal-align: center;
-    margin: 10;
-}
-
 .date-picker {
     vertical-align: center;
 }
@@ -96,8 +91,9 @@ textfield,
 
 .message {
     color: #4d4d4d;
-    font-size: 18;
+    font-size: 16;
     horizontal-align: center;
+    margin: 10;
 }
 
 .title {

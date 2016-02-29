@@ -24,15 +24,16 @@ var UserViewModel = function(data){
     var viewModel = new Observable({
         id: appsettings.userid,
         username: appsettings.username,
-        email: appsettings.registered ? appsettings.username : data.email,
+        email: appsettings.registered ? appsettings.username : data.email || "",
 		password: data.password || appsettings.password,
         oldPassword: "",
         previousPassword: "",
         previousUsername: "",
-        newPassword: data.newPassword,
+        newPassword: "",
         buttonText: "",
         newPasswordHint: "",
-        confirmNewPasswordHint: ""
+        confirmNewPasswordHint: "",
+        message: ""
 	});	
 
 	viewModel.register = function(){     
@@ -59,12 +60,12 @@ var UserViewModel = function(data){
    		return new Promise(function (resolve, reject) {
             EVERLIVE.authentication.login(_this.get("previousUsername") !== "" ? _this.get("previousUsername") : _this.get("username"), _this.get('previousPassword') !== "" ? _this.get('previousPassword') : _this.get("password"))
             .then(function (data) {
-                appsettings.username = _this.get("previousUsername") !== "" ? _this.get("previousUsername") : _this.get("username");
-                appsettings.password = _this.get('previousPassword') !== "" ? _this.get('previousPassword') : _this.get("password");
-                var i = appsettings.accesscounter;
-                i++;
-                appsettings.accesscounter = i;
-                resolve(data);
+                    appsettings.username = _this.get("previousUsername") !== "" ? _this.get("previousUsername") : _this.get("username");
+                    appsettings.password = _this.get('previousPassword') !== "" ? _this.get('previousPassword') : _this.get("password");
+                    var i = appsettings.accesscounter;
+                    i++;
+                    appsettings.accesscounter = i;
+                    resolve(data);
             },
             function(error) { 
                 reject(error);
@@ -130,5 +131,37 @@ var CategoryViewModel = function(){
    return viewModel;
 };
 
+var ExpenseListViewModel = function(){
+    var viewModel = new observableArrayModule.ObservableArray();
+
+    viewModel.add = function(expense) {
+        var model = EVERLIVE.data('expenses')
+        return new Promise(function (resolve, reject) {
+            model.create(expense,
+            function(data) {
+                resolve(data);
+            },
+            function(error) {
+                reject(error);
+            });
+        });
+    };
+    
+    viewModel.fetch = function() {
+        var model = EVERLIVE.data('expenses')
+        return new Promise(function (resolve, reject) {
+            model.get()
+            .then(function(data) {
+                resolve(data);
+            },
+            function(error) {
+                reject(error);
+            });
+        });
+    };
+    return viewModel;
+};
+
+exports.ExpenseListViewModel = ExpenseListViewModel;
 exports.UserViewModel = UserViewModel;
 exports.CategoryViewModel = CategoryViewModel;
