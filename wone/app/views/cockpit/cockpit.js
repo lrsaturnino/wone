@@ -11,7 +11,6 @@ var favButton1;
 var favButton2;
 var favButton3;
 var actDate;
-var lastDayActDate;
 var objBasicBudget;
 var objExtraBudget;
 var objInvestimentBudget;
@@ -22,12 +21,15 @@ var InvestimentBudgetReleased;
 var allowanceDates = function(){
     var checkDate;
     var allowanceDates = [];
+    var lastDayActDate = (new Date(actDate.getFullYear(), actDate.getMonth() + 1, 0)).getDate();
+    
     for (var i = 1; i <= lastDayActDate; i++){
         checkDate = new Date(actDate.getFullYear(), actDate.getMonth(), i);
         if (checkDate.getDay() == 1){
             allowanceDates.push(checkDate);           
         };
     };
+    
     return allowanceDates;
 };
 
@@ -51,12 +53,13 @@ var budgetReleased = function(data){
     var checkDates = allowanceDates();
     var budgetReleased = 0;
     var registerDate = new Date(appsettings.registerdate);
-    
+
     if (checkDates.length > 4 && checkDates[checkDates.length - 2] < registerDate){
         registerDate = checkDates[checkDates.length - 2] 
     };
     
     if (String(actDate.getFullYear()) + String(actDate.getMonth()) == String(new Date(appsettings.registerdate).getFullYear()) + String(new Date(appsettings.registerdate).getMonth())){
+
         for (var i = 1; i <= 4; i++){
             if (actDate >= checkDates[i-1]){
                 if (checkDates[i-1] >= registerDate){
@@ -66,10 +69,12 @@ var budgetReleased = function(data){
                         budgetReleased += data.weeklyBudget[i] * ((checkDates[i].getDate() - registerDate.getDate()) / 7);
                     };     
                 };
+            }else{
+                budgetReleased = data.weeklyBudget[1];
             };
         };     
     }else{
-        var budgetReleased = data.weeklyBudget[1];
+        budgetReleased = data.weeklyBudget[1];
         for (var i = 2; i <= 4; i++){
             if (actDate >= checkDates[i-1]){
                 budgetReleased += data.weeklyBudget[i];
@@ -100,7 +105,6 @@ exports.loaded = function(args) {
     page.bindingContext = pageData;
 
     actDate = new Date();
-    lastDayActDate = (new Date(actDate.getFullYear(), actDate.getMonth() + 1, 0)).getDate();
 
     objBasicBudget = JSON.parse(appsettings.basicCategoryBudget);
     objExtraBudget = JSON.parse(appsettings.extraCategoryBudget);

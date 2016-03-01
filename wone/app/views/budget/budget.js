@@ -34,23 +34,6 @@ exports.loaded = function(args) {
     page = args.object;
     page.bindingContext = pageData;
     
-    if (appsettings.messagetoken === 1){
-        appsettings.messagetoken = 0;
-        dialogsModule.alert({
-          title: "Seja bem-vindo!",
-          message: "Este é o mais novo produto da W1 Finance - O Expense Manager. \n\nEste aplicativo foi criado no intuito de auxiliá-lo no controle dos gastos do dia-a-dia e ajudá-lo a domar as suas finanças pessoais. \n\nNOSSO objetivo é aproximá-lo cada vez mais dos SEUS objetivos de vida.",
-          okButtonText: "Vamos começar"
-        }).then(function () {
-            dialogsModule.alert({
-              title: "Cadastre seu orçamento mensal",
-              message: "Este passo é fundamental para a gestão de suas finanças pessoais. \n\nComece cadastrando as categorias e o valor do orçamento que você disponhe mensalmente para suprir suas despesas.",
-              okButtonText: "OK, Entendi"
-            }).then(function () {
-            
-            });    
-        });
-    };
-    
     countCategories = appsettings.countcategory - 1;
     
     categories = JSON.parse(appsettings.categories);
@@ -84,13 +67,36 @@ exports.loaded = function(args) {
             });    
         break;
         case 2:
-            dialogsModule.alert({
-              title: "Gastos Básicos",
-              message: "Esta é a categoria de gastos indispensáveis em seu orçamento mensal. \n\nSão os gastos essenciais, por exemplo: mercado, moradia, transporte, energia, telefone, internet, etc.",
-              okButtonText: "OK, Entendi"
-            }).then(function () {
-            
-            });    
+            if (appsettings.messagetoken === 1){
+                appsettings.messagetoken = 0;
+                dialogsModule.alert({
+                  title: "Seja bem-vindo!",
+                  message: "Este é o mais novo produto da W1 Finance - O Expense Manager. \n\nEste aplicativo foi criado no intuito de auxiliá-lo no controle dos gastos do dia-a-dia e ajudá-lo a domar as suas finanças pessoais. \n\nNOSSO objetivo é aproximá-lo cada vez mais dos SEUS objetivos de vida.",
+                  okButtonText: "Vamos começar"
+                }).then(function () {
+                    dialogsModule.alert({
+                      title: "Cadastre seu orçamento mensal",
+                      message: "Este passo é fundamental para a gestão de suas finanças pessoais. \n\nComece cadastrando as categorias e o valor do orçamento que você disponhe mensalmente para suprir suas despesas.",
+                      okButtonText: "OK, Entendi"
+                    }).then(function () {
+                        dialogsModule.alert({
+                          title: "Gastos Básicos",
+                          message: "Esta é a categoria de gastos indispensáveis em seu orçamento mensal. \n\nSão os gastos essenciais, por exemplo: mercado, moradia, transporte, energia, telefone, internet, etc.",
+                          okButtonText: "OK, Entendi"
+                        }).then(function () {
+
+                        });                
+                    });    
+                });
+            }else{
+                dialogsModule.alert({
+                  title: "Gastos Básicos",
+                  message: "Esta é a categoria de gastos indispensáveis em seu orçamento mensal. \n\nSão os gastos essenciais, por exemplo: mercado, moradia, transporte, energia, telefone, internet, etc.",
+                  okButtonText: "OK, Entendi"
+                }).then(function () {
+
+                });                
+            };
     };
     
     
