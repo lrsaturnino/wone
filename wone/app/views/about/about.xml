@@ -1,0 +1,13 @@
+<Page xmlns="http://www.nativescript.org/tns.xsd" actionBarHidden="false" loaded="loaded">
+    <Page.actionBar>
+        <ActionBar title="Sobre nós">
+            <android>
+                <NavigationButton icon="res://ic_arrow_back" tap="goBack" />
+            </android>
+        </ActionBar>
+    </Page.actionBar>
+    <StackLayout>
+        <Image src="~/images/icons/logo_nobg_192.png" className="image-logo" />
+        <Label text="{{ about }}" className="about-message" textWrap="true" />
+    </StackLayout>
+</Page>

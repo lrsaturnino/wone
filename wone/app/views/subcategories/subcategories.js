@@ -17,7 +17,6 @@ var pageData = new observable({
 exports.loaded = function(args) {
     page = args.object;
     page.bindingContext = pageData;
-
     basicSubCategoryList = JSON.parse(appsettings.basicCategoryBudget);
     extraSubCategoryList = JSON.parse(appsettings.extraCategoryBudget);
     investimentSubCategoryList = JSON.parse(appsettings.investimentCategoryBudget);
@@ -33,7 +32,6 @@ exports.goBack = function(){
 
 exports.selectSubCategory = function(args) { 
     var item = args.view.bindingContext;
-    
     if (page.navigationContext.define_category){
         switch (page.navigationContext.from){
             case 1:
@@ -57,6 +55,7 @@ exports.selectSubCategory = function(args) {
                 categoryID: item.CategoryID,
                 subCategoryID: item.Id,
                 subCategoryName: item.SubCategoryName,
+                categoryName: item.CategoryName,
                 new: true
             }
         });

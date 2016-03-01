@@ -38,29 +38,51 @@ exports.loaded = function(args){
                     if (appsettings.expenses){
                         expenses.add(JSON.parse(appsettings.expenses))
                         .then(function(data) {
-                            appsettings.expenses = "";    
+                            expenses.resume_yearmonth(new Date())
+                            .then(function(data) {
+                                frameModule.topmost().navigate({
+                                        moduleName: "views/cockpit/cockpit", 
+                                        clearHistory: true
+                                });                                
+                            }, 
+                            function(error) {
+                                console.log(JSON.stringify(error));
+                                frameModule.topmost().navigate({
+                                        moduleName: "views/cockpit/cockpit", 
+                                        clearHistory: true
+                                });
+                            });
                         }, 
                         function(error) {
-                            console.log(error);
-                        });
-                    };
-                    expenses.fetch()
-                    .then(function(data) {
-                        console.log(JSON.stringify(data));
-                    }, 
-                    function(error) {
-                        console.log(error);
-                    });                    
-                    if (appsettings.basicCategoryBudget !== "" && appsettings.extraCategoryBudget !== "" && appsettings.investimentCategoryBudget !== "" && appsettings.basicCategoryBudget !== undefined && appsettings.extraCategoryBudget !== undefined && appsettings.investimentCategoryBudget !== undefined){
-                        frameModule.topmost().navigate({
-                                moduleName: "views/cockpit/cockpit", 
-                                clearHistory: true
+                            console.log(JSON.stringify(error));
+                            expenses.resume_yearmonth(new Date())
+                            .then(function(data) {
+
+                                frameModule.topmost().navigate({
+                                        moduleName: "views/cockpit/cockpit", 
+                                        clearHistory: true
+                                });                                
+                            }, 
+                            function(error) {
+                                console.log(JSON.stringify(error));
+                                frameModule.topmost().navigate({
+                                        moduleName: "views/cockpit/cockpit", 
+                                        clearHistory: true
+                                });
+                            });                            
                         });
                     }else{
-                        frameModule.topmost().navigate({
-                                moduleName: "views/budget/budget", 
-                                clearHistory: true
-                        });                    
+                        if (appsettings.basicCategoryBudget !== "" && appsettings.extraCategoryBudget !== "" && appsettings.investimentCategoryBudget !== "" && appsettings.basicCategoryBudget !== undefined && appsettings.extraCategoryBudget !== undefined && appsettings.investimentCategoryBudget !== undefined){
+                            frameModule.topmost().navigate({
+                                    moduleName: "views/cockpit/cockpit", 
+                                    clearHistory: true
+                            });
+                        }else{
+                            frameModule.topmost().navigate({
+                                    moduleName: "views/budget/budget", 
+                                    clearHistory: true
+                            });                    
+                        };
                     };
                 }, 
                 function(error){
@@ -79,6 +101,7 @@ exports.loaded = function(args){
                 user.register()
                 .then(function(data) {
                     appsettings.accesscounter = 0;
+                    appsettings.messagetoken = 1;
                     appsettings.expensecounter = 0;
                     appsettings.registered = false;
                     appsettings.registerdate = Number(new Date());
@@ -111,4 +134,7 @@ exports.loaded = function(args){
         };
     }; 	
 };
+
+
+
 

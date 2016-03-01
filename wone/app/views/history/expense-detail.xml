@@ -1,0 +1,12 @@
+<Page xmlns="http://www.nativescript.org/tns.xsd" actionBarHidden="false" loaded="loaded">
+    <Page.actionBar>
+        <ActionBar title="Histórico de Gastos">
+            <android>
+                <NavigationButton icon="res://ic_arrow_back" tap="goBack" />
+            </android>
+        </ActionBar>
+    </Page.actionBar>
+    <GridLayout rows="auto, auto, auto" columns="*">
+        
+    </GridLayout>
+</Page>

@@ -137,10 +137,35 @@ exports.next = function() {
             });
         }else{
             appsettings.countcategory = categories.count;                      
-            frameModule.topmost().navigate({
-                moduleName: "views/cockpit/cockpit", 
-                clearHistory: true
-            });
+            appsettings.favsubcat1 = "";
+            appsettings.favsubcat2 = "";
+            appsettings.favsubcat3 = "";
+            
+            if (appsettings.registered === false){
+                dialogsModule.confirm({
+                  title: "Pronto!",
+                  message: "Seu orçamento está concluído :) \n\nSugerimos que neste momento efetue o cadastro de seu e-mail para evitar perder suas informações no futuro.",
+                  okButtonText: "Cadastrar",
+                  cancelButtonText: "Mais tarde",
+                }).then(function (result) {
+                    if (result){
+                        frameModule.topmost().navigate({
+                        moduleName: "views/register/register", 
+                        clearHistory: true
+                        });                                        
+                    }else{
+                        frameModule.topmost().navigate({
+                        moduleName: "views/cockpit/cockpit", 
+                        clearHistory: true
+                        });                                                              
+                    };
+                });                           
+            }else{
+                frameModule.topmost().navigate({
+                    moduleName: "views/cockpit/cockpit", 
+                    clearHistory: true
+                });                            
+            };
         };
     }else{
         dialogsModule.alert({

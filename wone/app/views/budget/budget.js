@@ -4,11 +4,14 @@ var observable = require("data/observable").Observable;
 var viewModule = require("ui/core/view");
 var viewModel = require("./budget-view-model");
 var budget = new viewModel([]);
+var expensesViewModel = require("../main/main-view-model");
+var expenses = new expensesViewModel.ExpenseListViewModel();
 var frameModule = require("ui/frame");
 var page;
 var subCategories;
 var countCategories;
 var categories;
+var objBudget;
 
 var pageData = new observable({
     SubCategoryList: budget,
@@ -30,14 +33,67 @@ var sumTotalBudget = function(){
 exports.loaded = function(args) {
     page = args.object;
     page.bindingContext = pageData;
+    
+    if (appsettings.messagetoken === 1){
+        appsettings.messagetoken = 0;
+        dialogsModule.alert({
+          title: "Seja bem-vindo!",
+          message: "Este é o mais novo produto da W1 Finance - O Expense Manager. \n\nEste aplicativo foi criado no intuito de auxiliá-lo no controle dos gastos do dia-a-dia e ajudá-lo a domar as suas finanças pessoais. \n\nNOSSO objetivo é aproximá-lo cada vez mais dos SEUS objetivos de vida.",
+          okButtonText: "Vamos começar"
+        }).then(function () {
+            dialogsModule.alert({
+              title: "Cadastre seu orçamento mensal",
+              message: "Este passo é fundamental para a gestão de suas finanças pessoais. \n\nComece cadastrando as categorias e o valor do orçamento que você disponhe mensalmente para suprir suas despesas.",
+              okButtonText: "OK, Entendi"
+            }).then(function () {
+            
+            });    
+        });
+    };
+    
     countCategories = appsettings.countcategory - 1;
+    
     categories = JSON.parse(appsettings.categories);
     categories = categories.result;
     categories.sort(function(a,b){
     	return b['PresentationOrder'] - a['PresentationOrder'];
     });
+    
+    pageData.set("SubCategoryNameInput", "");
+    pageData.set("SubCategoryBudgetInput", "");    
     pageData.set('CategoryName', categories[countCategories]['CategoryName']);
     pageData.set('HintText', categories[countCategories]['HintText']);
+    
+    switch (countCategories){
+        case 0:
+            dialogsModule.alert({
+              title: "Investimentos",
+              message: "Quanto mais melhor :) \n\nOs investimentos é onde o dinheiro começa a trabalhar por você!",
+              okButtonText: "OK, Entendi"
+            }).then(function () {
+            
+            });    
+        break;
+        case 1:
+            dialogsModule.alert({
+              title: "Gastos Extras",
+              message: "Esses são os gastos dispensáveis, ou seja, você pode reduzí-los para melhorar seu orçamento e se aproximar ainda mais de seus objetivos.",
+              okButtonText: "OK, Entendi"
+            }).then(function () {
+            
+            });    
+        break;
+        case 2:
+            dialogsModule.alert({
+              title: "Gastos Básicos",
+              message: "Esta é a categoria de gastos indispensáveis em seu orçamento mensal. \n\nSão os gastos essenciais, por exemplo: mercado, moradia, transporte, energia, telefone, internet, etc.",
+              okButtonText: "OK, Entendi"
+            }).then(function () {
+            
+            });    
+    };
+    
+    
     budget.load(categories[countCategories]['Id'])
     .then(function(data) {
         subCategories = data.result;
@@ -47,7 +103,8 @@ exports.loaded = function(args) {
                 pageData.SubCategoryList.push({
                     "CategoryID" : data['CategoryID'],
                     "SubCategoryName" : data['SubCategoryName'],
-                    "SubCategoryBudget" : data['SubCategoryBudget']
+                    "SubCategoryBudget" : data['SubCategoryBudget'],
+                    "CategoryName" : data['CategoryName']
                 });
                 pageData.set('TotalBudget',  Number(pageData.get("TotalBudget")) + Number(data["SubCategoryBudget"]));
             });
@@ -55,26 +112,50 @@ exports.loaded = function(args) {
             switch (countCategories){
                 case 0:
                     pageData.SubCategoryList.push(
-                        {"CategoryID" : categories[countCategories]['Id'], "SubCategoryName" : 'Ações', "SubCategoryBudget" : 0},
-                        //{"CategoryID" : categories[countCategories]['Id'], "SubCategoryName" : 'Fundos de Investimento', "SubCategoryBudget" : 0},
-                        //{"CategoryID" : categories[countCategories]['Id'], "SubCategoryName" : 'Tesouro Direto', "SubCategoryBudget" : 0},
-                        {"CategoryID" : categories[countCategories]['Id'], "SubCategoryName" : 'Poupança', "SubCategoryBudget" : 0}
+                        {
+                            "CategoryID" : categories[countCategories]['Id'], 
+                            "SubCategoryName" : 'Ações', 
+                            "SubCategoryBudget" : 0, 
+                            "CategoryName" : categories[countCategories]['CategoryName']
+                        },
+                        {
+                            "CategoryID" : categories[countCategories]['Id'], 
+                            "SubCategoryName" : 'Poupança', 
+                            "SubCategoryBudget" : 0, 
+                            "CategoryName" : categories[countCategories]['CategoryName']
+                        }
                     );
                     break;
                 case 1:
                     pageData.SubCategoryList.push(
-                        {"CategoryID" : categories[countCategories]['Id'], "SubCategoryName" : 'Cinema', "SubCategoryBudget" : 0},
-                        //{"CategoryID" : categories[countCategories]['Id'], "SubCategoryName" : 'Lazer', "SubCategoryBudget" : 0},
-                        //{"CategoryID" : categories[countCategories]['Id'], "SubCategoryName" : 'Shopping', "SubCategoryBudget" : 0},
-                        {"CategoryID" : categories[countCategories]['Id'], "SubCategoryName" : 'Restaurantes', "SubCategoryBudget" : 0}
+                        {
+                            "CategoryID" : categories[countCategories]['Id'], 
+                            "SubCategoryName" : 'Cinema', 
+                            "SubCategoryBudget" : 0, 
+                            "CategoryName" : categories[countCategories]['CategoryName']
+                        },
+                        {
+                            "CategoryID" : categories[countCategories]['Id'], 
+                            "SubCategoryName" : 'Restaurantes', 
+                            "SubCategoryBudget" : 0, 
+                            "CategoryName" : categories[countCategories]['CategoryName']
+                        }
                     );
                     break;
                 case 2:
                     pageData.SubCategoryList.push(
-                        {"CategoryID" : categories[countCategories]['Id'], "SubCategoryName" : 'Mercado', "SubCategoryBudget" : 0},
-                        //{"CategoryID" : categories[countCategories]['Id'], "SubCategoryName" : 'Transporte', "SubCategoryBudget" : 0},
-                        //{"CategoryID" : categories[countCategories]['Id'], "SubCategoryName" : 'Moradia', "SubCategoryBudget" : 0},
-                        {"CategoryID" : categories[countCategories]['Id'], "SubCategoryName" : 'Escola', "SubCategoryBudget" : 0}
+                        {
+                            "CategoryID" : categories[countCategories]['Id'], 
+                            "SubCategoryName" : 'Mercado', 
+                            "SubCategoryBudget" : 0, 
+                            "CategoryName" : categories[countCategories]['CategoryName']
+                        },
+                        {
+                            "CategoryID" : categories[countCategories]['Id'], 
+                            "SubCategoryName" : 'Escola', 
+                            "SubCategoryBudget" : 0, 
+                            "CategoryName" : categories[countCategories]['CategoryName']
+                        }
                     );
                     break;
             };
@@ -91,23 +172,31 @@ exports.loaded = function(args) {
 
 exports.addSubCat = function(){
     if (pageData.get("SubCategoryNameInput").trim() !== "" && pageData.get("SubCategoryBudgetInput").trim() !== "") {
-        viewModule.getViewById(page, "SubCategoryNameInput").dismissSoftInput();
-        viewModule.getViewById(page, "SubCategoryBudgetInput").dismissSoftInput();
-        pageData.SubCategoryList.push({
-            "CategoryID" : categories[countCategories]['Id'],
-            "SubCategoryName" : pageData.get("SubCategoryNameInput"),
-            "SubCategoryBudget" : pageData.get("SubCategoryBudgetInput")            
-        });
-        subCategories = pageData.get('SubCategoryList')._array;
-        pageData.set('TotalBudget',  Number(pageData.get("TotalBudget")) + Number(pageData.get("SubCategoryBudgetInput")));
-        pageData.set("SubCategoryNameInput", "");
-        pageData.set("SubCategoryBudgetInput", "");
+        if (pageData.get("SubCategoryBudgetInput") > 0){
+            viewModule.getViewById(page, "SubCategoryNameInput").dismissSoftInput();
+            viewModule.getViewById(page, "SubCategoryBudgetInput").dismissSoftInput();
+            pageData.SubCategoryList.push({
+                "CategoryID" : categories[countCategories]['Id'],
+                "SubCategoryName" : pageData.get("SubCategoryNameInput"),
+                "SubCategoryBudget" : pageData.get("SubCategoryBudgetInput"),
+                "CategoryName" : categories[countCategories]['CategoryName']
+            });
+            subCategories = pageData.get('SubCategoryList')._array;
+            pageData.set('TotalBudget',  Number(pageData.get("TotalBudget")) + Number(pageData.get("SubCategoryBudgetInput")));
+            pageData.set("SubCategoryNameInput", "");
+            pageData.set("SubCategoryBudgetInput", "");        
+        }else{
+            dialogsModule.alert({
+                message: "Informe um valor de orçamento maior que 0.",
+                okButtonText: "OK"
+            });            
+        };
     }else{
         dialogsModule.alert({
             message: "Especifique uma categoria de gasto e um orçamento para controle.",
             okButtonText: "OK"
         });
-    }
+    };
 };
 
 exports.delSubCat = function(args) { 
@@ -130,53 +219,84 @@ exports.save = function() {
         .then(function(data){
             budget.addAll(subCategories)
             .then(function(data){
-                
-                var budgetObj = {
-                    idCategory: categories[countCategories]['Id'], 
-                    totalBudget: sumTotalBudget(), 
-                    weeklyBudget: {
-                        1: 0, 
-                        2: 0, 
-                        3: 0, 
-                        4: 0
-                    }, 
-                    subCategories: subCategories
-                };
-
-                if (subCategories.length){
-                    frameModule.topmost().navigate({
-                        moduleName: "views/apportionment/apportionment", 
-                        context: {
-                            count_category: countCategories,
-                            budget: budgetObj
-                        },
-                        clearHistory: false
-                    });
-                }else{
-                    switch (countCategories){
-                        case 0:
-                            appsettings.investimentCategoryBudget = JSON.stringify(budgetObj);
-                            break;
-                        case 1:
-                            appsettings.extraCategoryBudget = JSON.stringify(budgetObj);
-                            break; 
-                        case 2:
-                            appsettings.basicCategoryBudget = JSON.stringify(budgetObj);
-                            break;
+                expenses.resume_yearmonth(new Date())
+                .then(function(data) {
+                    objBudget = {
+                        idCategory: categories[countCategories]['Id'], 
+                        categoryName: categories[countCategories]['CategoryName'],
+                        totalBudget: sumTotalBudget(), 
+                        totalExpense: searchArray('CategoryID', categories[countCategories]['Id'], data.result, 'TotalExpense'), 
+                        weeklyBudget: {
+                            1: 0, 
+                            2: 0, 
+                            3: 0, 
+                            4: 0
+                        }, 
+                        subCategories: subCategories
                     };
-                    if (countCategories != 0){
-                        appsettings.countcategory = countCategories;
+                    if (subCategories.length){
                         frameModule.topmost().navigate({
-                            moduleName: "views/budget/budget", 
+                            moduleName: "views/apportionment/apportionment", 
+                            context: {
+                                count_category: countCategories,
+                                budget: objBudget
+                            },
+                            clearHistory: false
                         });
                     }else{
-                        appsettings.countcategory = categories.length;                      
-                        frameModule.topmost().navigate({
-                            moduleName: "views/cockpit/cockpit", 
-                            clearHistory: true
-                        });
-                    };                    
-                };
+                        switch (countCategories){
+                            case 0:
+                                appsettings.investimentCategoryBudget = JSON.stringify(objBudget);
+                                break;
+                            case 1:
+                                appsettings.extraCategoryBudget = JSON.stringify(objBudget);
+                                break; 
+                            case 2:
+                                appsettings.basicCategoryBudget = JSON.stringify(objBudget);
+                                break;
+                        };
+                        if (countCategories !== 0){
+                            appsettings.countcategory = countCategories;
+                            frameModule.topmost().navigate({
+                                moduleName: "views/budget/budget", 
+                            });
+                        }else{
+                            appsettings.countcategory = categories.length;                  
+
+                            if (appsettings.registered === false){
+                                dialogsModule.confirm({
+                                  title: "Pronto!",
+                                  message: "Seu orçamento está concluído :) \n\nSugerimos que neste momento efetue o cadastro para evitar perder suas informações no futuro.",
+                                  okButtonText: "Cadastrar",
+                                  cancelButtonText: "Mais tarde",
+                                }).then(function (result) {
+                                    if (result){
+                                        frameModule.topmost().navigate({
+                                        moduleName: "views/register/register", 
+                                        clearHistory: true
+                                        });                                        
+                                    }else{
+                                        frameModule.topmost().navigate({
+                                        moduleName: "views/cockpit/cockpit", 
+                                        clearHistory: true
+                                        });                                                              
+                                    };
+                                });                           
+                            }else{
+                                frameModule.topmost().navigate({
+                                    moduleName: "views/cockpit/cockpit", 
+                                    clearHistory: true
+                                });                            
+                            };
+                         };                    
+                    };
+                }, 
+                function(error) {
+                    dialogsModule.alert({
+                        message: JSON.stringify(error),
+                        okButtonText: "OK"
+                    });             
+                });
             }, 
             function(error){
                 dialogsModule.alert({
@@ -199,5 +319,11 @@ exports.save = function() {
     };
 };
 
-exports.sumTotalBudget = sumTotalBudget;
-
+function searchArray(searchkey, data, myArray, resultkey){
+    for (var i = 0; i < myArray.length; i++) {
+        if (myArray[i][searchkey] === data) {
+            return myArray[i][resultkey];
+        };
+    };
+    return 0;
+};

@@ -1,4 +1,4 @@
-<Page xmlns="http://www.nativescript.org/tns.xsd">
+<Page xmlns="http://www.nativescript.org/tns.xsd" actionBarHidden="false" loaded="loaded">
     <Page.actionBar>
         <ActionBar title="Histórico de Gastos">
             <android>
@@ -6,7 +6,23 @@
             </android>
         </ActionBar>
     </Page.actionBar>
-    <GridLayout rows="auto, auto, auto" columns="*">
-        
-    </GridLayout>
+    
+    <ListView items="{{ items }}">
+        <ListView.itemTemplate>
+            <GridLayout rows="auto, auto, auto, auto, auto, auto, auto" columns="3*,*" row="3">
+                <Label text="{{ YearMonth }}" className="subtitle" textWrap="false" row="0" colspan="2"/>
+                <Label text="Gastos Básicos" className="subtitle-left" textWrap="false" row="1" colspan="2"/>
+                <Progress value="{{ basicCategoryBar }}" className="progress-categories-blue" row="2" col="0" />
+                <Label text="{{ basicCategoryLabel }}" className="" textWrap="false" row="2" col="1"/>
+                <Label text="Gastos Extras" className="subtitle-left" textWrap="false" row="3" colspan="2"/>
+                <Progress value="{{ extraCategoryBar }}" className="progress-categories-blue" row="4" col="0"/>
+                <Label text="{{ extraCategoryLabel }}" className="" textWrap="false" row="4" col="1"/>
+                <Label text="Investimentos" className="subtitle-left" textWrap="false" row="5" colspan="2"/>
+                <Progress value="{{ investimentCategoryBar }}" className="progress-categories-green" row="6" col="0"/>
+                <Label text="{{ investimentCategoryLabel }}" className="" textWrap="false" row="6" col="1"/>
+                
+           </GridLayout>
+        </ListView.itemTemplate>
+    </ListView>
+
 </Page>

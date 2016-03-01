@@ -139,6 +139,7 @@ var ExpenseListViewModel = function(){
         return new Promise(function (resolve, reject) {
             model.create(expense,
             function(data) {
+                appsettings.expenses = "";    
                 resolve(data);
             },
             function(error) {
@@ -147,7 +148,7 @@ var ExpenseListViewModel = function(){
         });
     };
     
-    viewModel.fetch = function() {
+    viewModel.all = function() {
         var model = EVERLIVE.data('expenses')
         return new Promise(function (resolve, reject) {
             model.get()
@@ -159,9 +160,98 @@ var ExpenseListViewModel = function(){
             });
         });
     };
+    
+    viewModel.all_yearmonth = function(yearmonth) {
+        var filter = {
+            'YearMonth' : new Date(yearmonth.getFullYear(), yearmonth.getMonth(), 1)
+        };
+        var model = EVERLIVE.data('expenses')
+        return new Promise(function (resolve, reject) {
+            model.get(filter)
+            .then(function(data) {
+                resolve(data);
+            },
+            function(error) {
+                reject(error);
+            });
+        });
+    };
+    
+    viewModel.resume_all = function() {
+        var model = EVERLIVE.data('expenses')
+        var query = new Everlive.AggregateQuery();
+        query.groupBy(['YearMonth', 'CategoryName']);
+        query.sum('ExpenseValue', 'TotalExpense');
+        
+        return new Promise(function (resolve, reject) {
+            model.aggregate(query)
+            .then(function(data) {
+                resolve(data);
+            },
+            function(error) {
+                reject(error);
+            });
+        });
+    };
+    
+    viewModel.yearmonths = function() {
+        var model = EVERLIVE.data('expenses')
+        var query = new Everlive.AggregateQuery();
+        query.groupBy(['YearMonth']);
+        query.sum('ExpenseValue', 'TotalExpense');
+        query.where().lte('YearMonth', new Date(new Date().getFullYear(), new Date().getMonth(), 1));
+        
+        return new Promise(function (resolve, reject) {
+            model.aggregate(query)
+            .then(function(data) {
+                resolve(data);
+            },
+            function(error) {
+                reject(error);
+            });
+        });
+    };
+    
+    viewModel.resume_yearmonth = function(yearmonth) {
+        var model = EVERLIVE.data('expenses')
+        var query = new Everlive.AggregateQuery();
+        query.groupBy(['YearMonth', 'CategoryName', 'CategoryID']);
+        query.sum('ExpenseValue', 'TotalExpense');
+        query.where().eq('YearMonth', new Date(yearmonth.getFullYear(), yearmonth.getMonth(), 1));
+        
+        return new Promise(function (resolve, reject) {
+            model.aggregate(query)
+            .then(function(data) {
+                if (appsettings.basicCategoryBudget && appsettings.extraCategoryBudget && appsettings.investimentCategoryBudget){
+                    var objBasicBudget = JSON.parse(appsettings.basicCategoryBudget);
+                    var objExtraBudget = JSON.parse(appsettings.extraCategoryBudget);
+                    var objInvestimentBudget = JSON.parse(appsettings.investimentCategoryBudget);
+                    objBasicBudget.totalExpense = searchArray('CategoryID', objBasicBudget.idCategory, data.result, 'TotalExpense') === undefined ? 0 : searchArray('CategoryID', objBasicBudget.idCategory, data.result, 'TotalExpense');
+                    objExtraBudget.totalExpense = searchArray('CategoryID', objExtraBudget.idCategory, data.result, 'TotalExpense') === undefined ? 0 : searchArray('CategoryID', objExtraBudget.idCategory, data.result, 'TotalExpense');
+                    objInvestimentBudget.totalExpense = searchArray('CategoryID', objInvestimentBudget.idCategory, data.result, 'TotalExpense') === undefined ? 0 : searchArray('CategoryID', objInvestimentBudget.idCategory, data.result, 'TotalExpense');
+                    appsettings.basicCategoryBudget = JSON.stringify(objBasicBudget);
+                    appsettings.extraCategoryBudget = JSON.stringify(objExtraBudget);
+                    appsettings.investimentCategoryBudget = JSON.stringify(objInvestimentBudget);
+                };
+                resolve(data);
+            },
+            function(error) {
+                reject(error);
+            });
+        });
+    };
+    
     return viewModel;
 };
 
 exports.ExpenseListViewModel = ExpenseListViewModel;
 exports.UserViewModel = UserViewModel;
 exports.CategoryViewModel = CategoryViewModel;
+
+function searchArray(searchkey, data, myArray, resultkey){
+    for (var i = 0; i < myArray.length; i++) {
+        if (myArray[i][searchkey] === data) {
+            return myArray[i][resultkey];
+        };
+    };
+};

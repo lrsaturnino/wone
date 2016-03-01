@@ -1,4 +1,4 @@
-<Page xmlns="http://www.nativescript.org/tns.xsd" loaded="loaded">
+<Page xmlns="http://www.nativescript.org/tns.xsd" loaded="loaded" actionBarHidden="false">
     <Page.actionBar>
         <ActionBar title="Selecione a Categoria">
             <android>
@@ -11,7 +11,7 @@
         <ListView items="{{ basicSubCategoryList }}" row="1" className="list-view">
             <ListView.itemTemplate>
                 <GridLayout columns="*">
-                    <Label text="{{ SubCategoryName }}" col="0" tap="selectSubCategory"/>
+                    <Label text="{{ SubCategoryName }}" col="0" tap="selectSubCategory" className="subtitle" />
                 </GridLayout>
             </ListView.itemTemplate>
         </ListView>
@@ -19,7 +19,7 @@
         <ListView items="{{ extraSubCategoryList }}" row="3" className="list-view">
             <ListView.itemTemplate>
                 <GridLayout columns="*">
-                    <Label text="{{ SubCategoryName }}" col="0" tap="selectSubCategory"/>
+                    <Label text="{{ SubCategoryName }}" col="0" tap="selectSubCategory" className="subtitle" />
                 </GridLayout>
             </ListView.itemTemplate>
         </ListView>
@@ -27,7 +27,7 @@
         <ListView items="{{ investimentSubCategoryList }}" row="5" className="list-view">
             <ListView.itemTemplate>
                 <GridLayout columns="*">
-                    <Label text="{{ SubCategoryName }}" col="0" tap="selectSubCategory"/>
+                    <Label text="{{ SubCategoryName }}" col="0" tap="selectSubCategory" className="subtitle" />
                 </GridLayout>
             </ListView.itemTemplate>
         </ListView>

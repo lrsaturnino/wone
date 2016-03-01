@@ -1,6 +1,6 @@
-<Page xmlns="http://www.nativescript.org/tns.xsd" loaded="loaded">
+<Page xmlns="http://www.nativescript.org/tns.xsd" loaded="loaded" actionBarHidden="false">
     <Page.actionBar>
-        <ActionBar title="Selecione o cartão de crédito">
+        <ActionBar title="Selecione o cartão">
             <ActionBar.actionItems>
             	<ActionItem text="Pronto" ios.position="right" tap="goBack" />
             </ActionBar.actionItems>

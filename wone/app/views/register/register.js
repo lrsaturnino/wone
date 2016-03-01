@@ -83,7 +83,6 @@ exports.goBack = function(){
     frameModule.topmost().navigate({
         moduleName: "views/cockpit/cockpit"
     });
-    
 };
 
 exports.goToLogin = function(){

@@ -1,7 +1,6 @@
 var dialogsModule = require("ui/dialogs");
 var frameModule = require("ui/frame");
 var Observable = require("data/observable").Observable;
-var observableArrayModule = require("data/observable-array");
 var viewModule = require("ui/core/view");
 var appsettings = require("../../utils/appsettings");
 var expense = [];
@@ -9,6 +8,10 @@ var page;
 var expenseActNper;
 var paymentType;
 var CreditCardDueDay;
+var objBasicBudget;
+var objExtraBudget;
+var objInvestimentBudget;
+var expensePayDay;
 
 var pageData = new Observable({
     expenseValue: "",
@@ -20,9 +23,25 @@ var pageData = new Observable({
     expenseCreditCard: ""
 });
 
+var firstPaymentDate = function(){
+    if (paymentType.selectedIndex){
+        if (parseInt((nextCreditCardPayDay() - pageData.get("expenseDate"))/1000/60/60/24) > 10){
+            return new Date(nextCreditCardPayDay().getFullYear(), nextCreditCardPayDay().getMonth(), CreditCardDueDay)
+        }else{
+            return new Date(nextCreditCardPayDay().getFullYear(), nextCreditCardPayDay().getMonth() + 1, CreditCardDueDay)
+        }
+    }else{
+        return pageData.get('expenseDate');
+    };
+};
+
 exports.loaded = function(args) {
     page = args.object;
     page.bindingContext = pageData;
+    
+    objBasicBudget = JSON.parse(appsettings.basicCategoryBudget);
+    objExtraBudget = JSON.parse(appsettings.extraCategoryBudget);
+    objInvestimentBudget = JSON.parse(appsettings.investimentCategoryBudget);
     
     if (page.navigationContext.new){
         page.navigationContext.new = false;
@@ -34,11 +53,6 @@ exports.loaded = function(args) {
         pageData.set('expenseInstallment', 1);
         pageData.set('expenseCreditCard', "");
 
-        //viewModule.getViewById(page, 'expenseCreditCardLabel').visibility = "collapsed";
-        //viewModule.getViewById(page, 'expenseCreditCard').visibility = "collapsed";
-        //viewModule.getViewById(page, 'expenseInstallmentLabel').visibility = "collapsed";
-        //viewModule.getViewById(page, 'expenseInstallment').visibility = "collapsed";
-        
         paymentType = viewModule.getViewById(page, 'expenseOrigin');
     };
     
@@ -72,23 +86,14 @@ exports.loaded = function(args) {
 };
 
 exports.add = function() {
-    if (pageData.get("expenseValue").trim() !== "" && pageData.get("expenseSmDesc").trim() !== "") {
+    if (pageData.get("expenseValue").trim() !== "" && pageData.get("expenseSmDesc").trim() !== "" && pageData.get("expenseValue") > 0) {
         viewModule.getViewById(page, "expenseValue").dismissSoftInput();
         expense = appsettings.expenses;
         expense ? expense = JSON.parse(expense) : expense = [];
         
-        var firstPaymentDate = function(){
-            if (paymentType.selectedIndex){
-                if (parseInt((nextCreditCardPayDay() - pageData.get("expenseDate"))/1000/60/60/24) > 10){
-                    return new Date(nextCreditCardPayDay().getFullYear(), nextCreditCardPayDay().getMonth(), CreditCardDueDay)
-                }else{
-                    return new Date(nextCreditCardPayDay().getFullYear(), nextCreditCardPayDay().getMonth() + 1, CreditCardDueDay)
-                }
-            }else{
-                return pageData.get('expenseDate');
-            };
-        };
         for (var i = 1; i <= pageData.get("expenseInstallment"); i++){ 
+            expensePayDay = new Date(firstPaymentDate().getFullYear(), firstPaymentDate().getMonth() - 1 + i, firstPaymentDate().getDate(),0,0,0,0);
+            
             expense.push({
                 'CategoryID' : page.navigationContext.categoryID,
                 'SubCategoryID' : page.navigationContext.subCategoryID,
@@ -96,12 +101,32 @@ exports.add = function() {
                 'ExpenseOrigin' : paymentType.selectedIndex ? pageData.get("expenseCreditCard") : "Pagto. à Vista" ,
                 'ActualNPer' : i,
                 'TotalNPer' : pageData.get("expenseInstallment"),
-                'EventDate' : new Date(firstPaymentDate().getFullYear(), firstPaymentDate().getMonth() - 1 + i, firstPaymentDate().getDate()),
+                'EventDate' : expensePayDay,
                 'LongDescription' : pageData.get("expenseLgDesc"),
-                'SmallDescription' : pageData.get("expenseSmDesc")
+                'SmallDescription' : pageData.get("expenseSmDesc"),
+                'YearMonth' : new Date(firstPaymentDate().getFullYear(), firstPaymentDate().getMonth() - 1 + i, 1,0,0,0,0),
+                'CategoryName' : page.navigationContext.categoryName,
+                'SubCategoryName' : page.navigationContext.subCategoryName
             });
+            if (expensePayDay <= new Date()){
+                switch(page.navigationContext.categoryID) {
+                    case objBasicBudget.idCategory:
+                        objBasicBudget.totalExpense += pageData.get("expenseValue") / pageData.get("expenseInstallment");       
+                        appsettings.basicCategoryBudget = JSON.stringify(objBasicBudget);
+                        break;
+                    case objExtraBudget.idCategory:
+                        objExtraBudget.totalExpense += pageData.get("expenseValue") / pageData.get("expenseInstallment");
+                        appsettings.extraCategoryBudget = JSON.stringify(objExtraBudget);
+                        break;
+                    case objInvestimentBudget.idCategory:
+                        objInvestimentBudget.totalExpense += pageData.get("expenseValue") / pageData.get("expenseInstallment");
+                        appsettings.investimentCategoryBudget = JSON.stringify(objInvestimentBudget);    
+                };
+            };
         };
         appsettings.expenses = JSON.stringify(expense);
+        console.log(appsettings.expenses);
+        
         var x = appsettings.expensecounter;
         x += pageData.get("expenseInstallment");
         appsettings.expensecounter = x;
@@ -111,7 +136,7 @@ exports.add = function() {
         });
     }else{
         dialogsModule.alert({
-            message: "Informe no mínimo qual foi o gasto e o valor.",
+            message: "Informe, no mínimo, qual foi o gasto e o valor do gasto (maior que 0).",
             okButtonText: "OK"
         });
     };
@@ -136,15 +161,39 @@ exports.goDatePicker = function(){
 };
 
 function goCreditCard(){
-    frameModule.topmost().navigate({
-        moduleName: "views/inputexpense/credit-card-pop-up",
-        context: {
-            data: new CreditCardViewModel(JSON.parse(appsettings.creditcards), function (selectedData) {
-                pageData.set('expenseCreditCard', selectedData);
-                CreditCardDueDay = searchArray('creditCardName', selectedData, JSON.parse(appsettings.creditcards), 'creditCardDueDay');
-            })
-        }
-    });
+    if (appsettings.creditcards){
+        frameModule.topmost().navigate({
+            moduleName: "views/inputexpense/credit-card-pop-up",
+            context: {
+                data: new CreditCardViewModel(JSON.parse(appsettings.creditcards), function (selectedData) {
+                    pageData.set('expenseCreditCard', selectedData);
+                    CreditCardDueDay = searchArray('creditCardName', selectedData, JSON.parse(appsettings.creditcards), 'creditCardDueDay');
+                })
+            }
+        });
+    }else{
+        dialogsModule.confirm({
+          title: "Aviso",
+          message: "Não existem cartões de crédito cadastrados. \n\nDeseja cadastrar agora?",
+          okButtonText: "Cadastrar",
+          cancelButtonText: "Mais tarde",
+        }).then(function (result) {
+            if (result){
+                frameModule.topmost().navigate({
+                moduleName: "views/creditcards/creditcards", 
+                clearHistory: true
+                });                                        
+            }else{
+                viewModule.getViewById(page, 'expenseCreditCardLabel').visibility = "collapsed";
+                viewModule.getViewById(page, 'expenseCreditCard').visibility = "collapsed";
+                viewModule.getViewById(page, 'expenseInstallmentLabel').visibility = "collapsed";
+                viewModule.getViewById(page, 'expenseInstallment').visibility = "collapsed";
+                pageData.set('expenseInstallment', 1);
+                pageData.set('expenseCreditCard', "");
+                paymentType.selectedIndex = 0;
+            };
+        });     
+    };
 };
 
 exports.goCreditCard = goCreditCard;
@@ -171,6 +220,7 @@ function DatePickerViewModel(data, callback){
 
 DatePickerViewModel.prototype.done = function () {
     this._callback(new Date(this.year, this.month - 1, this.day, 0, 0, 0, 0));
+    paymentType.off(Observable.propertyChangeEvent);            
     frameModule.topmost().goBack();
 };
 
@@ -198,6 +248,7 @@ function InstallmentViewModel(data, callback){
 
 InstallmentViewModel.prototype.done = function (data) {
     this._callback(data);
+    paymentType.off(Observable.propertyChangeEvent);            
     frameModule.topmost().goBack();
 };
 

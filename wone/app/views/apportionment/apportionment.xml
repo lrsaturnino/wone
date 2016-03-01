@@ -9,21 +9,23 @@
             </ActionBar.actionItems>
         </ActionBar>
     </Page.actionBar>
-    <GridLayout rows="auto, auto, auto, auto, auto, auto, auto, auto, auto, auto" columns="2*, *">
-        <Label text="1ª Semana" row="0" colspan="2"/>
-        <Slider id="firstWeekSlider" row="1" col="0"/>
-       	<Label text="{{ firstWeekLabel }}" row="1" col="1"/>
-        <Label text="2ª Semana" row="2" colspan="2"/>
-        <Slider id="secondWeekSlider" row="3" col="0"/>
-       	<Label text="{{ secondWeekLabel }}" row="3" col="1"/>
-        <Label text="3ª Semana" row="4" colspan="2"/>
-        <Slider id="thirdWeekSlider" row="5" col="0"/>
-       	<Label text="{{ thirdWeekLabel }}" row="5" col="1"/>
-        <Label text="4ª Semana" row="6" colspan="2"/>
-        <Slider id="fourthWeekSlider" row="7" col="0"/>
-       	<Label text="{{ fourthWeekLabel }}" row="7" col="1"/>
-        <Label text="Orçamento disponível" className="subtitle" row="8" colspan="2"/>
-        <Label text="{{ budgetLeft }}" className="info-label" row="9" colspan="2"/>
-    </GridLayout>
-
+    <StackLayout>
+        <Label text="Proporcionalize seu orçamento pelas semanas do mês, afinal as contas não combinam a hora de chegar." className="message-label-left" textWrap="true" />
+        <GridLayout rows="auto, auto, auto, auto, auto, auto, auto, auto" columns="3*, *">
+            <Label text="1ª Semana" row="0" colspan="2" className="subtitle-left" />
+            <Slider id="firstWeekSlider" row="1" col="0"/>
+            <Label text="{{ firstWeekLabel }}" row="1" col="1"/>
+            <Label text="2ª Semana" row="2" colspan="2" className="subtitle-left" />
+            <Slider id="secondWeekSlider" row="3" col="0"/>
+            <Label text="{{ secondWeekLabel }}" row="3" col="1"/>
+            <Label text="3ª Semana" row="4" colspan="2" className="subtitle-left"/>
+            <Slider id="thirdWeekSlider" row="5" col="0"/>
+            <Label text="{{ thirdWeekLabel }}" row="5" col="1"/>
+            <Label text="4ª Semana" row="6" colspan="2" className="subtitle-left"/>
+            <Slider id="fourthWeekSlider" row="7" col="0"/>
+            <Label text="{{ fourthWeekLabel }}" row="7" col="1"/>
+        </GridLayout>
+        <Label text="Orçamento disponível" className="subtitle" />
+        <Label text="{{ budgetLeft }}" className="info-label" />
+    </StackLayout>
 </Page>

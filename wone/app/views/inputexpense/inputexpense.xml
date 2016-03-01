@@ -1,4 +1,4 @@
-<Page xmlns="http://www.nativescript.org/tns.xsd" loaded="loaded">
+<Page xmlns="http://www.nativescript.org/tns.xsd" loaded="loaded" actionBarHidden="false">
     <Page.actionBar>
         <ActionBar title="Adicionar Gasto">
             <android>
@@ -9,23 +9,29 @@
             </ActionBar.actionItems>
         </ActionBar>
     </Page.actionBar>
-  	<GridLayout rows="auto,auto,auto,auto,auto,auto,auto,auto,auto" columns="*, *, *">
-        <Label text="{{ expenseSubCategory }}" className="" row="0" colspan="3"/>
-        <TextField id="expenseSmDesc" className="" text="{{ expenseSmDesc }}" hint="Qual foi o gasto?" row="1" colspan="3" />
-        <TextField id="expenseValue" className="" text="{{ expenseValue }}" keyboardType="number" hint="R$ 0,00" row="2" colspan="3" />
-        <Label text="Data do Gasto" className="" row="3" colspan="3"/>
-        <Label text="{{ expenseDate }}" className="" row="4" colspan="3" tap="goDatePicker" />
-        <SegmentedBar id="expenseOrigin" row="5" colspan="3">
-            <SegmentedBar.items>
-              <SegmentedBarItem title="Pagamento à vista" />
-              <SegmentedBarItem title="Pagamento à prazo" />
-            </SegmentedBar.items>
-        </SegmentedBar>        
-        <Label id="expenseCreditCardLabel" text="Cartão de Crédito" className="" visibility="collapsed" row="6" col="0"/>
-        <Label id="expenseCreditCard" text="{{ expenseCreditCard }}" className="" visibility="collapsed" row="6" col="1" colspan="2" tap="goCreditCard" />
-        <Label id="expenseInstallmentLabel" text="Parcelas" className="" visibility="collapsed" row="7" col="0"/>
-        <Label id="expenseInstallment" text="{{ expenseInstallment }}" className="" visibility="collapsed" row="7" col="1" colspan="2" tap="goInstallment"/>
-        <TextView id="expenseLgDesc" className="" text="{{ expenseLgDesc }}" hint="Notas complementares (opcional)" row="8" colspan="3" />
+  	<GridLayout rows="auto, *" columns="*">
+        <StackLayout row="0">
+            <Label text="{{ expenseSubCategory }}" className="subtitle-left" />
+            <Label text="Qual foi o gasto?" className="minititle-left" />
+            <TextField id="expenseSmDesc" className="input-field" text="{{ expenseSmDesc }}" hint="ex. almoço" />
+            <Label text="Valor do Gasto" className="minititle-left" />
+            <TextField id="expenseValue" className="input-field" text="{{ expenseValue }}" keyboardType="number" hint="R$ 0,00" />
+            <Label text="Data do Gasto" className="minititle-left" />
+            <Label text="{{ expenseDate }}" className="field" tap="goDatePicker" />
+            <SegmentedBar id="expenseOrigin" className="paytype">
+                <SegmentedBar.items>
+                  <SegmentedBarItem title="Pagamento à vista" />
+                  <SegmentedBarItem title="Pagamento à prazo" />
+                </SegmentedBar.items>
+            </SegmentedBar>
+        </StackLayout>
+        <GridLayout row="1" rows="auto, auto, *" columns="*,*">
+            <Label id="expenseCreditCardLabel" text="Cartão de Crédito" className="field-left" visibility="collapsed" row="0" col="0"/>
+            <Label id="expenseCreditCard" text="{{ expenseCreditCard }}" className="field-left" visibility="collapsed" row="0" col="1"  tap="goCreditCard" />
+            <Label id="expenseInstallmentLabel" text="Parcelas" className="field-left" visibility="collapsed" row="1" col="0"/>
+            <Label id="expenseInstallment" text="{{ expenseInstallment }}" className="field-left" visibility="collapsed" row="1" col="1" tap="goInstallment"/>
+            <TextView id="expenseLgDesc" className="input-field" text="{{ expenseLgDesc }}" hint="Notas complementares (opcional)" row="2" colspan="2" />
+        </GridLayout>
  	</GridLayout>
 </Page>
 

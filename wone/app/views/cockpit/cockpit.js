@@ -2,10 +2,7 @@ var appsettings = require("../../utils/appsettings");
 var frameModule = require("ui/frame");
 var observable = require("data/observable").Observable;
 var viewModule = require("ui/core/view");
-var viewModel = require("./cockpit-view-model"); 
 var gestures = require("ui/gestures");
-
-//var categoryBarData = new viewModel.categoryBarData().categoryExpenseBudget;
 var page;
 var fav1;
 var fav2;
@@ -13,9 +10,14 @@ var fav3;
 var favButton1;
 var favButton2;
 var favButton3;
-var actDate = new Date();
-var lastDayActDate = (new Date(actDate.getFullYear(), actDate.getMonth() + 1, 0)).getDate();
-
+var actDate;
+var lastDayActDate;
+var objBasicBudget;
+var objExtraBudget;
+var objInvestimentBudget;
+var BasicBudgetReleased;
+var ExtraBudgetReleased;
+var InvestimentBudgetReleased;
 
 var allowanceDates = function(){
     var checkDate;
@@ -29,21 +31,43 @@ var allowanceDates = function(){
     return allowanceDates;
 };
 
+/*var checkWeekMonth = function(){
+    var checkDate;
+    var WeekBegins = [];
+    for (var i = 1; i <= lastDayActDate; i++){
+        checkDate = new Date(actDate.getFullYear(), actDate.getMonth(), i);
+        if (checkDate.getDay() == 1 || checkDate.getDate() == 1){
+            WeekBegins.push(checkDate);           
+        };
+    };
+    for (var i = 1; i <= WeekBegins.length, i++){
+            
+    };
+    
+    return WeekBegins;
+};*/
+
 var budgetReleased = function(data){
     var checkDates = allowanceDates();
     var budgetReleased = 0;
+    var registerDate = new Date(appsettings.registerdate);
+    
+    if (checkDates.length > 4 && checkDates[checkDates.length - 2] < registerDate){
+        registerDate = checkDates[checkDates.length - 2] 
+    };
+    
     if (String(actDate.getFullYear()) + String(actDate.getMonth()) == String(new Date(appsettings.registerdate).getFullYear()) + String(new Date(appsettings.registerdate).getMonth())){
         for (var i = 1; i <= 4; i++){
             if (actDate >= checkDates[i-1]){
-                if (checkDates[i-1] >= new Date(appsettings.registerdate)){
+                if (checkDates[i-1] >= registerDate){
                     budgetReleased += data.weeklyBudget[i];
                 }else{
-                    if (checkDates[i] > new Date(appsettings.registerdate)){
-                        budgetReleased += data.weeklyBudget[i] * ((checkDates[i].getDate() - new Date(appsettings.registerdate).getDate()) / 7);
+                    if (checkDates[i] > registerDate){
+                        budgetReleased += data.weeklyBudget[i] * ((checkDates[i].getDate() - registerDate.getDate()) / 7);
                     };     
                 };
             };
-        };      
+        };     
     }else{
         var budgetReleased = data.weeklyBudget[1];
         for (var i = 2; i <= 4; i++){
@@ -52,50 +76,79 @@ var budgetReleased = function(data){
             };
         };
     };
+    
     return budgetReleased;
 };
 
 
 var pageData = new observable({
-    //categoryDataChart: categoryBarData,
     cockpitMessage: "Bem-vindo ao W1 Expense Manager. O controle de suas despesas na palma de sua mão.",
-    fab1Label: "Definir",
-    fab2Label: "Definir",
-    fab3Label: "Definir",
-    basicCategoryBar: 40,
-    extraCategoryBar: 40,
-    investimentCategoryBar: 100,
+    fab1Label: "",
+    fab2Label: "",
+    fab3Label: "",
+    basicCategoryBar: 0,
+    extraCategoryBar: 0,
+    investimentCategoryBar: 0,
     basicCategoryLabel: "",
     extraCategoryLabel: "",
     investimentCategoryLabel: "",
-    hpBar: 50
+    hpBar: 0
 });
 
 exports.loaded = function(args) {
     page = args.object;
     page.bindingContext = pageData;
 
-    fav1 = appsettings.favsubcat1;
-    fav2 = appsettings.favsubcat2;
-    fav3 = appsettings.favsubcat3;    
+    actDate = new Date();
+    lastDayActDate = (new Date(actDate.getFullYear(), actDate.getMonth() + 1, 0)).getDate();
+
+    objBasicBudget = JSON.parse(appsettings.basicCategoryBudget);
+    objExtraBudget = JSON.parse(appsettings.extraCategoryBudget);
+    objInvestimentBudget = JSON.parse(appsettings.investimentCategoryBudget);    
+
+    BasicBudgetReleased = budgetReleased(objBasicBudget);
+    ExtraBudgetReleased = budgetReleased(objExtraBudget);
+    InvestimentBudgetReleased = budgetReleased(objInvestimentBudget);    
     
-    if (fav1){
-        fav1 = JSON.parse(fav1);
+    if (appsettings.favsubcat1){
+        fav1 = JSON.parse(appsettings.favsubcat1);
         pageData.set('fab1Label', fav1.SubCategoryName);
+    }else{
+        pageData.set('fab1Label', 'Definir');
     };
-    if (fav2){
-        fav2 = JSON.parse(fav2);
+    if (appsettings.favsubcat2){
+        fav2 = JSON.parse(appsettings.favsubcat2);
         pageData.set('fab2Label', fav2.SubCategoryName);
+    }else{
+        pageData.set('fab2Label', 'Definir');
     };
-    if (fav3){
-        fav3 = JSON.parse(fav3);
+    if (appsettings.favsubcat3){
+        fav3 = JSON.parse(appsettings.favsubcat3);
         pageData.set('fab3Label', fav3.SubCategoryName);
+    }else{
+        pageData.set('fab3Label', 'Definir');
     };
     
-    pageData.set('basicCategoryLabel', budgetReleased(JSON.parse(appsettings.basicCategoryBudget)));
-    pageData.set('extraCategoryLabel', budgetReleased(JSON.parse(appsettings.extraCategoryBudget)));
-    pageData.set('investimentCategoryLabel', budgetReleased(JSON.parse(appsettings.investimentCategoryBudget)));
+    pageData.set('basicCategoryLabel', objBasicBudget.totalExpense + '/' + BasicBudgetReleased);
+    pageData.set('extraCategoryLabel', objExtraBudget.totalExpense + '/' + ExtraBudgetReleased);
+    pageData.set('investimentCategoryLabel', objInvestimentBudget.totalExpense + '/' + InvestimentBudgetReleased);
     
+    pageData.set('basicCategoryBar', objBasicBudget.totalExpense / BasicBudgetReleased * 100.00);
+    pageData.set('extraCategoryBar', objExtraBudget.totalExpense / ExtraBudgetReleased * 100.00);
+    pageData.set('investimentCategoryBar',  objInvestimentBudget.totalExpense / InvestimentBudgetReleased * 100.00);
+    
+    if (pageData.get('basicCategoryBar') > 100){
+        viewModule.getViewById(page, 'basicCategoryBar').className = 'progress-categories-red';
+    };
+    if (pageData.get('extraCategoryBar') > 100){
+        viewModule.getViewById(page, 'extraCategoryBar').className = 'progress-categories-red';
+    };
+    if (pageData.get('investimentCategoryBar') > 100){
+        viewModule.getViewById(page, 'investimentCategoryBar').className = 'progress-categories-green';
+    };
+    
+    pageData.set('hpBar', (objBasicBudget.totalExpense + objExtraBudget.totalExpense) / (BasicBudgetReleased + ExtraBudgetReleased) * 100.00);
+                 
     favButton1 = viewModule.getViewById(page, 'favButton1');
     favButton2 = viewModule.getViewById(page, 'favButton2');
     favButton3 = viewModule.getViewById(page, 'favButton3');
@@ -132,33 +185,8 @@ exports.loaded = function(args) {
             }
         });       
     });
-
-    /*alert('basic: \n\n' + appsettings.basicCategoryBudget +
-         '\n\nextra: \n\n' + appsettings.extraCategoryBudget +
-          '\n\ninvestiment: \n\n' + appsettings.investimentCategoryBudget 
-         );*/
 };
 
-
-/*exports.onNavigatedTo = function(args) {
-    if (args.isBackNavigation){
-        frameModule.topmost().navigate({
-            moduleName: "views/cockpit/cockpit",
-            context: {
-                reload: false
-            }
-        });        
-    }else{
-        if (args.context.reload){
-            frameModule.topmost().navigate({
-                moduleName: "views/cockpit/cockpit",
-                context: {
-                    reload: false
-                }
-            });
-        };
-    };
-};*/
 
 exports.addFav1Expense = function() {
     if (appsettings.favsubcat1){
@@ -168,6 +196,7 @@ exports.addFav1Expense = function() {
                 categoryID: fav1.CategoryID,
                 subCategoryID: fav1.Id,
                 subCategoryName: fav1.SubCategoryName,
+                categoryName: fav1.CategoryName,
                 new: true
             }
         });    
@@ -190,6 +219,7 @@ exports.addFav2Expense = function() {
                 categoryID: fav2.CategoryID,
                 subCategoryID: fav2.Id,
                 subCategoryName: fav2.SubCategoryName,
+                categoryName: fav2.CategoryName,
                 new: true
             }
         });    
@@ -212,6 +242,7 @@ exports.addFav3Expense = function() {
                 categoryID: fav3.CategoryID,
                 subCategoryID: fav3.Id,
                 subCategoryName: fav3.SubCategoryName,
+                categoryName: fav3.CategoryName,
                 new: true
             }
         });    
@@ -262,6 +293,12 @@ exports.goToCreditCard = function() {
 exports.goToAccount = function() {
 	frameModule.topmost().navigate({
         moduleName: "views/register/register",
+    });   	
+};
+
+exports.goToAbout = function() {
+	frameModule.topmost().navigate({
+        moduleName: "views/about/about",
     });   	
 };
 

@@ -9,20 +9,18 @@
             </ActionBar.actionItems>
 		</ActionBar>
     </Page.actionBar>
-    <GridLayout rows="auto, auto, *" columns="*">
-        <GridLayout rows="auto, auto" columns="2*, *, auto" row="1" colspan="3" className="child-grid">
-            <Label text="Cartão de Crédito" className="" row="0" col="0"/>
-            <Label text="Dia do Vencimento" className="" row="0" col="1"/>
-            <TextField id="inputCreditCardName" text="{{ inputCreditCardName }}" hint="ex. Visa, Mastercard" row="1" col="0" />
-            <TextField id="inputCreditCardDueDay" text="{{ inputCreditCardDueDay }}" keyboardType="number" hint="15" row="1" col="1" />
-            <Image src="~/images/icons/add.png" row="1" col="2" tap="addCreditCard" className="image-icon"/>
-        </GridLayout>
+    <GridLayout rows="auto, auto, *" columns="2*, *, auto" row="1" colspan="3">
+        <Label text="Cartão de Crédito" className="minititle-left" row="0" col="0"/>
+        <Label text="Dia do Vencimento" className="minititle-left" row="0" col="1" colspan="2"/>
+        <TextField id="inputCreditCardName" text="{{ inputCreditCardName }}" hint="Visa, Mastercard, Amex" className="input-field" row="1" col="0" />
+        <TextField id="inputCreditCardDueDay" text="{{ inputCreditCardDueDay }}" keyboardType="number" hint="01 - 31" className="input-field" row="1" col="1" />
+        <Image src="~/images/icons/add.png" row="1" col="2" tap="addCreditCard" className="image-icon"/>
         <ListView id="creditCardList" items="{{ creditCardList }}" row="2" colSpan="3" className="list-view">
             <ListView.itemTemplate>
                 <GridLayout columns="*, *, auto">
-                    <Label text="{{ creditCardName }}" col="0"/>
-                    <Label text="{{ creditCardDueDay }}" col="1"/>
-                    <Image src="res://ic_menu_delete" col="2" tap="delCreditCard" />
+                    <Label text="{{ creditCardName }}" className="subtitle" col="0"/>
+                    <Label text="{{ creditCardDueDay }}" className="subtitle" col="1"/>
+                    <Image src="res://ic_menu_delete" col="2" tap="delCreditCard" className="image-icon" />
                 </GridLayout>
             </ListView.itemTemplate>
         </ListView>
