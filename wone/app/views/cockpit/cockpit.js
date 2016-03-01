@@ -87,7 +87,7 @@ var budgetReleased = function(data){
 
 
 var pageData = new observable({
-    cockpitMessage: "Bem-vindo ao W1 Expense Manager. O controle de suas despesas na palma de sua mão.",
+    cockpitMessage: "",
     fab1Label: "",
     fab2Label: "",
     fab3Label: "",
@@ -140,6 +140,9 @@ exports.loaded = function(args) {
     pageData.set('basicCategoryBar', objBasicBudget.totalExpense / BasicBudgetReleased * 100.00);
     pageData.set('extraCategoryBar', objExtraBudget.totalExpense / ExtraBudgetReleased * 100.00);
     pageData.set('investimentCategoryBar',  objInvestimentBudget.totalExpense / InvestimentBudgetReleased * 100.00);
+    
+    pageData.set('cockpitMessage', "Bem-vindo ao W1 Expense Manager. O controle de suas despesas na palma de sua mão.");
+    
     
     if (pageData.get('basicCategoryBar') > 100){
         viewModule.getViewById(page, 'basicCategoryBar').className = 'progress-categories-red';
