@@ -142,13 +142,25 @@ exports.loaded = function(args) {
                     pageData.SubCategoryList.push(
                         {
                             "CategoryID" : categories[countCategories]['Id'], 
-                            "SubCategoryName" : 'Ações', 
+                            "SubCategoryName" : 'Plano de Saúde', 
                             "SubCategoryBudget" : 0, 
                             "CategoryName" : categories[countCategories]['CategoryName']
                         },
                         {
                             "CategoryID" : categories[countCategories]['Id'], 
-                            "SubCategoryName" : 'Poupança', 
+                            "SubCategoryName" : 'Seguros', 
+                            "SubCategoryBudget" : 0, 
+                            "CategoryName" : categories[countCategories]['CategoryName']
+                        },
+                        {
+                            "CategoryID" : categories[countCategories]['Id'], 
+                            "SubCategoryName" : 'Previdência', 
+                            "SubCategoryBudget" : 0, 
+                            "CategoryName" : categories[countCategories]['CategoryName']
+                        },
+                        {
+                            "CategoryID" : categories[countCategories]['Id'], 
+                            "SubCategoryName" : 'Renda Fixa', 
                             "SubCategoryBudget" : 0, 
                             "CategoryName" : categories[countCategories]['CategoryName']
                         }
@@ -158,13 +170,25 @@ exports.loaded = function(args) {
                     pageData.SubCategoryList.push(
                         {
                             "CategoryID" : categories[countCategories]['Id'], 
-                            "SubCategoryName" : 'Cinema', 
+                            "SubCategoryName" : 'Alimentação', 
                             "SubCategoryBudget" : 0, 
                             "CategoryName" : categories[countCategories]['CategoryName']
                         },
                         {
                             "CategoryID" : categories[countCategories]['Id'], 
-                            "SubCategoryName" : 'Restaurantes', 
+                            "SubCategoryName" : 'Transporte', 
+                            "SubCategoryBudget" : 0, 
+                            "CategoryName" : categories[countCategories]['CategoryName']
+                        },
+                        {
+                            "CategoryID" : categories[countCategories]['Id'], 
+                            "SubCategoryName" : 'Lazer', 
+                            "SubCategoryBudget" : 0, 
+                            "CategoryName" : categories[countCategories]['CategoryName']
+                        },
+                        {
+                            "CategoryID" : categories[countCategories]['Id'], 
+                            "SubCategoryName" : 'Roupas', 
                             "SubCategoryBudget" : 0, 
                             "CategoryName" : categories[countCategories]['CategoryName']
                         }
@@ -174,13 +198,31 @@ exports.loaded = function(args) {
                     pageData.SubCategoryList.push(
                         {
                             "CategoryID" : categories[countCategories]['Id'], 
-                            "SubCategoryName" : 'Mercado', 
+                            "SubCategoryName" : 'Casa', 
                             "SubCategoryBudget" : 0, 
                             "CategoryName" : categories[countCategories]['CategoryName']
                         },
                         {
                             "CategoryID" : categories[countCategories]['Id'], 
-                            "SubCategoryName" : 'Escola', 
+                            "SubCategoryName" : 'Contas', 
+                            "SubCategoryBudget" : 0, 
+                            "CategoryName" : categories[countCategories]['CategoryName']
+                        },
+                        {
+                            "CategoryID" : categories[countCategories]['Id'], 
+                            "SubCategoryName" : 'Educação', 
+                            "SubCategoryBudget" : 0, 
+                            "CategoryName" : categories[countCategories]['CategoryName']
+                        },
+                        {
+                            "CategoryID" : categories[countCategories]['Id'], 
+                            "SubCategoryName" : 'Prestações', 
+                            "SubCategoryBudget" : 0, 
+                            "CategoryName" : categories[countCategories]['CategoryName']
+                        },
+                        {
+                            "CategoryID" : categories[countCategories]['Id'], 
+                            "SubCategoryName" : 'Saúde', 
                             "SubCategoryBudget" : 0, 
                             "CategoryName" : categories[countCategories]['CategoryName']
                         }
