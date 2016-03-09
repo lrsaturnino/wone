@@ -18,6 +18,22 @@ var BasicBudgetReleased;
 var ExtraBudgetReleased;
 var InvestimentBudgetReleased;
 
+var valueConverter = {
+    toView: function (value) {
+        var n = value, c = 2, d = ",", t = ".", s = n < 0 ? "-" : "", i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "", j = (j = i.length) > 3 ? j % 3 : 0;
+        return 'R$ ' + s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");        
+    },
+    toModel: function (value) {
+        var n = value;
+        n = n.replace(' ','');
+        n = n.replace('R$', '');
+        n = n.replace(',','');
+        n = n.replace('.','');
+        n = parseInt(n) / 100;
+        return n;
+    }
+};
+
 var allowanceDates = function(){
     var checkDate;
     var allowanceDates = [];
@@ -133,9 +149,9 @@ exports.loaded = function(args) {
         pageData.set('fab3Label', 'Definir');
     };
     
-    pageData.set('basicCategoryLabel', objBasicBudget.totalExpense + '/' + BasicBudgetReleased);
-    pageData.set('extraCategoryLabel', objExtraBudget.totalExpense + '/' + ExtraBudgetReleased);
-    pageData.set('investimentCategoryLabel', objInvestimentBudget.totalExpense + '/' + InvestimentBudgetReleased);
+    pageData.set('basicCategoryLabel', valueConverter.toView(objBasicBudget.totalExpense) + ' / ' + valueConverter.toView(BasicBudgetReleased));
+    pageData.set('extraCategoryLabel', valueConverter.toView(objExtraBudget.totalExpense) + ' / ' + valueConverter.toView(ExtraBudgetReleased));
+    pageData.set('investimentCategoryLabel', valueConverter.toView(objInvestimentBudget.totalExpense) + ' / ' + valueConverter.toView(InvestimentBudgetReleased));
     
     pageData.set('basicCategoryBar', objBasicBudget.totalExpense / BasicBudgetReleased * 100.00);
     pageData.set('extraCategoryBar', objExtraBudget.totalExpense / ExtraBudgetReleased * 100.00);

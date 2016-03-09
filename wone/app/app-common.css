@@ -9,6 +9,8 @@ TextView {
 ActivityIndicator {
     width: 50;
     height: 50;
+    horizontal-align: center;
+    vertical-align: center;
 }
 
 button {
@@ -109,7 +111,7 @@ datepicker
     color: #0000ff;
     font-size: 18;
     font-weight: bold;
-    width: 100;
+    width: 250;
     height: 50;
     text-align: center;
     horizontal-align: center;
@@ -127,8 +129,8 @@ datepicker
 }
 
 .title {
-    margin-top: 15;
-    margin-bottom: 15;
+    margin-top: 10;
+    margin-bottom: 10;
     font-size: 21;
     color: #4d4d4d;
     font-weight: bold;
@@ -159,7 +161,7 @@ datepicker
 
 .subtitle-left {
     margin-top: 5;
-    margin-bottom: 5;
+    margin-bottom: 0;
     font-size: 17;
     color: #4d4d4d ;
     horizontal-align: left;
@@ -176,6 +178,14 @@ datepicker
 .minititle-right{
     margin-top: 10;
     margin-bottom: -7;
+    font-size: 12;
+    color: #4d4d4d ;
+    horizontal-align: right;
+}
+
+.minititle-right-cockpit{
+    margin-top: 0;
+    margin-bottom: 0;
     font-size: 12;
     color: #4d4d4d ;
     horizontal-align: right;

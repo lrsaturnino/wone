@@ -180,7 +180,7 @@ var ExpenseListViewModel = function(){
     viewModel.resume_all = function() {
         var model = EVERLIVE.data('expenses')
         var query = new Everlive.AggregateQuery();
-        query.groupBy(['YearMonth', 'CategoryName']);
+        query.groupBy(['YearMonth', 'CategoryName', 'CategoryID']);
         query.sum('ExpenseValue', 'TotalExpense');
         
         return new Promise(function (resolve, reject) {
@@ -226,9 +226,15 @@ var ExpenseListViewModel = function(){
                     var objBasicBudget = JSON.parse(appsettings.basicCategoryBudget);
                     var objExtraBudget = JSON.parse(appsettings.extraCategoryBudget);
                     var objInvestimentBudget = JSON.parse(appsettings.investimentCategoryBudget);
-                    objBasicBudget.totalExpense = searchArray('CategoryID', objBasicBudget.idCategory, data.result, 'TotalExpense') === undefined ? 0 : searchArray('CategoryID', objBasicBudget.idCategory, data.result, 'TotalExpense');
-                    objExtraBudget.totalExpense = searchArray('CategoryID', objExtraBudget.idCategory, data.result, 'TotalExpense') === undefined ? 0 : searchArray('CategoryID', objExtraBudget.idCategory, data.result, 'TotalExpense');
-                    objInvestimentBudget.totalExpense = searchArray('CategoryID', objInvestimentBudget.idCategory, data.result, 'TotalExpense') === undefined ? 0 : searchArray('CategoryID', objInvestimentBudget.idCategory, data.result, 'TotalExpense');
+    
+                    var basicExpenseValue = searchArray('CategoryID', objBasicBudget.idCategory, data.result, 'TotalExpense');
+                    var extraExpenseValue = searchArray('CategoryID', objExtraBudget.idCategory, data.result, 'TotalExpense');
+                    var investimentExpenseValue = searchArray('CategoryID', objInvestimentBudget.idCategory, data.result, 'TotalExpense');
+                    
+                    objBasicBudget.totalExpense = basicExpenseValue;
+                    objExtraBudget.totalExpense = extraExpenseValue;
+                    objInvestimentBudget.totalExpense = investimentExpenseValue;
+                    
                     appsettings.basicCategoryBudget = JSON.stringify(objBasicBudget);
                     appsettings.extraCategoryBudget = JSON.stringify(objExtraBudget);
                     appsettings.investimentCategoryBudget = JSON.stringify(objInvestimentBudget);
@@ -240,6 +246,31 @@ var ExpenseListViewModel = function(){
             });
         });
     };
+    
+    viewModel.resume_each_yearmonth = function() {
+        viewModel.empty();
+        var model = EVERLIVE.data('expenses')
+        var query = new Everlive.AggregateQuery();
+        query.groupBy(['YearMonth', 'CategoryName', 'CategoryID']);
+        query.sum('ExpenseValue', 'TotalExpense');
+        query.where().lt('YearMonth', new Date(new Date().getFullYear(), new Date().getMonth(), 1));
+        
+        return new Promise(function (resolve, reject) {
+            model.aggregate(query)
+            .then(function(data) {
+                resolve(data);
+            },
+            function(error) {
+                reject(error);
+            });
+        });
+    };
+    
+	viewModel.empty = function() {
+		while (viewModel.length) {
+			viewModel.pop();
+		}
+	};    
     
     return viewModel;
 };
@@ -254,4 +285,5 @@ function searchArray(searchkey, data, myArray, resultkey){
             return myArray[i][resultkey];
         };
     };
+    return 0;
 };

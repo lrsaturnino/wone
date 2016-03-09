@@ -1,3 +1,4 @@
+var appModule = require("application");
 var appsettings = require("../../utils/appsettings");
 var dialogsModule = require("ui/dialogs");
 var observable = require("data/observable").Observable;
@@ -12,6 +13,22 @@ var subCategories;
 var countCategories;
 var categories;
 var objBudget;
+
+var valueConverter = {
+    toView: function (value) {
+        var n = value, c = 2, d = ",", t = ".", s = n < 0 ? "-" : "", i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "", j = (j = i.length) > 3 ? j % 3 : 0;
+        return 'R$ ' + s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");        
+    },
+    toModel: function (value) {
+        var n = value;
+        n = n.replace(' ','');
+        n = n.replace('R$', '');
+        n = n.replace(',','');
+        n = n.replace('.','');
+        n = Number(Number(n) / 100);
+        return n;
+    }
+};
 
 var pageData = new observable({
     SubCategoryList: budget,
@@ -31,8 +48,12 @@ var sumTotalBudget = function(){
 };
 
 exports.loaded = function(args) {
+    appModule.resources["valueConverter"] = valueConverter;     
+
     page = args.object;
     page.bindingContext = pageData;
+    
+    pageData.set('isLoading', true);
     
     countCategories = appsettings.countcategory - 1;
     
@@ -102,6 +123,7 @@ exports.loaded = function(args) {
     
     budget.load(categories[countCategories]['Id'])
     .then(function(data) {
+        pageData.set('isLoading', false);
         subCategories = data.result;
         pageData.set('TotalBudget', 0);
         if (subCategories.length){ 

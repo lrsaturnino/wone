@@ -17,7 +17,7 @@
             <Label text="Valor do Gasto" className="minititle-left" />
             <TextField id="expenseValue" className="input-field" text="{{ expenseValue }}" keyboardType="number" hint="R$ 0,00" />
             <Label text="Data do Gasto" className="minititle-left" />
-            <Label text="{{ expenseDate }}" className="field" tap="goDatePicker" />
+            <Label text="{{ expenseDate | dateConverter('DD/MM/YYYY') }}" className="field" tap="goDatePicker" />
             <SegmentedBar id="expenseOrigin" className="paytype">
                 <SegmentedBar.items>
                   <SegmentedBarItem title="Pagamento à vista" />

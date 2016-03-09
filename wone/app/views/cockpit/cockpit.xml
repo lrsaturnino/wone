@@ -31,19 +31,19 @@
                             <Progress value=" {{ hpBar }}" className="progress-hp" row="3"/>
                             <Progress value=" {{ hpBar }}" className="progress-hp" row="3"/>
                         </GridLayout>        
-                        <Label text="1ª Semana de Mar/2016" className="subtitle" />     
+                        <Label text="2ª Semana de Mar/2016" className="subtitle" />     
                     </StackLayout>
                     <Label text="{{ cockpitMessage }}" className="message-label" textWrap="true" row="1" />
-                    <GridLayout rows="auto, auto, auto, auto, auto, auto" columns="3*,*" row="2" className="catbar" >
-                        <Label text="Gastos Básicos" className="subtitle-left" textWrap="false" row="0" colspan="2"/>
-                        <Progress id="basicCategoryBar" value="{{ basicCategoryBar }}" className="progress-categories-blue" row="1" col="0" />
-                        <Label text="{{ basicCategoryLabel }}" className="" textWrap="false" row="1" col="1"/>
-                        <Label text="Gastos Extras" className="subtitle-left" textWrap="false" row="2" colspan="2"/>
-                        <Progress id="extraCategoryBar" value="{{ extraCategoryBar }}" className="progress-categories-blue" row="3" col="0"/>
-                        <Label text="{{ extraCategoryLabel }}" className="" textWrap="false" row="3" col="1"/>
-                        <Label text="Investimentos" className="subtitle-left" textWrap="false" row="4" colspan="2"/>
-                        <Progress id="investimentCategoryBar" value="{{ investimentCategoryBar }}" className="progress-categories-blue" row="5" col="0"/>
-                        <Label text="{{ investimentCategoryLabel }}" className="" textWrap="false" row="5" col="1"/>
+                    <GridLayout rows="auto, auto, auto, auto, auto, auto, auto, auto, auto" columns="*" row="2" className="catbar" >
+                        <Label text="Gastos Básicos" className="subtitle-left" textWrap="false" row="0" />
+                        <Progress id="basicCategoryBar" value="{{ basicCategoryBar }}" className="progress-categories-blue" row="1" />
+                        <Label text="{{ basicCategoryLabel }}" className="minititle-right-cockpit" textWrap="false" row="2" />
+                        <Label text="Gastos Extras" className="subtitle-left" textWrap="false" row="3" />
+                        <Progress id="extraCategoryBar" value="{{ extraCategoryBar }}" className="progress-categories-blue" row="4" />
+                        <Label text="{{ extraCategoryLabel }}" className="minititle-right-cockpit" textWrap="false" row="5" />
+                        <Label text="Investimentos" className="subtitle-left" textWrap="false" row="6" />
+                        <Progress id="investimentCategoryBar" value="{{ investimentCategoryBar }}" className="progress-categories-blue" row="7" />
+                        <Label text="{{ investimentCategoryLabel }}" className="minititle-right-cockpit" textWrap="false" row="8" />
                     </GridLayout>
                     <GridLayout rows="auto, auto" columns="*,*,*,*" row="3" colspan="2">
                         <android>

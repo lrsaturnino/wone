@@ -6,25 +6,26 @@
             </ActionBar.actionItems>
 		</ActionBar>
     </Page.actionBar>
-    <GridLayout rows="auto, auto, auto, *, auto" columns="2*, *, auto" row="1" colspan="3">
+    <GridLayout rows="auto, auto, auto, *, auto, auto" columns="2*, *, auto" row="1" colspan="3">
         <Label text="{{ CategoryName }}" className="title" row="0" colSpan="3"/>
         <Label text="Categoria" className="minititle-left" row="1" col="0"/>
         <Label text="Orçamento" className="minititle-left" row="1" col="1"/>
         <TextField id="SubCategoryNameInput" text="{{ SubCategoryNameInput }}" hint="{{ HintText }}" row="2" col="0" className="input-field" />
-        <TextField id="SubCategoryBudgetInput" text="{{ SubCategoryBudgetInput }}" keyboardType="number" hint="0,00" row="2" col="1" className="input-field" />
+        <TextField id="SubCategoryBudgetInput" text="{{ SubCategoryBudgetInput }}" keyboardType="number" hint="R$ 0,00" row="2" col="1" className="input-field" />
         <Image src="~/images/icons/add.png" row="2" col="3" tap="addSubCat" className="image-icon"/>
         <ListView id="SubCategoryList" items="{{ SubCategoryList }}" row="3" colspan="3" className="list-view">
             <ListView.itemTemplate>
-                <GridLayout columns="2*, *, auto">
+                <GridLayout columns="10*, 7*, auto">
                     <Label text="{{ SubCategoryName }}" className="subtitle" col="0"/>
-                    <TextField text="{{ SubCategoryBudget }}" col="1" keyboardType="number" className="input-field" />
+                    <TextField text="{{ SubCategoryBudget | valueConverter() }}" col="1" keyboardType="number" hint="R$ 0,00" className="input-field" />
                     <Image src="res://ic_menu_delete" col="2" tap="delSubCat" className="image-icon" />
                 </GridLayout>
             </ListView.itemTemplate>
         </ListView>
-        <StackLayout row="4" colspan="3">
+        <ActivityIndicator busy="{{ isLoading }}" row="4" colspan="3" />
+        <StackLayout row="5" colspan="3">
             <Label text="Orçamento Mensal" className="subtitle" />
-            <Label text="{{ TotalBudget }}" className="info-label" />
+            <Label text="{{ TotalBudget | valueConverter() }}" className="info-label" />
         </StackLayout>
     </GridLayout>
 </Page>
