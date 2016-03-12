@@ -165,6 +165,10 @@ exports.add = function() {
         var x = appsettings.expensecounter;
         x += pageData.get("expenseInstallment");
         appsettings.expensecounter = x;
+        dialogsModule.alert({
+            message: "Gasto incluído com sucesso. Obrigado :)",
+            okButtonText: "OK"
+        });        
         frameModule.topmost().navigate({
             moduleName: "views/cockpit/cockpit",
             clearHistory: true

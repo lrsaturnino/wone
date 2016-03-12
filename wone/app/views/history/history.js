@@ -23,7 +23,7 @@ var dateConverter = {
         var day = value.getDate();
         result = result.replace("DD", day < 10 ? "0" + day : day);
         var month = monthNames[value.getMonth()];
-        result = result.replace("MM", month);
+        result = result.replace("MMM", month);
         result = result.replace("YYYY", value.getFullYear());
         return result;
     },
@@ -56,7 +56,8 @@ var valueConverter = {
 };
 
 var pageData = new observable({
-    items : history
+    resumeExpensesList : history,
+    message: ''
 });
 
 
@@ -67,6 +68,9 @@ exports.loaded = function(args) {
     page = args.object;
     page.bindingContext = pageData;
     
+    pageData.set('message', '');
+    viewModule.getViewById(page, 'message').visibility = "collapsed";    
+    
     pageData.set('isLoading', true);
     
     objBasicBudget = JSON.parse(appsettings.basicCategoryBudget);
@@ -75,26 +79,33 @@ exports.loaded = function(args) {
 
     history.resume_each_yearmonth()
     .then(function(data){
-        data.result.DateToNumber();
-        data.result.unique().forEach(function(yearmonth){
-            basicExpenseValue = searchArray('CategoryID', objBasicBudget.idCategory, 'YearMonth', yearmonth, data.result, 'TotalExpense');
-            extraExpenseValue = searchArray('CategoryID', objExtraBudget.idCategory, 'YearMonth', yearmonth, data.result, 'TotalExpense');
-            investimentExpenseValue = searchArray('CategoryID', objInvestimentBudget.idCategory, 'YearMonth', yearmonth, data.result, 'TotalExpense');
+        if (data.result.length) {
+            data.result.DateToNumber();
+            data.result.unique().forEach(function(yearmonth){
+                basicExpenseValue = searchArray('CategoryID', objBasicBudget.idCategory, 'YearMonth', yearmonth, data.result, 'TotalExpense');
+                extraExpenseValue = searchArray('CategoryID', objExtraBudget.idCategory, 'YearMonth', yearmonth, data.result, 'TotalExpense');
+                investimentExpenseValue = searchArray('CategoryID', objInvestimentBudget.idCategory, 'YearMonth', yearmonth, data.result, 'TotalExpense');
 
-            pageData.items.push({
-                    YearMonth: new Date(yearmonth),
-                    basicCategoryLabel: valueConverter.toView(basicExpenseValue) + ' / ' + valueConverter.toView(objBasicBudget.totalBudget),
-                    extraCategoryLabel: valueConverter.toView(extraExpenseValue) + ' / ' + valueConverter.toView(objExtraBudget.totalBudget),
-                    investimentCategoryLabel: valueConverter.toView(investimentExpenseValue) + ' / ' + valueConverter.toView(objInvestimentBudget.totalBudget),
-                    basicCategoryBar: basicExpenseValue / objBasicBudget.totalBudget * 100 || 0,
-                    extraCategoryBar: extraExpenseValue / objExtraBudget.totalBudget * 100 || 0,
-                    investimentCategoryBar: investimentExpenseValue / objInvestimentBudget.totalBudget * 100 || 0,
-                    classBasicBar: (basicExpenseValue / objBasicBudget.totalBudget * 100 || 0) > 100 ? 'progress-categories-red' : 'progress-categories-blue',
-                    classExtraBar: (extraExpenseValue / objExtraBudget.totalBudget * 100 || 0) > 100 ? 'progress-categories-red' : 'progress-categories-blue',
-                    classInvestimentBar: (investimentExpenseValue / objInvestimentBudget.totalBudget * 100 || 0) > 100 ? 'progress-categories-green' : 'progress-categories-blue'
+                pageData.resumeExpensesList.push({
+                        YearMonth: new Date(yearmonth),
+                        basicCategoryLabel: valueConverter.toView(basicExpenseValue) + ' / ' + valueConverter.toView(objBasicBudget.totalBudget),
+                        extraCategoryLabel: valueConverter.toView(extraExpenseValue) + ' / ' + valueConverter.toView(objExtraBudget.totalBudget),
+                        investimentCategoryLabel: valueConverter.toView(investimentExpenseValue) + ' / ' + valueConverter.toView(objInvestimentBudget.totalBudget),
+                        basicCategoryBar: basicExpenseValue / objBasicBudget.totalBudget * 100 || 0,
+                        extraCategoryBar: extraExpenseValue / objExtraBudget.totalBudget * 100 || 0,
+                        investimentCategoryBar: investimentExpenseValue / objInvestimentBudget.totalBudget * 100 || 0,
+                        classBasicBar: (basicExpenseValue / objBasicBudget.totalBudget * 100 || 0) > 100 ? 'progress-categories-red' : 'progress-categories-blue',
+                        classExtraBar: (extraExpenseValue / objExtraBudget.totalBudget * 100 || 0) > 100 ? 'progress-categories-red' : 'progress-categories-blue',
+                        classInvestimentBar: (investimentExpenseValue / objInvestimentBudget.totalBudget * 100 || 0) > 100 ? 'progress-categories-green' : 'progress-categories-blue'
+                });
             });
-        });
-
+            pageData.resumeExpensesList.sort(function(a,b){
+    	       return b['YearMonth'] - a['YearMonth'];
+            });
+        }else{
+            pageData.set('message', 'Não existem dados históricos para consulta, continue efetuando o registro de seus gastos.');
+            viewModule.getViewById(page, 'message').visibility = "visible";            
+        };
         pageData.set('isLoading', false);
     },
     function(error){
@@ -105,6 +116,42 @@ exports.loaded = function(args) {
 
 exports.goBack = function(){
     frameModule.topmost().goBack();
+};
+
+exports.basicExpenseList = function(args){
+    var item = args.view.bindingContext;
+    frameModule.topmost().navigate({
+        moduleName: "views/history/expense-list",
+        context: {
+            yearmonth: item.YearMonth,
+            category_id: objBasicBudget.idCategory,
+            category: objBasicBudget.categoryName
+        }
+    });       
+};
+
+exports.extraExpenseList = function(args){
+    var item = args.view.bindingContext;
+    frameModule.topmost().navigate({
+        moduleName: "views/history/expense-list",
+        context: {
+            yearmonth: item.YearMonth,
+            category_id: objExtraBudget.idCategory,
+            category: objExtraBudget.categoryName
+        }
+    });       
+};
+
+exports.investimentExpenseList = function(args){
+    var item = args.view.bindingContext;
+    frameModule.topmost().navigate({
+        moduleName: "views/history/expense-list",
+        context: {
+            yearmonth: item.YearMonth,
+            category_id: objInvestimentBudget.idCategory,
+            category: objInvestimentBudget.categoryName
+        }
+    }); 
 };
 
 function searchArray(searchkey1, data1, searchkey2, data2, myArray, resultkey){

@@ -161,9 +161,11 @@ var ExpenseListViewModel = function(){
         });
     };
     
-    viewModel.all_yearmonth = function(yearmonth) {
+    viewModel.all_by_yearmonth_category = function(yearmonth, category_id) {
+        viewModel.empty();
         var filter = {
-            'YearMonth' : new Date(yearmonth.getFullYear(), yearmonth.getMonth(), 1)
+            'YearMonth' : new Date(yearmonth.getFullYear(), yearmonth.getMonth(), 1),
+            'CategoryID' : category_id
         };
         var model = EVERLIVE.data('expenses')
         return new Promise(function (resolve, reject) {
@@ -266,12 +268,28 @@ var ExpenseListViewModel = function(){
         });
     };
     
+    viewModel.delete_expense = function(expense_id) {
+        var model = EVERLIVE.data('expenses')
+        
+        return new Promise(function (resolve, reject) {
+            model.destroySingle ({Id : expense_id})
+            .then(function(data) {
+                resolve(data);
+            },
+            function(error) {
+                reject(error);
+            });
+        });
+    };
+    
 	viewModel.empty = function() {
 		while (viewModel.length) {
 			viewModel.pop();
 		}
 	};    
     
+    viewModel.empty();
+ 
     return viewModel;
 };
 

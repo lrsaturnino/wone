@@ -7,20 +7,22 @@
         </ActionBar>
     </Page.actionBar>
     <StackLayout>
-        <ListView items="{{ items }}">
+        <Label id="message" text="{{ message }}" className="message" textWrap="true" />
+        <ListView items="{{ resumeExpensesList }}">
             <ListView.itemTemplate>
                 <Card:CardView margin="10">
                     <grid-layout rows="auto, auto, auto, auto, auto, auto, auto, auto, auto, auto" columns="*" className="catbar" >
-                        <Label text="{{ YearMonth | dateConverter('MM/YYYY') }}" className="subtitle" textWrap="false" row="0" />
-                        <Label text="Gastos Básicos" className="subtitle-left" textWrap="false" row="1" />
+                        <Label text="{{ YearMonth | dateConverter('MMM/YYYY') }}" className="subtitle" textWrap="false" row="0" />
+                        <Label text="Gastos Básicos (+)" className="subtitle-left" textWrap="false" row="1" tap="basicExpenseList" />
                         <Progress id="basicCategoryBar" value="{{ basicCategoryBar }}" className="{{ classBasicBar }}" row="2" />
-                        <Label text="{{ basicCategoryLabel }}" className="minititle-right-cockpit" textWrap="false" row="3" />
-                        <Label text="Gastos Extras" className="subtitle-left" textWrap="false" row="4" />
+                        <Label text="{{ basicCategoryLabel }}" className="minititle-right-w-margin" textWrap="false" row="3" />
+                        <Label text="Gastos Extras (+)" className="subtitle-left" textWrap="false" row="4" tap="extraExpenseList" />
                         <Progress id="extraCategoryBar" value="{{ extraCategoryBar }}" className="{{ classExtraBar }}" row="5" />
-                        <Label text="{{ extraCategoryLabel }}" className="minititle-right-cockpit" textWrap="false" row="6" />
-                        <Label text="Investimentos" className="subtitle-left" textWrap="false" row="7" />
+                        <Label text="{{ extraCategoryLabel }}" className="minititle-right-w-margin" textWrap="false" row="6" />
+                        <Label text="Investimentos (+)" className="subtitle-left" textWrap="false" row="7" tap="investimentExpenseList" />
                         <Progress id="investimentCategoryBar" value="{{ investimentCategoryBar }}" className="{{ classInvestimentBar }}" row="8" />
-                        <Label text="{{ investimentCategoryLabel }}" className="minititle-right-cockpit" textWrap="false" row="9" />                                     </grid-layout>
+                        <Label text="{{ investimentCategoryLabel }}" className="minititle-right-w-margin" textWrap="false" row="9" />                                     
+                    </grid-layout>
                 </Card:CardView>        
             </ListView.itemTemplate>
         </ListView>

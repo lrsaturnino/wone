@@ -8,26 +8,26 @@
     </Page.actionBar>
     <GridLayout rows="auto, *, auto, *, auto, *" columns="*">
         <Label text="Gastos Básicos" row="0" className="subtitle-left"/>
-        <ListView items="{{ basicSubCategoryList }}" row="1" className="list-view">
+        <ListView items="{{ basicSubCategoryList }}" row="1" className="list-view" itemTap="selectSubCategory">
             <ListView.itemTemplate>
                 <GridLayout columns="*">
-                    <Label text="{{ SubCategoryName }}" col="0" tap="selectSubCategory" className="subtitle" />
+                    <Label text="{{ SubCategoryName }}" col="0" className="subtitle" />
                 </GridLayout>
             </ListView.itemTemplate>
         </ListView>
         <Label text="Gastos Extras" row="2" className="subtitle-left"/>
-        <ListView items="{{ extraSubCategoryList }}" row="3" className="list-view">
+        <ListView items="{{ extraSubCategoryList }}" row="3" className="list-view" itemTap="selectSubCategory">
             <ListView.itemTemplate>
                 <GridLayout columns="*">
-                    <Label text="{{ SubCategoryName }}" col="0" tap="selectSubCategory" className="subtitle" />
+                    <Label text="{{ SubCategoryName }}" col="0" className="subtitle" />
                 </GridLayout>
             </ListView.itemTemplate>
         </ListView>
         <Label text="Investimentos" row="4" className="subtitle-left"/>
-        <ListView items="{{ investimentSubCategoryList }}" row="5" className="list-view">
+        <ListView items="{{ investimentSubCategoryList }}" row="5" className="list-view" itemTap="selectSubCategory">
             <ListView.itemTemplate>
                 <GridLayout columns="*">
-                    <Label text="{{ SubCategoryName }}" col="0" tap="selectSubCategory" className="subtitle" />
+                    <Label text="{{ SubCategoryName }}" col="0" className="subtitle" />
                 </GridLayout>
             </ListView.itemTemplate>
         </ListView>

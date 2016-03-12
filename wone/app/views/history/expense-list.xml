@@ -1,12 +1,29 @@
-<Page xmlns="http://www.nativescript.org/tns.xsd" actionBarHidden="false" loaded="loaded">
+<Page xmlns="http://www.nativescript.org/tns.xsd" xmlns:Card="nativescript-cardview" actionBarHidden="false" loaded="loaded">
     <Page.actionBar>
-        <ActionBar title="Histórico de Gastos">
+        <ActionBar title="Lista de Gastos">
             <android>
                 <NavigationButton icon="res://ic_arrow_back" tap="goBack" />
             </android>
         </ActionBar>
     </Page.actionBar>
-    <GridLayout rows="auto, auto, auto" columns="*">
-        
-    </GridLayout>
+    <StackLayout>
+        <Label text="{{ category }}" className="subtitle-left-w-margin " />
+        <Label id="message" text="{{ message }}" className="message" textWrap="true" />
+        <ListView items="{{ expensesList }}" itemTap="expenseDetail" >
+            <ListView.itemTemplate>
+                <Card:CardView margin="2">
+                    <grid-layout rows="auto, *, auto" columns="2*,*" className="catbar" >
+                        <Label text="{{ 'Categoria: ' + SubCategoryName }}" className="minititle-left-w-margin" textWrap="false" row="0" col="0" />
+                        <Label text="{{ SmallDescription }}" className="subtitle-left" textWrap="true" row="1" col="0" />
+                        <Label text="{{ EventDate | dateConverter('DD/MM/YYYY') }}" className="minititle-left-w-margin" textWrap="false" row="2" col="0" />
+                        <Label text="{{ ExpenseValue | valueConverter() }}" className="subtitle" textWrap="false" row="0" rowspan="3" col="1" />
+                    </grid-layout>
+                </Card:CardView>        
+            </ListView.itemTemplate>
+        </ListView>
+        <ActivityIndicator busy="{{ isLoading }}" />
+    </StackLayout>    
 </Page>
+
+
+

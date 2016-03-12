@@ -13,16 +13,16 @@
         <Label text="Proporcionalize seu orçamento pelas semanas do mês, afinal as contas não combinam a hora de chegar." className="message-label-left" textWrap="true" />
         <Label text="1ª Semana" className="subtitle-left" />
         <Slider id="firstWeekSlider" />
-        <Label text="{{ firstWeekLabel | valueConverter() }}" className="minititle-right-cockpit" />
+        <Label text="{{ firstWeekLabel | valueConverter() }}" className="minititle-right-w-margin" />
         <Label text="2ª Semana" className="subtitle-left" />
         <Slider id="secondWeekSlider" />
-        <Label text="{{ secondWeekLabel | valueConverter() }}" className="minititle-right-cockpit" />
+        <Label text="{{ secondWeekLabel | valueConverter() }}" className="minititle-right-w-margin" />
         <Label text="3ª Semana" className="subtitle-left"/>
         <Slider id="thirdWeekSlider" />
-        <Label text="{{ thirdWeekLabel | valueConverter() }}" className="minititle-right-cockpit" />
+        <Label text="{{ thirdWeekLabel | valueConverter() }}" className="minititle-right-w-margin" />
         <Label text="4ª Semana" className="subtitle-left"/>
         <Slider id="fourthWeekSlider" />
-        <Label text="{{ fourthWeekLabel | valueConverter() }}" className="minititle-right-cockpit" />
+        <Label text="{{ fourthWeekLabel | valueConverter() }}" className="minititle-right-w-margin" />
         <Label text="Disponível para rateio" className="subtitle" />
         <Label text="{{ budgetLeft | valueConverter() }}" className="info-label" />
     </StackLayout>            

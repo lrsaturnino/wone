@@ -1,12 +1,26 @@
 <Page xmlns="http://www.nativescript.org/tns.xsd" actionBarHidden="false" loaded="loaded">
     <Page.actionBar>
-        <ActionBar title="Histórico de Gastos">
+        <ActionBar title="Detalhe do Gasto">
             <android>
                 <NavigationButton icon="res://ic_arrow_back" tap="goBack" />
             </android>
+            <ActionBar.actionItems>
+            	<ActionItem text="Excluir" icon="res://ic_menu_delete" ios.position="right" tap="delete" />
+            </ActionBar.actionItems>
         </ActionBar>
     </Page.actionBar>
-    <GridLayout rows="auto, auto, auto" columns="*">
-        
-    </GridLayout>
+    <StackLayout>
+        <Label text="Gasto" className="minititle-left" />
+        <Label text="{{ SmallDescription }}" className="subtitle-left" textWrap="true" />
+        <Label text="Valor do Pagamento" className="minititle-left" />
+        <Label text="{{ ExpenseValue | valueConverter() }}" className="subtitle-left" />
+        <Label text="Forma de Pagamento" className="minititle-left" />
+        <Label text="{{ ExpenseOrigin }}" className="subtitle-left" />
+        <Label text="Parcelamento" className="minititle-left" />
+        <Label text="{{ ActualNPer + '/' + TotalNPer }}" className="subtitle-left" />        
+        <Label text="Data do Pagamento" className="minititle-left" />
+        <Label text="{{ EventDate | dateConverter('DD/MM/YYYY') }}" className="subtitle-left" />
+        <Label text="Notas Complementares" className="minititle-left" />
+        <Label text="{{ LongDescription }}" className="subtitle-left" textWrap="true" />        
+    </StackLayout>
 </Page>

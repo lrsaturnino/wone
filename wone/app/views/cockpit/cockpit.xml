@@ -35,15 +35,15 @@
                     </StackLayout>
                     <Label text="{{ cockpitMessage }}" className="message-label" textWrap="true" row="1" />
                     <GridLayout rows="auto, auto, auto, auto, auto, auto, auto, auto, auto" columns="*" row="2" className="catbar" >
-                        <Label text="Gastos Básicos" className="subtitle-left" textWrap="false" row="0" />
+                        <Label text="Gastos Básicos (+)" className="subtitle-left" textWrap="false" row="0" tap="basicExpenseList" />
                         <Progress id="basicCategoryBar" value="{{ basicCategoryBar }}" className="progress-categories-blue" row="1" />
-                        <Label text="{{ basicCategoryLabel }}" className="minititle-right-cockpit" textWrap="false" row="2" />
-                        <Label text="Gastos Extras" className="subtitle-left" textWrap="false" row="3" />
+                        <Label text="{{ basicCategoryLabel }}" className="minititle-right-w-margin" textWrap="false" row="2" />
+                        <Label text="Gastos Extras (+)" className="subtitle-left" textWrap="false" row="3" tap="extraExpenseList" />
                         <Progress id="extraCategoryBar" value="{{ extraCategoryBar }}" className="progress-categories-blue" row="4" />
-                        <Label text="{{ extraCategoryLabel }}" className="minititle-right-cockpit" textWrap="false" row="5" />
-                        <Label text="Investimentos" className="subtitle-left" textWrap="false" row="6" />
+                        <Label text="{{ extraCategoryLabel }}" className="minititle-right-w-margin" textWrap="false" row="5" />
+                        <Label text="Investimentos (+)" className="subtitle-left" textWrap="false" row="6" tap="investimentExpenseList" />
                         <Progress id="investimentCategoryBar" value="{{ investimentCategoryBar }}" className="progress-categories-blue" row="7" />
-                        <Label text="{{ investimentCategoryLabel }}" className="minititle-right-cockpit" textWrap="false" row="8" />
+                        <Label text="{{ investimentCategoryLabel }}" className="minititle-right-w-margin" textWrap="false" row="8" />
                     </GridLayout>
                     <GridLayout rows="auto, auto" columns="*,*,*,*" row="3" colspan="2">
                         <android>

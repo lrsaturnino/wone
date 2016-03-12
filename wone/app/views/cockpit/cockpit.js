@@ -210,6 +210,38 @@ exports.loaded = function(args) {
     });
 };
 
+exports.basicExpenseList = function(){
+    frameModule.topmost().navigate({
+        moduleName: "views/history/expense-list",
+        context: {
+            yearmonth: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+            category_id: objBasicBudget.idCategory,
+            category: objBasicBudget.categoryName
+        }
+    });       
+};
+
+exports.extraExpenseList = function(){
+    frameModule.topmost().navigate({
+        moduleName: "views/history/expense-list",
+        context: {
+            yearmonth: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+            category_id: objExtraBudget.idCategory,
+            category: objExtraBudget.categoryName
+        }
+    });       
+};
+
+exports.investimentExpenseList = function(){
+    frameModule.topmost().navigate({
+        moduleName: "views/history/expense-list",
+        context: {
+            yearmonth: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+            category_id: objInvestimentBudget.idCategory,
+            category: objInvestimentBudget.categoryName
+        }
+    }); 
+};
 
 exports.addFav1Expense = function() {
     if (appsettings.favsubcat1){
