@@ -65,21 +65,68 @@ exports.loaded = function(args) {
     pageData.set('category', page.navigationContext.category);
     pageData.set('message', '');
     viewModule.getViewById(page, 'message').visibility = "collapsed";
-
-    history.all_by_yearmonth_category(page.navigationContext.yearmonth, page.navigationContext.category_id)
-    .then(function(data){
-        if (data.result.length){
-            pageData.expensesList.push(data.result);
-        }else{
-            pageData.set('message', 'Não existem gastos para essa categoria neste mês.');
-            viewModule.getViewById(page, 'message').visibility = "visible";
-        };
-        pageData.set('isLoading', false);
-    },
-    function(error){
-        pageData.set('isLoading', false);
-        console.log(JSON.stringify(error));
-    });
+    
+    if (appsettings.expenses){
+        history.add(JSON.parse(appsettings.expenses))
+        .then(function(data) {
+            history.resume_yearmonth(new Date())
+            .then(function(data) {
+                history.all_by_yearmonth_category(page.navigationContext.yearmonth, page.navigationContext.category_id)
+                .then(function(data){
+                    if (data.result.length){
+                        pageData.expensesList.push(data.result);
+                    }else{
+                        pageData.set('message', 'Não existem gastos para essa categoria neste mês.');
+                        viewModule.getViewById(page, 'message').visibility = "visible";
+                    };
+                    pageData.set('isLoading', false);
+                },
+                function(error){
+                    pageData.set('isLoading', false);
+                    dialogsModule.alert({
+                        message: "Ops! Tivemos uma falha. Erro: (" + JSON.stringify(error) + ")",
+                        okButtonText: "OK"
+                    }); 
+                    frameModule.topmost().goBack();
+                });
+            }, 
+            function(error) {
+                pageData.set('isLoading', false);
+                dialogsModule.alert({
+                    message: "Ops! Tivemos uma falha. Erro: (" + JSON.stringify(error) + ")",
+                    okButtonText: "OK"
+                }); 
+                frameModule.topmost().goBack();    
+            });
+        }, 
+        function(error) {
+            pageData.set('isLoading', false);
+            dialogsModule.alert({
+                message: "Ops! Tivemos uma falha. Erro: (" + JSON.stringify(error) + ")",
+                okButtonText: "OK"
+            }); 
+            frameModule.topmost().goBack();    
+        });
+    }else{
+        history.all_by_yearmonth_category(page.navigationContext.yearmonth, page.navigationContext.category_id)
+        .then(function(data){
+            if (data.result.length){
+                pageData.expensesList.push(data.result);
+            }else{
+                pageData.set('message', 'Não existem gastos para essa categoria neste mês.');
+                viewModule.getViewById(page, 'message').visibility = "visible";
+            };
+            pageData.set('isLoading', false);
+        },
+        function(error){
+            pageData.set('isLoading', false);
+            dialogsModule.alert({
+                message: "Ops! Tivemos uma falha. Erro: (" + JSON.stringify(error) + ")",
+                okButtonText: "OK"
+            }); 
+            frameModule.topmost().goBack();
+        });
+    };
 };
 
 exports.goBack = function(){

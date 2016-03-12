@@ -110,7 +110,11 @@ exports.loaded = function(args) {
     },
     function(error){
         pageData.set('isLoading', false);
-        console.log(JSON.stringify(error));
+        dialogsModule.alert({
+            message: "Ops! Tivemos uma falha. Erro: (" + JSON.stringify(error) + ")",
+            okButtonText: "OK"
+        }); 
+        frameModule.topmost().goBack();    
     });
 };
 

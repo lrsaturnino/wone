@@ -57,7 +57,6 @@ exports.loaded = function(args){
                             console.log(JSON.stringify(error));
                             expenses.resume_yearmonth(new Date())
                             .then(function(data) {
-
                                 frameModule.topmost().navigate({
                                         moduleName: "views/cockpit/cockpit", 
                                         clearHistory: true

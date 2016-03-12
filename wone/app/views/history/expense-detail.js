@@ -62,8 +62,6 @@ exports.loaded = function(args) {
     objExtraBudget = JSON.parse(appsettings.extraCategoryBudget);
     objInvestimentBudget = JSON.parse(appsettings.investimentCategoryBudget);            
     
-    console.log(JSON.stringify(objBasicBudget));
-    
     pageData.set('SmallDescription', page.navigationContext.expense.SmallDescription)
     pageData.set('ExpenseValue', page.navigationContext.expense.ExpenseValue)
     pageData.set('ExpenseOrigin', page.navigationContext.expense.ExpenseOrigin)
