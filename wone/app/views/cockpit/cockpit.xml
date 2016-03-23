@@ -6,7 +6,7 @@
     <Page.actionBar>
         <ActionBar title="Cockpit">
             <android>
-                <NavigationButton icon="~/images/icons/menu.png" tap="toggleSideDrawer" className="image-icon" />
+                <NavigationButton android.systemIcon="ic_menu_moreoverflow_normal_holo_light" tap="toggleSideDrawer"  />
             </android>
             <ActionBar.actionItems>
             	<ios>
@@ -31,7 +31,7 @@
                             <Progress value=" {{ hpBar }}" className="progress-hp" row="3"/>
                             <Progress value=" {{ hpBar }}" className="progress-hp" row="3"/>
                         </GridLayout>        
-                        <Label text="2ª Semana de Mar/2016" className="subtitle" />     
+                        <Label text="{{ actualWeekMessage }}" className="subtitle" />     
                     </StackLayout>
                     <Label text="{{ cockpitMessage }}" className="message-label" textWrap="true" row="1" />
                     <GridLayout rows="auto, auto, auto, auto, auto, auto, auto, auto, auto" columns="*" row="2" className="catbar" >

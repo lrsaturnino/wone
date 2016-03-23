@@ -17,7 +17,10 @@
             <Label text="Valor do Gasto" className="minititle-left" />
             <TextField id="expenseValue" className="input-field" text="{{ expenseValue }}" keyboardType="number" hint="R$ 0,00" />
             <Label text="Data do Gasto" className="minititle-left" />
-            <Label text="{{ expenseDate | dateConverter('DD/MM/YYYY') }}" className="field" tap="goDatePicker" />
+            <GridLayout rows="auto" columns="auto,auto">
+                <Label text="{{ expenseDate | dateConverter('DD/MM/YYYY') }}" className="field" tap="goDatePicker" row="0" col="0" />
+                <Image src="res://ic_edit" tap="goDatePicker" row="0" col="1" />
+            </GridLayout>
             <SegmentedBar id="expenseOrigin" className="paytype">
                 <SegmentedBar.items>
                   <SegmentedBarItem title="Pagamento à vista" />
@@ -25,11 +28,13 @@
                 </SegmentedBar.items>
             </SegmentedBar>
         </StackLayout>
-        <GridLayout row="1" rows="auto, auto, *" columns="*,*">
+        <GridLayout row="1" rows="auto, auto, *" columns="auto,auto,auto">
             <Label id="expenseCreditCardLabel" text="Cartão de Crédito" className="field-left" visibility="collapsed" row="0" col="0"/>
             <Label id="expenseCreditCard" text="{{ expenseCreditCard }}" className="field-left" visibility="collapsed" row="0" col="1"  tap="goCreditCard" />
+            <Image id="editCreditCard" src="res://ic_edit" tap="goCreditCard" visibility="collapsed" row="0" col="2" />
             <Label id="expenseInstallmentLabel" text="Parcelas" className="field-left" visibility="collapsed" row="1" col="0"/>
             <Label id="expenseInstallment" text="{{ expenseInstallment }}" className="field-left" visibility="collapsed" row="1" col="1" tap="goInstallment"/>
+            <Image id="editInstallment" src="res://ic_edit" tap="goInstallment" visibility="collapsed" row="1" col="2" />
             <TextView id="expenseLgDesc" className="input-field" text="{{ expenseLgDesc }}" hint="Notas complementares (opcional)" row="2" colspan="2" />
         </GridLayout>
  	</GridLayout>

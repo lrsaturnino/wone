@@ -103,14 +103,18 @@ exports.loaded = function(args) {
         if (paymentType.selectedIndex){
             viewModule.getViewById(page, 'expenseCreditCardLabel').visibility = "visible";
             viewModule.getViewById(page, 'expenseCreditCard').visibility = "visible";
+            viewModule.getViewById(page, 'editCreditCard').visibility = "visible";
             viewModule.getViewById(page, 'expenseInstallmentLabel').visibility = "visible";
             viewModule.getViewById(page, 'expenseInstallment').visibility = "visible";
+            viewModule.getViewById(page, 'editInstallment').visibility = "visible";
             goCreditCard();
         }else{
             viewModule.getViewById(page, 'expenseCreditCardLabel').visibility = "collapsed";
             viewModule.getViewById(page, 'expenseCreditCard').visibility = "collapsed";
+            viewModule.getViewById(page, 'editCreditCard').visibility = "collapsed";
             viewModule.getViewById(page, 'expenseInstallmentLabel').visibility = "collapsed";
             viewModule.getViewById(page, 'expenseInstallment').visibility = "collapsed";
+            viewModule.getViewById(page, 'editInstallment').visibility = "collapsed";
             pageData.set('expenseInstallment', 1);
             pageData.set('expenseCreditCard', "");
         }
@@ -122,7 +126,7 @@ exports.loaded = function(args) {
 };
 
 exports.add = function() {
-    if (pageData.get("expenseValue").trim() !== "" && pageData.get("expenseSmDesc").trim() !== "" && pageData.get("expenseValue") > 0) {
+    if (pageData.get("expenseValue").trim() !== "" && pageData.get("expenseValue") > 0) {
         viewModule.getViewById(page, "expenseValue").dismissSoftInput();
         expense = appsettings.expenses;
         expense ? expense = JSON.parse(expense) : expense = [];
@@ -139,7 +143,7 @@ exports.add = function() {
                 'TotalNPer' : pageData.get("expenseInstallment"),
                 'EventDate' : expensePayDay,
                 'LongDescription' : pageData.get("expenseLgDesc"),
-                'SmallDescription' : pageData.get("expenseSmDesc"),
+                'SmallDescription' : pageData.get("expenseSmDesc").trim() == "" ? page.navigationContext.subCategoryName : pageData.get("expenseSmDesc"),
                 'YearMonth' : new Date(firstPaymentDate().getFullYear(), firstPaymentDate().getMonth() - 1 + i, 1,0,0,0,0),
                 'CategoryName' : page.navigationContext.categoryName,
                 'SubCategoryName' : page.navigationContext.subCategoryName
@@ -175,7 +179,7 @@ exports.add = function() {
         });
     }else{
         dialogsModule.alert({
-            message: "Informe, no mínimo, qual foi o gasto e o valor do gasto (maior que 0).",
+            message: "Informe o valor do gasto, maior que 0,00.",
             okButtonText: "OK"
         });
     };

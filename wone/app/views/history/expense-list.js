@@ -130,7 +130,14 @@ exports.loaded = function(args) {
 };
 
 exports.goBack = function(){
-    frameModule.topmost().goBack();
+    if (page.navigationContext.from == 'cockpit'){
+        frameModule.topmost().navigate({
+            moduleName: "views/cockpit/cockpit", 
+            clearHistory: true
+        });        
+    }else{
+        frameModule.topmost().goBack();
+    };
 };
 
 exports.expenseDetail = function(args){

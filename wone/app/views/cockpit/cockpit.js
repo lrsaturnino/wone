@@ -11,12 +11,15 @@ var favButton1;
 var favButton2;
 var favButton3;
 var actDate;
+var lastDayActDate;
 var objBasicBudget;
 var objExtraBudget;
 var objInvestimentBudget;
 var BasicBudgetReleased;
 var ExtraBudgetReleased;
 var InvestimentBudgetReleased;
+var monthNamesAbrev = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+
 
 var valueConverter = {
     toView: function (value) {
@@ -37,7 +40,6 @@ var valueConverter = {
 var allowanceDates = function(){
     var checkDate;
     var allowanceDates = [];
-    var lastDayActDate = (new Date(actDate.getFullYear(), actDate.getMonth() + 1, 0)).getDate();
     
     for (var i = 1; i <= lastDayActDate; i++){
         checkDate = new Date(actDate.getFullYear(), actDate.getMonth(), i);
@@ -49,21 +51,26 @@ var allowanceDates = function(){
     return allowanceDates;
 };
 
-/*var checkWeekMonth = function(){
+var checkWeekMonth = function(){
     var checkDate;
     var WeekBegins = [];
+    var actualWeek;
+    
     for (var i = 1; i <= lastDayActDate; i++){
         checkDate = new Date(actDate.getFullYear(), actDate.getMonth(), i);
         if (checkDate.getDay() == 1 || checkDate.getDate() == 1){
             WeekBegins.push(checkDate);           
         };
     };
-    for (var i = 1; i <= WeekBegins.length, i++){
-            
+    
+    for (i = 1; i <= WeekBegins.length; i++){
+        if (actDate >= WeekBegins[i-1]){
+            actualWeek = i;        
+        };
     };
     
-    return WeekBegins;
-};*/
+    return actualWeek;
+};
 
 var budgetReleased = function(data){
     var checkDates = allowanceDates();
@@ -113,7 +120,8 @@ var pageData = new observable({
     basicCategoryLabel: "",
     extraCategoryLabel: "",
     investimentCategoryLabel: "",
-    hpBar: 0
+    hpBar: 0,
+    actualWeekMessage: ""
 });
 
 exports.loaded = function(args) {
@@ -121,7 +129,8 @@ exports.loaded = function(args) {
     page.bindingContext = pageData;
 
     actDate = new Date();
-
+    lastDayActDate = (new Date(actDate.getFullYear(), actDate.getMonth() + 1, 0)).getDate();
+    
     objBasicBudget = JSON.parse(appsettings.basicCategoryBudget);
     objExtraBudget = JSON.parse(appsettings.extraCategoryBudget);
     objInvestimentBudget = JSON.parse(appsettings.investimentCategoryBudget);    
@@ -157,6 +166,8 @@ exports.loaded = function(args) {
     pageData.set('extraCategoryBar', objExtraBudget.totalExpense / ExtraBudgetReleased * 100.00);
     pageData.set('investimentCategoryBar',  objInvestimentBudget.totalExpense / InvestimentBudgetReleased * 100.00);
     
+    pageData.set('actualWeekMessage', checkWeekMonth() + 'ª semana de ' + monthNamesAbrev[actDate.getMonth()] + '/' + actDate.getFullYear());
+    
     pageData.set('cockpitMessage', "Bem-vindo ao W1 Expense Manager. O controle de suas despesas na palma de sua mão.");
     
     
@@ -170,7 +181,7 @@ exports.loaded = function(args) {
         viewModule.getViewById(page, 'investimentCategoryBar').className = 'progress-categories-green';
     };
     
-    pageData.set('hpBar', (objBasicBudget.totalExpense + objExtraBudget.totalExpense) / (BasicBudgetReleased + ExtraBudgetReleased) * 100.00);
+    pageData.set('hpBar', 100 - (objBasicBudget.totalExpense + objExtraBudget.totalExpense) / (BasicBudgetReleased + ExtraBudgetReleased) * 100.00);
                  
     favButton1 = viewModule.getViewById(page, 'favButton1');
     favButton2 = viewModule.getViewById(page, 'favButton2');
@@ -216,7 +227,8 @@ exports.basicExpenseList = function(){
         context: {
             yearmonth: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
             category_id: objBasicBudget.idCategory,
-            category: objBasicBudget.categoryName
+            category: objBasicBudget.categoryName,
+            from: 'cockpit'
         }
     });       
 };
@@ -227,7 +239,8 @@ exports.extraExpenseList = function(){
         context: {
             yearmonth: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
             category_id: objExtraBudget.idCategory,
-            category: objExtraBudget.categoryName
+            category: objExtraBudget.categoryName,
+            from: 'cockpit'
         }
     });       
 };
@@ -238,7 +251,8 @@ exports.investimentExpenseList = function(){
         context: {
             yearmonth: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
             category_id: objInvestimentBudget.idCategory,
-            category: objInvestimentBudget.categoryName
+            category: objInvestimentBudget.categoryName,
+            from: 'cockpit'
         }
     }); 
 };
