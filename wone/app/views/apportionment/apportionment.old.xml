@@ -1,0 +1,29 @@
+<Page xmlns="http://www.nativescript.org/tns.xsd" loaded="loaded" actionBarHidden="false">
+    <Page.actionBar>
+        <ActionBar title="Proporção do Orçamento">
+            <android>
+                <NavigationButton icon="res://ic_arrow_back" tap="goBack" />
+            </android>
+            <ActionBar.actionItems>
+                <ActionItem text="Próximo" icon="res://ic_submit" ios.position="right" tap="next" />
+            </ActionBar.actionItems>
+        </ActionBar>
+    </Page.actionBar>
+    <StackLayout>
+        <Label text="Proporcionalize seu orçamento pelas semanas do mês, afinal as contas não combinam a hora de chegar." className="message-label-left" textWrap="true" />
+        <Label text="Do dia 01 ao 07" className="subtitle-left" />
+        <Slider id="firstWeekSlider" />
+        <Label text="{{ firstWeekLabel | valueConverter() }}" className="minititle-right-w-margin" />
+        <Label text="Do dia 08 ao 14" className="subtitle-left" />
+        <Slider id="secondWeekSlider" />
+        <Label text="{{ secondWeekLabel | valueConverter() }}" className="minititle-right-w-margin" />
+        <Label text="Do dia 15 ao 21" className="subtitle-left"/>
+        <Slider id="thirdWeekSlider" />
+        <Label text="{{ thirdWeekLabel | valueConverter() }}" className="minititle-right-w-margin" />
+        <Label text="Do dia 22 ao último dia" className="subtitle-left"/>
+        <Slider id="fourthWeekSlider" />
+        <Label text="{{ fourthWeekLabel | valueConverter() }}" className="minititle-right-w-margin" />
+        <Label text="Disponível para rateio" className="subtitle" />
+        <Label text="{{ budgetLeft | valueConverter() }}" className="info-label" />
+    </StackLayout>            
+</Page>

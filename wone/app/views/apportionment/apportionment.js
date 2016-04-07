@@ -1,3 +1,4 @@
+var appModule = require("application");
 var observable = require("data/observable");
 var frameModule = require("ui/frame");
 var dialogsModule = require("ui/dialogs");
@@ -7,118 +8,230 @@ var viewModule = require("ui/core/view");
 var categoryCount;
 var page;
 var budget;
-var firstWeekSliderProp;
-var secondWeekSliderProp;
-var thirdWeekSliderProp;
-var fourthWeekSliderProp;
-var firstWeekSliderMaxValue;
+var firstWeekBudgetField;
+var secondWeekBudgetField;
+var thirdWeekBudgetField;
+var fourthWeekBudgetField;
+var budgetLeftField;
 
-var firstWeekSlider = function(data){
-    secondWeekSliderProp.maxValue = Math.floor(100 - data.value - thirdWeekSliderProp.value - fourthWeekSliderProp.value);
-    thirdWeekSliderProp.maxValue = Math.floor(100 - data.value - secondWeekSliderProp.value - fourthWeekSliderProp.value);
-    fourthWeekSliderProp.maxValue = Math.floor(100 - data.value - secondWeekSliderProp.value - thirdWeekSliderProp.value);
-    pageData.set('firstWeekLabel', firstWeekSliderProp.value / 100 * budget.totalBudget);
-    pageData.set('budgetLeft', budget.totalBudget - (pageData.get('firstWeekLabel') + pageData.get('secondWeekLabel') 
-                                              + pageData.get('thirdWeekLabel') + pageData.get('fourthWeekLabel')));        
- 
-};
-
-var secondWeekSlider = function(data){
-    firstWeekSliderProp.maxValue = Math.floor(100 - data.value - thirdWeekSliderProp.value - fourthWeekSliderProp.value);
-    fourthWeekSliderProp.maxValue = Math.floor(100 - data.value - firstWeekSliderProp.value - thirdWeekSliderProp.value);
-    thirdWeekSliderProp.maxValue = Math.floor(100 - data.value - firstWeekSliderProp.value - fourthWeekSliderProp.value);
-   	pageData.set('secondWeekLabel', secondWeekSliderProp.value / 100 * budget.totalBudget);
-    pageData.set('budgetLeft', budget.totalBudget - (pageData.get('firstWeekLabel') + pageData.get('secondWeekLabel') 
-                                              + pageData.get('thirdWeekLabel') + pageData.get('fourthWeekLabel')));  
-};
-
-var thirdWeekSlider = function(data){
-    fourthWeekSliderProp.maxValue = Math.floor(100 - data.value - secondWeekSliderProp.value - firstWeekSliderProp.value);
-    secondWeekSliderProp.maxValue = Math.floor(100 - data.value - firstWeekSliderProp.value - fourthWeekSliderProp.value);
-    firstWeekSliderProp.maxValue = Math.floor(100 - data.value - secondWeekSliderProp.value - fourthWeekSliderProp.value);
-   	pageData.set('thirdWeekLabel', thirdWeekSliderProp.value / 100 * budget.totalBudget);
-    pageData.set('budgetLeft', budget.totalBudget - (pageData.get('firstWeekLabel') + pageData.get('secondWeekLabel') 
-                                              + pageData.get('thirdWeekLabel') + pageData.get('fourthWeekLabel')));  
-};
-
-var fourthWeekSlider = function(data){
-    thirdWeekSliderProp.maxValue = Math.floor(100 - data.value - secondWeekSliderProp.value - firstWeekSliderProp.value);
-    firstWeekSliderProp.maxValue = Math.floor(100 - data.value - thirdWeekSliderProp.value - secondWeekSliderProp.value);
-    secondWeekSliderProp.maxValue = Math.floor(100 - data.value - thirdWeekSliderProp.value - firstWeekSliderProp.value);
-   	pageData.set('fourthWeekLabel', fourthWeekSliderProp.value / 100 * budget.totalBudget);
-    pageData.set('budgetLeft', budget.totalBudget - (pageData.get('firstWeekLabel') + pageData.get('secondWeekLabel') 
-                                              + pageData.get('thirdWeekLabel') + pageData.get('fourthWeekLabel')));  
-};
-
-function resetApportionment() {
-    firstWeekSliderProp.maxValue = 25;
-    secondWeekSliderProp.maxValue = 25;
-    thirdWeekSliderProp.maxValue = 25;
-    fourthWeekSliderProp.maxValue = 25;
-    
-    firstWeekSliderProp.value = 25;
-    secondWeekSliderProp.value = 25;
-    thirdWeekSliderProp.value = 25;
-    fourthWeekSliderProp.value = 25;
-
-    pageData.set('firstWeekLabel', 0.25 * budget.totalBudget);
-   	pageData.set('secondWeekLabel', 0.25 * budget.totalBudget);
-   	pageData.set('thirdWeekLabel', 0.25 * budget.totalBudget);
-   	pageData.set('fourthWeekLabel', 0.25 * budget.totalBudget);	    
+var valueConverter = {
+    toView: function (value) {
+        var n = value, c = 2, d = ",", t = ".", s = n < 0 ? "-" : "", i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "", j = (j = i.length) > 3 ? j % 3 : 0;
+        return 'R$ ' + s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");        
+    },
+    toModel: function (value) {
+        var n = value;
+        n = n.replace(' ','');
+        n = n.replace('R$', '');
+        n = n.replace(',','');
+        n = n.replace('.','');
+        n = Number(Number(n) / 100);
+        return n;
+    }
 };
 
 var pageData = new observable.Observable({
-    firstWeekLabel: 0,
-    secondWeekLabel: 0,
-    thirdWeekLabel: 0,
-    fourthWeekLabel: 0,
+    firstWeekBudget: "",
+    secondWeekBudget: "",
+    thirdWeekBudget: "",
+    fourthWeekBudget: "",
 	buttontext: "",
-    budgetLeft: 0
+    budgetLeft: ""
 });
 
-exports.loaded = function(args) {   	
+exports.loaded = function(args) { 
+    appModule.resources["valueConverter"] = valueConverter;
+    
     page = args.object;
    	page.bindingContext = pageData;
+    
     categoryCount = page.navigationContext.count_category;
    	budget = page.navigationContext.budget;
-    firstWeekSliderProp = viewModule.getViewById(page, 'firstWeekSlider');
-    secondWeekSliderProp = viewModule.getViewById(page, 'secondWeekSlider');
-    thirdWeekSliderProp = viewModule.getViewById(page, 'thirdWeekSlider');
-    fourthWeekSliderProp = viewModule.getViewById(page, 'fourthWeekSlider');
-	
-    resetApportionment();
+    
+    if (!page.navigationContext.reset){
+        pageData.set('firstWeekBudget', 0.25 * budget.totalBudget);
+        pageData.set('secondWeekBudget', 0.25 * budget.totalBudget);
+        pageData.set('thirdWeekBudget', 0.25 * budget.totalBudget);
+        pageData.set('fourthWeekBudget', 0.25 * budget.totalBudget); 
+    }else{
+        pageData.set('firstWeekBudget', 0.25 * budget.totalBudget);
+        pageData.set('secondWeekBudget', 0.25 * budget.totalBudget);
+        pageData.set('thirdWeekBudget', 0.25 * budget.totalBudget);
+        pageData.set('fourthWeekBudget', 0.25 * budget.totalBudget);           
+    };
     
     pageData.set('budgetLeft', 0);  
+    
+    firstWeekBudgetField = viewModule.getViewById(page, 'firstWeekBudget');
+    secondWeekBudgetField = viewModule.getViewById(page, 'secondWeekBudget');
+    thirdWeekBudgetField = viewModule.getViewById(page, 'thirdWeekBudget');
+    fourthWeekBudgetField = viewModule.getViewById(page, 'fourthWeekBudget');
+    
+    budgetLeftField = viewModule.getViewById(page, 'budgetLeft');
+    
+    viewModule.getViewById(page, 'changeFirstWeek').visibility = "visible"; 
+    viewModule.getViewById(page, 'confirmFirstWeek').visibility = "collapsed";
+    
+    viewModule.getViewById(page, 'changeSecondWeek').visibility = "visible"; 
+    viewModule.getViewById(page, 'confirmSecondWeek').visibility = "collapsed";
+    
+    viewModule.getViewById(page, 'changeThirdWeek').visibility = "visible"; 
+    viewModule.getViewById(page, 'confirmThirdWeek').visibility = "collapsed";
+    
+    viewModule.getViewById(page, 'changeFourthWeek').visibility = "visible"; 
+    viewModule.getViewById(page, 'confirmFourthWeek').visibility = "collapsed";
+    
+    viewModule.getViewById(page, 'firstWeekBudget').isEnabled = false;
+    viewModule.getViewById(page, 'secondWeekBudget').isEnabled = false;
+    viewModule.getViewById(page, 'thirdWeekBudget').isEnabled = false;
+    viewModule.getViewById(page, 'fourthWeekBudget').isEnabled = false;
+    
+    
+};
 
-    firstWeekSliderProp.on(observable.Observable.propertyChangeEvent, function(data){
-		if (data.propertyName != 'maxValue'){
-        	firstWeekSlider(data);
-        };    
-    });
-    secondWeekSliderProp.on(observable.Observable.propertyChangeEvent, function(data){
-		if (data.propertyName != 'maxValue'){
-        	secondWeekSlider(data);
-        };
-    });
-    thirdWeekSliderProp.on(observable.Observable.propertyChangeEvent, function(data){
-		if (data.propertyName != 'maxValue'){
-			thirdWeekSlider(data);
-        };
-    });
-    fourthWeekSliderProp.on(observable.Observable.propertyChangeEvent, function(data){
-        if (data.propertyName != 'maxValue'){
-			fourthWeekSlider(data);        
-        };
-    });
- 
+exports.changeFirstWeek = function(){
+    firstWeekBudgetField.on(observable.Observable.propertyChangeEvent, function(data){
+        pageData.set('budgetLeft', budget.totalBudget - 
+                                (secondWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100 +
+                                thirdWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100 +
+                                fourthWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100));
+        
+        //budgetLeftField.text = valueConverter.toView(budget.totalBudget - (Number(firstWeekBudgetField.text) +
+                               // secondWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100 +
+                            //    thirdWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100 +
+                            //    fourthWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100));
+    });          
+    
+    firstWeekBudgetField.text = '';
+    firstWeekBudgetField.focus();
+    viewModule.getViewById(page, 'changeFirstWeek').visibility = "collapsed";
+    viewModule.getViewById(page, 'confirmFirstWeek').visibility = "visible";
+    viewModule.getViewById(page, 'firstWeekBudget').isEnabled = true;
+
+};
+
+exports.confirmFirstWeek = function(){
+    firstWeekBudgetField.off(observable.Observable.propertyChangeEvent);
+    pageData.set('firstWeekBudget', firstWeekBudgetField.text);
+    
+    //firstWeekBudgetField.text = valueConverter.toView(firstWeekBudgetField.text);
+    
+    pageData.set('budgetLeft', budget.totalBudget - 
+                                    (firstWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100 +
+                                    secondWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100 +
+                                    thirdWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100 +
+                                    fourthWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100));    
+    
+    
+    viewModule.getViewById(page, 'changeFirstWeek').visibility = "visible";
+    viewModule.getViewById(page, 'confirmFirstWeek').visibility = "collapsed";
+    viewModule.getViewById(page, 'firstWeekBudget').isEnabled = false;
+};
+
+exports.changeSecondWeek = function(){
+    secondWeekBudgetField.on(observable.Observable.propertyChangeEvent, function(data){
+        pageData.set('budgetLeft', budget.totalBudget - 
+                                (firstWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100 +
+                                thirdWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100 +
+                                fourthWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100));
+    });          
+    
+    secondWeekBudgetField.text = '';
+    secondWeekBudgetField.focus();
+    viewModule.getViewById(page, 'changeSecondWeek').visibility = "collapsed";
+    viewModule.getViewById(page, 'confirmSecondWeek').visibility = "visible";
+    viewModule.getViewById(page, 'secondWeekBudget').isEnabled = true;
+
+};
+
+exports.confirmSecondWeek = function(){
+    secondWeekBudgetField.off(observable.Observable.propertyChangeEvent);
+    
+    pageData.set('secondWeekBudget', secondWeekBudgetField.text);
+    
+    pageData.set('budgetLeft', budget.totalBudget - 
+                                    (firstWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100 +
+                                    secondWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100 +
+                                    thirdWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100 +
+                                    fourthWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100));    
+    
+    viewModule.getViewById(page, 'changeSecondWeek').visibility = "visible";
+    viewModule.getViewById(page, 'confirmSecondWeek').visibility = "collapsed";
+    viewModule.getViewById(page, 'secondWeekBudget').isEnabled = false;
+};
+
+exports.changeThirdWeek = function(){
+    thirdWeekBudgetField.on(observable.Observable.propertyChangeEvent, function(data){
+        pageData.set('budgetLeft', budget.totalBudget - 
+                                (firstWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100 +
+                                secondWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100 +
+                                fourthWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100));
+    });          
+    
+    thirdWeekBudgetField.text = '';
+    thirdWeekBudgetField.focus();
+    viewModule.getViewById(page, 'changeThirdWeek').visibility = "collapsed";
+    viewModule.getViewById(page, 'confirmThirdWeek').visibility = "visible";
+    viewModule.getViewById(page, 'thirdWeekBudget').isEnabled = true;
+
+};
+
+exports.confirmThirdWeek = function(){
+    thirdWeekBudgetField.off(observable.Observable.propertyChangeEvent);
+    
+    pageData.set('thirdWeekBudget', thirdWeekBudgetField.text);
+    
+    pageData.set('budgetLeft', budget.totalBudget - 
+                                    (firstWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100 +
+                                    secondWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100 +
+                                    thirdWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100 +
+                                    fourthWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100));        
+    
+    viewModule.getViewById(page, 'changeThirdWeek').visibility = "visible";
+    viewModule.getViewById(page, 'confirmThirdWeek').visibility = "collapsed";
+    viewModule.getViewById(page, 'thirdWeekBudget').isEnabled = false;
+};
+
+exports.changeFourthWeek = function(){
+    fourthWeekBudgetField.on(observable.Observable.propertyChangeEvent, function(data){
+        pageData.set('budgetLeft', budget.totalBudget - 
+                                (firstWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100 +
+                                secondWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100 +
+                                thirdWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100));
+    });          
+    
+    fourthWeekBudgetField.text = '';
+    fourthWeekBudgetField.focus();
+    viewModule.getViewById(page, 'changeFourthWeek').visibility = "collapsed";
+    viewModule.getViewById(page, 'confirmFourthWeek').visibility = "visible";
+    viewModule.getViewById(page, 'fourthWeekBudget').isEnabled = true;
+
+};
+
+exports.confirmFourthWeek = function(){
+    fourthWeekBudgetField.off(observable.Observable.propertyChangeEvent);
+    
+    pageData.set('fourthWeekBudget', fourthWeekBudgetField.text);
+    
+    pageData.set('budgetLeft', budget.totalBudget - 
+                                    (firstWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100 +
+                                    secondWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100 +
+                                    thirdWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100 +
+                                    fourthWeekBudgetField.text.replace('.','').replace(',','').replace('R$ ','') / 100));        
+    
+    viewModule.getViewById(page, 'changeFourthWeek').visibility = "visible";
+    viewModule.getViewById(page, 'confirmFourthWeek').visibility = "collapsed";
+    viewModule.getViewById(page, 'fourthWeekBudget').isEnabled = false;
 };
 
 exports.next = function() {
-	if (!pageData.get('budgetLeft')){    
-        budget.weeklyBudget['1'] = pageData.get('firstWeekLabel');
-        budget.weeklyBudget['2'] = pageData.get('secondWeekLabel');
-        budget.weeklyBudget['3'] = pageData.get('thirdWeekLabel');
-        budget.weeklyBudget['4'] = pageData.get('fourthWeekLabel');
+    if (pageData.get('budgetLeft') == 0){
+        
+        budget.weeklyBudget['1'] = pageData.get('firstWeekBudget');
+        budget.weeklyBudget['2'] = pageData.get('secondWeekBudget');
+        budget.weeklyBudget['3'] = pageData.get('thirdWeekBudget');
+        budget.weeklyBudget['4'] = pageData.get('fourthWeekBudget');
+        
         switch (categoryCount){
             case 0:
                 appsettings.investimentCategoryBudget = JSON.stringify(budget);
@@ -130,46 +243,34 @@ exports.next = function() {
                 appsettings.basicCategoryBudget = JSON.stringify(budget);
                 break;
         };
-        if (categoryCount != 0){
-            appsettings.countcategory = categoryCount;
-            frameModule.topmost().navigate({
-                moduleName: "views/budget/budget", 
-            });
-        }else{
-            appsettings.countcategory = categories.count;                      
-            appsettings.favsubcat1 = "";
-            appsettings.favsubcat2 = "";
-            appsettings.favsubcat3 = "";
-            
-            if (appsettings.registered === false){
-                dialogsModule.confirm({
-                  title: "Pronto!",
-                  message: "Seu orçamento está concluído :) \n\nSugerimos que neste momento efetue o cadastro de seu e-mail para evitar perder suas informações no futuro.",
-                  okButtonText: "Cadastrar",
-                  cancelButtonText: "Mais tarde",
-                }).then(function (result) {
-                    if (result){
-                        frameModule.topmost().navigate({
-                        moduleName: "views/register/register", 
-                        clearHistory: true
-                        });                                        
-                    }else{
-                        frameModule.topmost().navigate({
-                        moduleName: "views/cockpit/cockpit", 
-                        clearHistory: true
-                        });                                                              
-                    };
-                });                           
-            }else{
+        
+        if (categoryCount !== 0){
+            if (page.navigationContext.origin == 'quickadd'){
+                appsettings.countcategory = categories.count;
                 frameModule.topmost().navigate({
                     moduleName: "views/cockpit/cockpit", 
                     clearHistory: true
-                });                            
+                });
+            }else{            
+                appsettings.countcategory = categoryCount;
+                frameModule.topmost().navigate({
+                    moduleName: "views/budget/budget",
+                    clearHistory: true,
+                    context: {
+                        origin: 'apportionment'
+                    }
+                });
             };
+        }else{
+            appsettings.countcategory = categories.count;                      
+            frameModule.topmost().navigate({
+                moduleName: "views/cockpit/cockpit", 
+                clearHistory: true
+            });                            
         };
     }else{
         dialogsModule.alert({
-            message: 'Ainda existe orçamento disponível para proporcionalização nas semanas do mês.',
+            message: 'Distrua os valores pelas semanas do mês de modo que zere o orçamento disponível.',
             okButtonText: "OK"
         });             		        
     };

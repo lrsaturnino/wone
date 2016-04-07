@@ -79,7 +79,10 @@ exports.loaded = function(args){
                         }else{
                             frameModule.topmost().navigate({
                                     moduleName: "views/budget/budget", 
-                                    clearHistory: true
+                                    clearHistory: true,
+                                    context: {
+                                        origin: 'main',
+                                    }
                             });                    
                         };
                     };
@@ -113,7 +116,10 @@ exports.loaded = function(args){
                             appsettings.countcategory = Number(data.count);
                             frameModule.topmost().navigate({
                                 moduleName: "views/budget/budget", 
-                                clearHistory: true
+                                clearHistory: true,
+                                context: {
+                                    origin: 'main',
+                                }
                             });            
                         },     
                         function(error){

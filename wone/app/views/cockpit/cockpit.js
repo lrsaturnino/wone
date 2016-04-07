@@ -37,7 +37,14 @@ var valueConverter = {
     }
 };
 
-var allowanceDates = function(){
+var allowanceDates = [
+    new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+    new Date(new Date().getFullYear(), new Date().getMonth(), 8),
+    new Date(new Date().getFullYear(), new Date().getMonth(), 15),
+    new Date(new Date().getFullYear(), new Date().getMonth(), 22)
+];
+    
+/*function(){
     var checkDate;
     var allowanceDates = [];
     
@@ -49,57 +56,56 @@ var allowanceDates = function(){
     };
     
     return allowanceDates;
-};
+};*/
 
 var checkWeekMonth = function(){
     var checkDate;
-    var WeekBegins = [];
     var actualWeek;
     
-    for (var i = 1; i <= lastDayActDate; i++){
-        checkDate = new Date(actDate.getFullYear(), actDate.getMonth(), i);
-        if (checkDate.getDay() == 1 || checkDate.getDate() == 1){
-            WeekBegins.push(checkDate);           
-        };
-    };
-    
-    for (i = 1; i <= WeekBegins.length; i++){
-        if (actDate >= WeekBegins[i-1]){
+    for (i = 1; i <= allowanceDates.length; i++){
+        if (actDate >= allowanceDates[i-1]){
             actualWeek = i;        
         };
     };
     
-    return actualWeek;
+    switch (actualWeek){
+        case 1:
+            return 'Dia 01 ao 07';
+            break;
+        case 2:
+            return 'Dia 08 ao 14';
+            break; 
+        case 3:
+            return 'Dia 15 ao 21';
+            break;
+        case 4:
+            return 'Dia 22 ao último dia';
+            break;
+    };    
 };
 
 var budgetReleased = function(data){
-    var checkDates = allowanceDates();
     var budgetReleased = 0;
     var registerDate = new Date(appsettings.registerdate);
 
-    if (checkDates.length > 4 && checkDates[checkDates.length - 2] < registerDate){
-        registerDate = checkDates[checkDates.length - 2] 
-    };
+    //if (allowanceDates.length > 4 && allowanceDates[allowanceDates.length - 2] < registerDate){
+    //    registerDate = allowanceDates[allowanceDates.length - 2] 
+    //};
     
     if (String(actDate.getFullYear()) + String(actDate.getMonth()) == String(new Date(appsettings.registerdate).getFullYear()) + String(new Date(appsettings.registerdate).getMonth())){
-
         for (var i = 1; i <= 4; i++){
-            if (actDate >= checkDates[i-1]){
-                if (checkDates[i-1] >= registerDate){
-                    budgetReleased += data.weeklyBudget[i];
-                }else{
-                    if (checkDates[i] > registerDate){
-                        budgetReleased += data.weeklyBudget[i] * ((checkDates[i].getDate() - registerDate.getDate()) / 7);
-                    };     
-                };
+            if (allowanceDates[i-1] >= registerDate){
+                budgetReleased += data.weeklyBudget[i];
             }else{
-                budgetReleased = data.weeklyBudget[1];
+                if (allowanceDates[i] > registerDate){
+                    budgetReleased += data.weeklyBudget[i] * ((allowanceDates[i].getDate() - registerDate.getDate()) / 7);
+                };     
             };
         };     
     }else{
         budgetReleased = data.weeklyBudget[1];
         for (var i = 2; i <= 4; i++){
-            if (actDate >= checkDates[i-1]){
+            if (actDate >= allowanceDates[i-1]){
                 budgetReleased += data.weeklyBudget[i];
             };
         };
@@ -166,7 +172,7 @@ exports.loaded = function(args) {
     pageData.set('extraCategoryBar', objExtraBudget.totalExpense / ExtraBudgetReleased * 100.00);
     pageData.set('investimentCategoryBar',  objInvestimentBudget.totalExpense / InvestimentBudgetReleased * 100.00);
     
-    pageData.set('actualWeekMessage', checkWeekMonth() + 'ª semana de ' + monthNamesAbrev[actDate.getMonth()] + '/' + actDate.getFullYear());
+    pageData.set('actualWeekMessage', checkWeekMonth() + ' de ' + monthNamesAbrev[actDate.getMonth()] + '/' + actDate.getFullYear());
     
     pageData.set('cockpitMessage', "Bem-vindo ao W1 Expense Manager. O controle de suas despesas na palma de sua mão.");
     
@@ -342,32 +348,35 @@ exports.toggleSideDrawer = function() {
 
 exports.goToHistory = function() {
 	frameModule.topmost().navigate({
-        moduleName: "views/history/history",
+        moduleName: "views/history/history"
     });   	
 };
 
 exports.goToBudget = function() {
 	frameModule.topmost().navigate({
         moduleName: "views/budget/budget",
+        context: {
+            origin: 'cockpit',
+        }
     });   	
 };
 
 
 exports.goToCreditCard = function() {
 	frameModule.topmost().navigate({
-        moduleName: "views/creditcards/creditcards",
+        moduleName: "views/creditcards/creditcards"
     });   	
 };
 
 exports.goToAccount = function() {
 	frameModule.topmost().navigate({
-        moduleName: "views/register/register",
+        moduleName: "views/register/register"
     });   	
 };
 
 exports.goToAbout = function() {
 	frameModule.topmost().navigate({
-        moduleName: "views/about/about",
+        moduleName: "views/about/about"
     });   	
 };
 

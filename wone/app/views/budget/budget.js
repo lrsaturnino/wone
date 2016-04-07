@@ -13,6 +13,7 @@ var subCategories;
 var countCategories;
 var categories;
 var objBudget;
+var resetApportionment;
 
 var valueConverter = {
     toView: function (value) {
@@ -55,7 +56,13 @@ exports.loaded = function(args) {
     
     pageData.set('isLoading', true);
     
-    countCategories = appsettings.countcategory - 1;
+    resetApportionment = false;
+
+    if (page.navigationContext.origin == 'quickadd'){
+        countCategories = page.navigationContext.countcategory;
+    }else{
+        countCategories = appsettings.countcategory - 1;
+    };
     
     categories = JSON.parse(appsettings.categories);
     categories = categories.result;
@@ -92,7 +99,7 @@ exports.loaded = function(args) {
             case 2:
                 dialogsModule.alert({
                   title: "Olá! Seja bem-vindo",
-                  message: "Este é o mais novo produto da W1 Finance - O Expense Manager. \n\nEste aplicativo foi criado no intuito de auxiliá-lo no controle dos gastos do dia-a-dia e ajudá-lo a domar as suas finanças pessoais.\n\nVamos começar cadastrando seu orçamento mensal - este passo é fundamental para a gestão de suas finanças pessoais.\n\nDetermine as categorias de despesas e o valor do orçamento que você disponhe mensalmente para cada uma delas.",
+                  message: "Este é o mais novo produto da W1 Finance - O Expense Manager. \n\nEste aplicativo foi criado no intuito de auxiliá-lo no controle dos gastos do dia-a-dia e ajudá-lo a domar as suas finanças pessoais.\n\nVamos começar cadastrando seu orçamento mensal - este passo é fundamental para a gestão de suas finanças pessoais.\n\nDetermine as categorias de despesas e o valor do orçamento que você dispõe mensalmente para cada uma delas.",
                   okButtonText: "Vamos começar"
                 }).then(function () {
                     dialogsModule.alert({
@@ -240,7 +247,8 @@ exports.addSubCat = function(){
             subCategories = pageData.get('SubCategoryList')._array;
             pageData.set('TotalBudget',  Number(pageData.get("TotalBudget")) + Number(pageData.get("SubCategoryBudgetInput")));
             pageData.set("SubCategoryNameInput", "");
-            pageData.set("SubCategoryBudgetInput", "");        
+            pageData.set("SubCategoryBudgetInput", "");
+            resetApportionment = true;
         }else{
             dialogsModule.alert({
                 message: "Informe um valor de orçamento maior que 0,00.",
@@ -261,6 +269,7 @@ exports.delSubCat = function(args) {
     pageData.set('TotalBudget',  Number(pageData.get("TotalBudget")) - Number(item["SubCategoryBudget"]));
     pageData.SubCategoryList.splice(index,1);
     subCategories = pageData.get('SubCategoryList')._array;
+    resetApportionment = true;
 };
 
 exports.save = function() {
@@ -295,7 +304,9 @@ exports.save = function() {
                             moduleName: "views/apportionment/apportionment", 
                             context: {
                                 count_category: countCategories,
-                                budget: objBudget
+                                budget: objBudget,
+                                origin: page.navigationContext.origin,
+                                reset: resetApportionment
                             },
                             clearHistory: false
                         });
@@ -312,10 +323,18 @@ exports.save = function() {
                                 break;
                         };
                         if (countCategories !== 0){
-                            appsettings.countcategory = countCategories;
-                            frameModule.topmost().navigate({
-                                moduleName: "views/budget/budget", 
-                            });
+                            if (page.navigationContext.origin == 'quickadd'){
+                                appsettings.countcategory = categories.length;
+                                frameModule.topmost().navigate({
+                                    moduleName: "views/cockpit/cockpit", 
+                                    clearHistory: true
+                                });                                                                                              
+                            }else{
+                                appsettings.countcategory = countCategories;
+                                frameModule.topmost().navigate({
+                                    moduleName: "views/budget/budget", 
+                                });
+                            };
                         }else{
                             appsettings.countcategory = categories.length;                  
 

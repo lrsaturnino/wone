@@ -30,6 +30,36 @@ exports.goBack = function(){
     frameModule.topmost().goBack();
 };
 
+exports.addSubCatBasic = function(){
+    frameModule.topmost().navigate({
+        moduleName: "views/budget/budget",
+        context: {
+            origin: 'quickadd',
+            countcategory: 2
+        }
+    }); 
+};
+
+exports.addSubCatExtra = function(){
+    frameModule.topmost().navigate({
+        moduleName: "views/budget/budget",
+        context: {
+            origin: 'quickadd',
+            countcategory: 1
+        }
+    }); 
+};
+
+exports.addSubCatInvestiment = function(){
+    frameModule.topmost().navigate({
+        moduleName: "views/budget/budget",
+        context: {
+            origin: 'quickadd',
+            countcategory: 0
+        }
+    }); 
+};
+
 exports.selectSubCategory = function(args) { 
     var item = args.view.bindingContext;
     if (page.navigationContext.define_category){
