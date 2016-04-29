@@ -356,7 +356,7 @@ exports.goToBudget = function() {
 	frameModule.topmost().navigate({
         moduleName: "views/budget/budget",
         context: {
-            origin: 'cockpit',
+            origin: 'cockpit'
         }
     });   	
 };

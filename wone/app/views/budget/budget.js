@@ -332,7 +332,8 @@ exports.save = function() {
                             }else{
                                 appsettings.countcategory = countCategories;
                                 frameModule.topmost().navigate({
-                                    moduleName: "views/budget/budget", 
+                                    moduleName: "views/budget/budget",
+                                    origin: 'budget'
                                 });
                             };
                         }else{
