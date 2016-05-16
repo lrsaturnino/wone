@@ -18,7 +18,7 @@ var resetApportionment;
 var valueConverter = {
     toView: function (value) {
         var n = value, c = 2, d = ",", t = ".", s = n < 0 ? "-" : "", i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "", j = (j = i.length) > 3 ? j % 3 : 0;
-        return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");        
+        return 'R$ ' + s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");        
     },
     toModel: function (value) {
         var n = value;
@@ -127,8 +127,9 @@ exports.loaded = function(args) {
                     "SubCategoryBudget" : data['SubCategoryBudget'],
                     "CategoryName" : data['CategoryName']
                 });
-                pageData.set('TotalBudget',  Number(pageData.get("TotalBudget")) + Number(data["SubCategoryBudget"]));
+                //pageData.set('TotalBudget',  Number(pageData.get("TotalBudget")) + Number(data["SubCategoryBudget"]));
             });
+            sumTotalBudget();
     	}else{
             switch (countCategories){
                 case 0:
@@ -245,9 +246,9 @@ exports.addSubCat = function(){
                 "CategoryName" : categories[countCategories]['CategoryName']
             });
             subCategories = pageData.get('SubCategoryList')._array;
-            pageData.set('TotalBudget',  Number(pageData.get("TotalBudget")) + Number(pageData.get("SubCategoryBudgetInput")));
             pageData.set("SubCategoryNameInput", "");
             pageData.set("SubCategoryBudgetInput", "");
+            sumTotalBudget();
             resetApportionment = true;
         }else{
             dialogsModule.alert({
@@ -266,13 +267,16 @@ exports.addSubCat = function(){
 exports.delSubCat = function(args) { 
     var item = args.view.bindingContext;
     var index = pageData.SubCategoryList.indexOf(item);
-    pageData.set('TotalBudget',  Number(pageData.get("TotalBudget")) - Number(item["SubCategoryBudget"]));
     pageData.SubCategoryList.splice(index,1);
     subCategories = pageData.get('SubCategoryList')._array;
+    sumTotalBudget();
     resetApportionment = true;
 };
 
 exports.save = function() {
+
+    pageData.set('isLoading', true);
+
     var check = true; 
     subCategories.forEach(function(data) {
         if (data['SubCategoryBudget'] <= 0){
@@ -333,7 +337,9 @@ exports.save = function() {
                                 appsettings.countcategory = countCategories;
                                 frameModule.topmost().navigate({
                                     moduleName: "views/budget/budget",
-                                    origin: 'budget'
+                                    context: {
+                                        origin: 'budget'
+                                    }
                                 });
                             };
                         }else{
@@ -368,6 +374,7 @@ exports.save = function() {
                     };
                 }, 
                 function(error) {
+                    pageData.set('isLoading', false);
                     dialogsModule.alert({
                         message: JSON.stringify(error),
                         okButtonText: "OK"
@@ -375,6 +382,7 @@ exports.save = function() {
                 });
             }, 
             function(error){
+                pageData.set('isLoading', false);
                 dialogsModule.alert({
                     message: JSON.stringify(error),
                     okButtonText: "OK"
@@ -382,17 +390,39 @@ exports.save = function() {
             });
         }, 
         function(error){
+            pageData.set('isLoading', false);
             dialogsModule.alert({
                 message: JSON.stringify(error),
                 okButtonText: "OK"
             });             
         });
     }else{
+        pageData.set('isLoading', false);
         dialogsModule.alert({
             message: 'Existe categoria com valor de orçamento menor ou igual a 0,00. Por favor, adicione um valor superior a R$ 0,00 ou exclua a categoria.',
             okButtonText: "OK"
         });			            
     };
+};
+
+exports.changeSubCatValue = function(args){
+    var item = args.view.bindingContext;
+    var index = pageData.SubCategoryList.indexOf(item);
+    //alert(circularRef(pageData.SubCategoryList));
+    dialogsModule.prompt({
+          title: "Alterar",
+          message: "Informe o valor",
+          okButtonText: "OK",
+          cancelButtonText: "Cancelar",
+          inputType: dialogsModule.inputType.text
+    }).then(function (result) {
+        isNaN(Number(result.text)) ? result.text = 0 : result.text = Number(result.text);
+        pageData.SubCategoryList._array[index].SubCategoryBudget = result.text;
+        viewModule.getViewById(page, 'SubCategoryList').refresh();
+        subCategories = pageData.get('SubCategoryList')._array;
+        sumTotalBudget();
+        resetApportionment = true;
+    });
 };
 
 function searchArray(searchkey, data, myArray, resultkey){
@@ -403,3 +433,25 @@ function searchArray(searchkey, data, myArray, resultkey){
     };
     return 0;
 };
+
+function circularRef(obj){
+    var cache = [];
+    return JSON.stringify(obj, function(key, value) {
+        if (typeof value === 'object' && value !== null) {
+            if (cache.indexOf(value) !== -1) {
+                // Circular reference found, discard key
+                return;
+            }
+            // Store value in our collection
+            cache.push(value);
+        }
+        return value;
+    });
+    cache = null; // Enable garbage collection
+};
+
+
+
+
+
+

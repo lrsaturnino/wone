@@ -13,19 +13,19 @@
         <Label text="Proporcionalize seu orçamento pelas semanas do mês, afinal as contas não combinam a hora de chegar." className="message-label-left" textWrap="true" />
         <GridLayout columns="*, auto" rows="auto, auto, auto, auto, auto, auto, auto, auto">
             <Label text="Do dia 01 ao 07" className="minititle-left" colspan="2" row="0" />
-            <TextField id="firstWeekBudget" text="{{ firstWeekBudget | valueConverter() }}" keyboardType="number" className="input-field" col="0" row="1"/>
+            <TextField id="firstWeekBudget" text="{{ firstWeekBudget | valueConverter() }}" tap="changeFirstWeek" keyboardType="number" className="input-field" col="0" row="1"/>
             <Image id="changeFirstWeek" src="res://ic_edit" tap="changeFirstWeek" row="1" col="1" />
             <Label id="confirmFirstWeek" text="OK" tap="confirmFirstWeek" col="1" row="1" />
             <Label text="Do dia 08 ao 14" className="minititle-left" colspan="2" row="2" />
-            <TextField id="secondWeekBudget" text="{{ secondWeekBudget | valueConverter() }}" keyboardType="number" className="input-field" col="0" row="3" />
+            <TextField id="secondWeekBudget" text="{{ secondWeekBudget | valueConverter() }}" tap="changeSecondWeek" keyboardType="number" className="input-field" col="0" row="3" />
             <Image id="changeSecondWeek" src="res://ic_edit" tap="changeSecondWeek" row="3" col="1" />
             <Label id="confirmSecondWeek" text="OK" tap="confirmSecondWeek" col="1" row="3" />            
             <Label text="Do dia 15 ao 21" className="minititle-left" colspan="2" row="4" />
-            <TextField id="thirdWeekBudget" text="{{ thirdWeekBudget | valueConverter() }}" keyboardType="number" className="input-field" col="0" row="5" />
+            <TextField id="thirdWeekBudget" text="{{ thirdWeekBudget | valueConverter() }}" tap="changeThirdWeek" keyboardType="number" className="input-field" col="0" row="5" />
             <Image id="changeThirdWeek" src="res://ic_edit" tap="changeThirdWeek" row="5" col="1" />
             <Label id="confirmThirdWeek" text="OK" tap="confirmThirdWeek" col="1" row="5" />            
             <Label text="Do dia 22 ao último dia" className="minititle-left" colspan="2" row="6" />
-            <TextField id="fourthWeekBudget" text="{{ fourthWeekBudget | valueConverter() }}" keyboardType="number" className="input-field" col="0" row="7" />
+            <TextField id="fourthWeekBudget" text="{{ fourthWeekBudget | valueConverter() }}" tap="changeFourthWeek" keyboardType="number" className="input-field" col="0" row="7" />
             <Image id="changeFourthWeek" src="res://ic_edit" tap="changeFourthWeek" row="7" col="1" />
             <Label id="confirmFourthWeek" text="OK" tap="confirmFourthWeek" col="1" row="7" />            
         </GridLayout>            

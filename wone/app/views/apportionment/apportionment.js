@@ -47,7 +47,7 @@ exports.loaded = function(args) {
     
     categoryCount = page.navigationContext.count_category;
    	budget = page.navigationContext.budget;
-    
+
     if (!page.navigationContext.reset){
         pageData.set('firstWeekBudget', 0.25 * budget.totalBudget);
         pageData.set('secondWeekBudget', 0.25 * budget.totalBudget);
@@ -81,10 +81,10 @@ exports.loaded = function(args) {
     viewModule.getViewById(page, 'changeFourthWeek').visibility = "visible"; 
     viewModule.getViewById(page, 'confirmFourthWeek').visibility = "collapsed";
     
-    viewModule.getViewById(page, 'firstWeekBudget').isEnabled = false;
-    viewModule.getViewById(page, 'secondWeekBudget').isEnabled = false;
-    viewModule.getViewById(page, 'thirdWeekBudget').isEnabled = false;
-    viewModule.getViewById(page, 'fourthWeekBudget').isEnabled = false;
+    //viewModule.getViewById(page, 'firstWeekBudget').isEnabled = false;
+    //viewModule.getViewById(page, 'secondWeekBudget').isEnabled = false;
+    //viewModule.getViewById(page, 'thirdWeekBudget').isEnabled = false;
+    //viewModule.getViewById(page, 'fourthWeekBudget').isEnabled = false;
     
     
 };
@@ -106,7 +106,7 @@ exports.changeFirstWeek = function(){
     firstWeekBudgetField.focus();
     viewModule.getViewById(page, 'changeFirstWeek').visibility = "collapsed";
     viewModule.getViewById(page, 'confirmFirstWeek').visibility = "visible";
-    viewModule.getViewById(page, 'firstWeekBudget').isEnabled = true;
+    //viewModule.getViewById(page, 'firstWeekBudget').isEnabled = true;
 
 };
 
@@ -125,7 +125,8 @@ exports.confirmFirstWeek = function(){
     
     viewModule.getViewById(page, 'changeFirstWeek').visibility = "visible";
     viewModule.getViewById(page, 'confirmFirstWeek').visibility = "collapsed";
-    viewModule.getViewById(page, 'firstWeekBudget').isEnabled = false;
+    firstWeekBudgetField.dismissSoftInput();
+    //viewModule.getViewById(page, 'firstWeekBudget').isEnabled = false;
 };
 
 exports.changeSecondWeek = function(){
@@ -140,7 +141,7 @@ exports.changeSecondWeek = function(){
     secondWeekBudgetField.focus();
     viewModule.getViewById(page, 'changeSecondWeek').visibility = "collapsed";
     viewModule.getViewById(page, 'confirmSecondWeek').visibility = "visible";
-    viewModule.getViewById(page, 'secondWeekBudget').isEnabled = true;
+    //viewModule.getViewById(page, 'secondWeekBudget').isEnabled = true;
 
 };
 
@@ -157,7 +158,8 @@ exports.confirmSecondWeek = function(){
     
     viewModule.getViewById(page, 'changeSecondWeek').visibility = "visible";
     viewModule.getViewById(page, 'confirmSecondWeek').visibility = "collapsed";
-    viewModule.getViewById(page, 'secondWeekBudget').isEnabled = false;
+    secondWeekBudgetField.dismissSoftInput();
+    //viewModule.getViewById(page, 'secondWeekBudget').isEnabled = false;
 };
 
 exports.changeThirdWeek = function(){
@@ -172,7 +174,7 @@ exports.changeThirdWeek = function(){
     thirdWeekBudgetField.focus();
     viewModule.getViewById(page, 'changeThirdWeek').visibility = "collapsed";
     viewModule.getViewById(page, 'confirmThirdWeek').visibility = "visible";
-    viewModule.getViewById(page, 'thirdWeekBudget').isEnabled = true;
+    //viewModule.getViewById(page, 'thirdWeekBudget').isEnabled = true;
 
 };
 
@@ -189,7 +191,8 @@ exports.confirmThirdWeek = function(){
     
     viewModule.getViewById(page, 'changeThirdWeek').visibility = "visible";
     viewModule.getViewById(page, 'confirmThirdWeek').visibility = "collapsed";
-    viewModule.getViewById(page, 'thirdWeekBudget').isEnabled = false;
+    thirdWeekBudgetField.dismissSoftInput();
+    //viewModule.getViewById(page, 'thirdWeekBudget').isEnabled = false;
 };
 
 exports.changeFourthWeek = function(){
@@ -204,7 +207,7 @@ exports.changeFourthWeek = function(){
     fourthWeekBudgetField.focus();
     viewModule.getViewById(page, 'changeFourthWeek').visibility = "collapsed";
     viewModule.getViewById(page, 'confirmFourthWeek').visibility = "visible";
-    viewModule.getViewById(page, 'fourthWeekBudget').isEnabled = true;
+    //viewModule.getViewById(page, 'fourthWeekBudget').isEnabled = true;
 
 };
 
@@ -221,7 +224,8 @@ exports.confirmFourthWeek = function(){
     
     viewModule.getViewById(page, 'changeFourthWeek').visibility = "visible";
     viewModule.getViewById(page, 'confirmFourthWeek').visibility = "collapsed";
-    viewModule.getViewById(page, 'fourthWeekBudget').isEnabled = false;
+    fourthWeekBudgetField.dismissSoftInput();
+    //viewModule.getViewById(page, 'fourthWeekBudget').isEnabled = false;
 };
 
 exports.next = function() {

@@ -81,7 +81,7 @@ exports.loaded = function(args){
                                     moduleName: "views/budget/budget", 
                                     clearHistory: true,
                                     context: {
-                                        origin: 'main',
+                                        origin: 'main'
                                     }
                             });                    
                         };
@@ -118,7 +118,7 @@ exports.loaded = function(args){
                                 moduleName: "views/budget/budget", 
                                 clearHistory: true,
                                 context: {
-                                    origin: 'main',
+                                    origin: 'main'
                                 }
                             });            
                         },     
