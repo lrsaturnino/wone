@@ -274,7 +274,7 @@ exports.next = function() {
         };
     }else{
         dialogsModule.alert({
-            message: 'Distrua os valores pelas semanas do mês de modo que zere o orçamento disponível.',
+            message: 'Distribua os valores pelas semanas do mês de modo que zere o orçamento disponível.',
             okButtonText: "OK"
         });             		        
     };

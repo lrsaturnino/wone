@@ -286,6 +286,15 @@ exports.save = function() {
     if (check){
         budget.deleteAll(categories[countCategories]['Id'])
         .then(function(data){
+            if (!subCategories.length){
+                pageData.SubCategoryList.push({
+                    "CategoryID" : categories[countCategories]['Id'],
+                    "SubCategoryName" : categories[countCategories]['CategoryName'],
+                    "SubCategoryBudget" : 0,
+                    "CategoryName" : categories[countCategories]['CategoryName']
+                });
+                subCategories = pageData.get('SubCategoryList')._array;                
+            };
             budget.addAll(subCategories)
             .then(function(data){
                 expenses.resume_yearmonth(new Date())
@@ -303,7 +312,7 @@ exports.save = function() {
                         }, 
                         subCategories: subCategories
                     };
-                    if (subCategories.length){
+                    if (sumTotalBudget() !== 0){
                         frameModule.topmost().navigate({
                             moduleName: "views/apportionment/apportionment", 
                             context: {

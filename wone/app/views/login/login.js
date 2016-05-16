@@ -51,7 +51,10 @@ exports.login = function(){
                         user.set('previousPassword', "");
                         frameModule.topmost().navigate({
                             moduleName: "views/budget/budget", 
-                            clearHistory: true
+                            clearHistory: true,
+                            context: {
+                                origin: 'login'
+                            }
                         });            
                     },
                     function(error){

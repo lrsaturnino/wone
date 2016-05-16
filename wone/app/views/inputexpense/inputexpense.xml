@@ -19,7 +19,7 @@
             <Label text="Data do Gasto" className="minititle-left" />
             <GridLayout rows="auto" columns="auto,auto">
                 <Label text="{{ expenseDate | dateConverter('DD/MM/YYYY') }}" className="field" tap="goDatePicker" row="0" col="0" />
-                <Image src="res://ic_edit" tap="goDatePicker" row="0" col="1" />
+                <Image src="res://ic_edit" tap="goDatePicker" className="image-icon-mini" row="0" col="1" />
             </GridLayout>
             <SegmentedBar id="expenseOrigin" className="paytype">
                 <SegmentedBar.items>
@@ -31,10 +31,10 @@
         <GridLayout row="1" rows="auto, auto, *" columns="auto,auto,auto">
             <Label id="expenseCreditCardLabel" text="Cartão de Crédito" className="field-left" visibility="collapsed" row="0" col="0"/>
             <Label id="expenseCreditCard" text="{{ expenseCreditCard }}" className="field-left" visibility="collapsed" row="0" col="1"  tap="goCreditCard" />
-            <Image id="editCreditCard" src="res://ic_edit" tap="goCreditCard" visibility="collapsed" row="0" col="2" />
+            <Image id="editCreditCard" src="res://ic_edit" className="image-icon-mini" tap="goCreditCard" visibility="collapsed" row="0" col="2" />
             <Label id="expenseInstallmentLabel" text="Parcelas" className="field-left" visibility="collapsed" row="1" col="0"/>
             <Label id="expenseInstallment" text="{{ expenseInstallment }}" className="field-left" visibility="collapsed" row="1" col="1" tap="goInstallment"/>
-            <Image id="editInstallment" src="res://ic_edit" tap="goInstallment" visibility="collapsed" row="1" col="2" />
+            <Image id="editInstallment" src="res://ic_edit" tap="goInstallment" className="image-icon-mini" visibility="collapsed" row="1" col="2" />
             <TextView id="expenseLgDesc" className="input-field" text="{{ expenseLgDesc }}" hint="Notas complementares (opcional)" row="2" colspan="2" />
         </GridLayout>
  	</GridLayout>

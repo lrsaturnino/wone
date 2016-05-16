@@ -20,13 +20,15 @@ exports.loaded = function(args) {
         user.set('email', appsettings.username);
         user.set('newPasswordHint', 'Nova senha');
         user.set('confirmNewPasswordHint', 'Confirmar nova senha');
-        user.set('buttonText', 'Atualizar conta');
+        user.set('regBtnText', 'Atualizar conta');
     }else{
         viewModule.getViewById(page, 'oldPassword').visibility = 'collapsed';
         user.set('newPasswordHint', 'Senha');
         user.set('confirmNewPasswordHint', 'Confirmar senha');
-        user.set('buttonText', 'Registrar');
+        user.set('regBtnText', 'Registrar');
     };
+    user.set('loginBtnText', 'Acessar com uma conta diferente');
+
 };
 
 exports.updateUser = function(){

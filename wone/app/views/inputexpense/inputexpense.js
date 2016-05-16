@@ -88,7 +88,7 @@ exports.loaded = function(args) {
     
     if (page.navigationContext.new){
         page.navigationContext.new = false;
-        pageData.set('expenseSubCategory', 'Categoria: ' +  page.navigationContext.subCategoryName);
+        pageData.set('expenseSubCategory', 'Subcategoria: ' +  page.navigationContext.subCategoryName);
         pageData.set('expenseValue', "");
         pageData.set('expenseDate', new Date());
         pageData.set('expenseLgDesc', "");
