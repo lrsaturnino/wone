@@ -20,6 +20,7 @@
             <TextField id="contact" text="{{ contact }}" className="subtitle-left" keyboardType="phone" row="1" col="1" />
             <Label id="confirmContact" text="OK" tap="confirmContact" className="subtitle-left" row="1" col="2" />
             <Image id="changeContact" src="res://ic_edit" tap="changeContact" className="image-icon-mini" row="1" col="2" />
+            <Label text="{{ message }}" className="message" textWrap="true" />
         
         </GridLayout>
     </StackLayout>
