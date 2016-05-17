@@ -24,6 +24,7 @@ var UserViewModel = function(data){
     var viewModel = new Observable({
         id: appsettings.userid,
         username: appsettings.username,
+        resetEmail: data.resetEmail,
         email: appsettings.registered ? appsettings.username : data.email || "",
 		password: data.password || appsettings.password,
         oldPassword: "",
@@ -86,6 +87,20 @@ var UserViewModel = function(data){
         });
    };
 
+   viewModel.reset = function(){
+        var _this = this;
+        var _rEmail = _this.get('resetEmail').toLowerCase();
+   		return new Promise(function (resolve, reject) {
+            EVERLIVE.users.resetPassword({'Email' : _rEmail})
+            .then(function (data) {
+                resolve(data);
+            },
+            function(error) { 
+                reject(error);
+            });
+        });
+   };
+    
    viewModel.update = function(){
         var _this = this;
         var _email = _this.get('email').toLowerCase();

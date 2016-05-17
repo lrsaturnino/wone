@@ -191,5 +191,23 @@ Object.defineProperty(appSettings, "creditcards", {
 	}
 });
 
+Object.defineProperty(appSettings, "consultantName", {
+	get: function() {
+		return appSettingsModule.getString("consultantName");
+	},
+	set: function(data) {
+		return appSettingsModule.setString("consultantName", data);
+	}
+});
+
+Object.defineProperty(appSettings, "consultantContact", {
+	get: function() {
+		return appSettingsModule.getString("consultantContact");
+	},
+	set: function(data) {
+		return appSettingsModule.setString("consultantContact", data);
+	}
+});
+
 
 module.exports = appSettings;

@@ -14,12 +14,21 @@ exports.loaded = function(args) {
     page = args.object;
     page.bindingContext = user;
     user.set('message', '');
+    user.set('loginText', 'Acessar Conta');
 };
 
 exports.goBack = function(){
     frameModule.topmost().goBack();
     user.set('previousUsername', '');
     user.set('previousPassword', '');
+};
+
+exports.goToReset = function(){
+    user.set('previousUsername', "");
+    user.set('previousPassword', "");
+    frameModule.topmost().navigate({
+        moduleName: "views/login/reset-password"
+    });
 };
 
 exports.login = function(){
@@ -75,4 +84,8 @@ exports.login = function(){
                 });            
             };
     };
+};
+
+exports.resetPassword = function(){
+
 };

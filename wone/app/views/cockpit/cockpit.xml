@@ -51,9 +51,9 @@
                             <FAB:fab id="favButton2" tap="addFav2Expense" icon="~/images/icons/add.png" backColor="#FBC02D" rippleColor="#f1f1f1" className="fab-button" row="0" col="1" />
                             <FAB:fab id="favButton3" tap="addFav3Expense" icon="~/images/icons/add.png" backColor="#1976D2" rippleColor="#f1f1f1" className="fab-button" row="0" col="2" />
                             <FAB:fab tap="addOtherExpense" icon="~/images/icons/add.png" backColor="#4CAF50" rippleColor="#f1f1f1" className="fab-button" row="0" col="3" />
-                            <Label row="1" col="0" text="{{ fab1Label }}" className="field"/>
-                            <Label row="1" col="1" text="{{ fab2Label }}" className="field"/>
-                            <Label row="1" col="2" text="{{ fab3Label }}" className="field"/>
+                            <Label row="1" col="0" text="{{ fab1Label }}" className="field" />
+                            <Label row="1" col="1" text="{{ fab2Label }}" className="field" />
+                            <Label row="1" col="2" text="{{ fab3Label }}" className="field" />
                             <Label row="1" col="3" text="Mais" className="field"/>
                         </android>
                         <ios>

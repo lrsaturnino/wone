@@ -9,5 +9,18 @@
     <StackLayout>
         <Image src="~/images/icons/logo_nobg_192.png" className="image-logo" />
         <Label text="{{ about }}" className="about-message" textWrap="true" />
+        <GridLayout rows="auto, auto" columns="auto, *, auto">
+            
+            <Label text="Consultor:" className="subtitle-left" row="0" col="0" />
+            <TextField id="consultant" text="{{ consultant }}" className="subtitle-left" row="0" col="1" />
+            <Label id="confirmConsultant" text="OK" tap="confirmConsultant" className="subtitle-left" row="0" col="2" />
+            <Image id="changeConsultant" src="res://ic_edit" tap="changeConsultant" className="image-icon-mini" row="0" col="2" />
+            
+            <Label text="Contato:" className="subtitle-left" row="1" col="0" />
+            <TextField id="contact" text="{{ contact }}" className="subtitle-left" keyboardType="phone" row="1" col="1" />
+            <Label id="confirmContact" text="OK" tap="confirmContact" className="subtitle-left" row="1" col="2" />
+            <Image id="changeContact" src="res://ic_edit" tap="changeContact" className="image-icon-mini" row="1" col="2" />
+        
+        </GridLayout>
     </StackLayout>
 </Page>

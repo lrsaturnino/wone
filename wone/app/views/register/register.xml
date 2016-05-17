@@ -14,7 +14,7 @@
             <TextField id="confirmNewPassword" text="{{ confirmNewPassword }}" secure="true" hint="{{ confirmNewPasswordHint }}" />
             <Button id="registerbtn" text="{{ regBtnText }}" tap="updateUser" className="primary-button" />
             <Button id="loginbtn" text="{{ loginBtnText }}" tap="goToLogin" className="primary-button" />
-            <Label text="{{ message }}" className="message" />
+            <Label text="{{ message }}" className="message" textWrap="true" />
         </StackLayout>
     </GridLayout>
 </Page>

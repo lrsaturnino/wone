@@ -27,7 +27,7 @@ exports.loaded = function(args) {
         user.set('confirmNewPasswordHint', 'Confirmar senha');
         user.set('regBtnText', 'Registrar');
     };
-    user.set('loginBtnText', 'Acessar com uma conta diferente');
+    user.set('loginBtnText', 'Acessar uma conta diferente');
 
 };
 
