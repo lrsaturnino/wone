@@ -1,7 +1,7 @@
-<Page xmlns="http://www.nativescript.org/tns.xsd" 
-      xmlns:drawer="nativescript-telerik-ui/sidedrawer" 
-      xmlns:FAB="nativescript-floatingactionbutton" 
-      actionBarHidden="false" 
+<Page xmlns="http://www.nativescript.org/tns.xsd"
+      xmlns:drawer="nativescript-telerik-ui/sidedrawer"
+      xmlns:FAB="nativescript-floatingactionbutton"
+      actionBarHidden="false"
       loaded="loaded">
     <Page.actionBar>
         <ActionBar title="Cockpit">
@@ -30,8 +30,8 @@
                             <Progress value=" {{ hpBar }}" className="progress-hp" row="2"/>
                             <Progress value=" {{ hpBar }}" className="progress-hp" row="3"/>
                             <Progress value=" {{ hpBar }}" className="progress-hp" row="3"/>
-                        </GridLayout>        
-                        <Label text="{{ actualWeekMessage }}" className="subtitle" />     
+                        </GridLayout>
+                        <Label text="{{ actualWeekMessage }}" className="subtitle" />
                     </StackLayout>
                     <Label text="{{ cockpitMessage }}" className="message-label" textWrap="true" row="1" />
                     <GridLayout rows="auto, auto, auto, auto, auto, auto, auto, auto, auto" columns="*" row="2" className="catbar" >
@@ -46,7 +46,7 @@
                         <Label text="{{ investimentCategoryLabel }}" className="minititle-right-w-margin" textWrap="false" row="8" />
                     </GridLayout>
                     <GridLayout rows="auto, auto" columns="*,*,*,*" row="3" colspan="2">
-                        <android>
+                        <!--<android>-->
                             <FAB:fab id="favButton1" tap="addFav1Expense" icon="~/images/icons/add.png" backColor="#D32F2F" rippleColor="#f1f1f1" className="fab-button" row="0" col="0" />
                             <FAB:fab id="favButton2" tap="addFav2Expense" icon="~/images/icons/add.png" backColor="#FBC02D" rippleColor="#f1f1f1" className="fab-button" row="0" col="1" />
                             <FAB:fab id="favButton3" tap="addFav3Expense" icon="~/images/icons/add.png" backColor="#1976D2" rippleColor="#f1f1f1" className="fab-button" row="0" col="2" />
@@ -55,13 +55,13 @@
                             <Label row="1" col="1" text="{{ fab2Label }}" className="field" />
                             <Label row="1" col="2" text="{{ fab3Label }}" className="field" />
                             <Label row="1" col="3" text="Mais" className="field"/>
-                        </android>
+                        <!--</android>
                         <ios>
                             <Button id="favButton1" text="{{ fab1Label }}" tap="addFav1Expense" row="0" col="0"/>
                             <Button id="favButton2" text="{{ fab2Label }}" tap="addFav2Expense" row="0" col="1"/>
                             <Button id="favButton3" text="{{ fab3Label }}" tap="addFav3Expense" row="0" col="2"/>
                             <Button text="Mais" tap="addOtherExpense" row="0" col="3"/>
-                        </ios>
+                        </ios>-->
                     </GridLayout>
                 </GridLayout>
         </drawer:RadSideDrawer.mainContent>
@@ -80,5 +80,3 @@
         </drawer:RadSideDrawer.drawerContent>
 	</drawer:RadSideDrawer>
 </Page>
- 
-

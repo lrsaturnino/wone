@@ -4,7 +4,7 @@
             <ActionBar.actionItems>
             	<ActionItem text="Salvar" icon="res://ic_submit" ios.position="right" tap="save" />
             </ActionBar.actionItems>
-		</ActionBar>
+		    </ActionBar>
     </Page.actionBar>
     <GridLayout rows="auto, auto, auto, *, auto, auto, auto" columns="2*, *, auto" row="1" colspan="3">
         <Label text="{{ CategoryName }}" className="title" row="0" colSpan="3"/>
@@ -15,7 +15,7 @@
         <Image src="~/images/icons/add.png" row="2" col="3" tap="addSubCat" className="image-icon"/>
         <ListView id="SubCategoryList" items="{{ SubCategoryList }}" row="3" colspan="3" className="list-view">
             <ListView.itemTemplate>
-                <GridLayout columns="*, *, auto, auto" tap="changeSubCatValue">
+                <GridLayout columns="*, *, auto, auto" tap="">
                     <Label text="{{ SubCategoryName }}" className="subtitle" col="0"/>
                     <Label text="{{ SubCategoryBudget | valueConverter() }}" col="1" className="subtitle" />
                     <Image src="res://ic_edit" tap="changeSubCatValue" col="2" />

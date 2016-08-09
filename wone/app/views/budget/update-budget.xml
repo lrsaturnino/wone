@@ -1,0 +1,8 @@
+<Page xmlns="http://www.nativescript.org/tns.xsd" actionBarHidden="false" showingModally="onShowingModally">
+    <GridLayout rows="auto, auto, auto" columns="*, auto">
+        <Label text="Atualizar Orçamento" className="title-left" row="0" col="0"/>
+        <TextField id="newBudgetValue" text="{{ newBudgetValue }}" hint="R$ 0,00" row="1" col="0" className="input-field" keyboardType="number" />
+        <Image src="res://ic_submit" tap="updateBudget" row="1" col="1" />
+        <Button id="cancelUpdate" text="Cancelar" tap="cancelUpdate" className="primary-button" row="2" colspan="2" />
+    </GridLayout>
+</Page>

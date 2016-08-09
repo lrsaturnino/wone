@@ -23,8 +23,8 @@
             </GridLayout>
             <SegmentedBar id="expenseOrigin" className="paytype">
                 <SegmentedBar.items>
-                  <SegmentedBarItem title="Pagamento à vista" />
-                  <SegmentedBarItem title="Pagamento à prazo" />
+                  <SegmentedBarItem title="Pagto. à vista" />
+                  <SegmentedBarItem title="Pagto. à prazo" />
                 </SegmentedBar.items>
             </SegmentedBar>
         </StackLayout>

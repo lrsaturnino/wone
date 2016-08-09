@@ -18,7 +18,7 @@ var resetApportionment;
 var valueConverter = {
     toView: function (value) {
         var n = value, c = 2, d = ",", t = ".", s = n < 0 ? "-" : "", i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "", j = (j = i.length) > 3 ? j % 3 : 0;
-        return 'R$ ' + s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");        
+        return 'R$ ' + s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
     },
     toModel: function (value) {
         var n = value;
@@ -49,13 +49,13 @@ var sumTotalBudget = function(){
 };
 
 exports.loaded = function(args) {
-    appModule.resources["valueConverter"] = valueConverter;     
+    appModule.resources["valueConverter"] = valueConverter;
 
     page = args.object;
     page.bindingContext = pageData;
-    
+
     pageData.set('isLoading', true);
-    
+
     resetApportionment = false;
 
     if (page.navigationContext.origin == 'quickadd'){
@@ -63,19 +63,19 @@ exports.loaded = function(args) {
     }else{
         countCategories = appsettings.countcategory - 1;
     };
-    
+
     categories = JSON.parse(appsettings.categories);
     categories = categories.result;
     categories.sort(function(a,b){
     	return b['PresentationOrder'] - a['PresentationOrder'];
     });
-    
+
     pageData.set("SubCategoryNameInput", "");
-    pageData.set("SubCategoryBudgetInput", "");    
+    pageData.set("SubCategoryBudgetInput", "");
     pageData.set('CategoryName', categories[countCategories]['CategoryName']);
     pageData.set('HintText', categories[countCategories]['HintText']);
 
-    if (appsettings.messagetoken === 1){
+    /*if (appsettings.messagetoken === 1){
          switch (countCategories){
             case 0:
                 appsettings.messagetoken = 0;
@@ -85,7 +85,7 @@ exports.loaded = function(args) {
                   okButtonText: "OK, Entendi"
                 }).then(function () {
 
-                });    
+                });
             break;
             case 1:
                 dialogsModule.alert({
@@ -94,7 +94,7 @@ exports.loaded = function(args) {
                   okButtonText: "OK, Entendi"
                 }).then(function () {
 
-                });    
+                });
             break;
             case 2:
                 dialogsModule.alert({
@@ -108,18 +108,18 @@ exports.loaded = function(args) {
                       okButtonText: "OK, Entendi"
                     }).then(function () {
 
-                    });                    
+                    });
                 });
             break;
         };
-    };
-    
+    };*/
+
     budget.load(categories[countCategories]['Id'])
     .then(function(data) {
         pageData.set('isLoading', false);
         subCategories = data.result;
         pageData.set('TotalBudget', 0);
-        if (subCategories.length){ 
+        if (subCategories.length){
             subCategories.forEach(function(data) {
                 pageData.SubCategoryList.push({
                     "CategoryID" : data['CategoryID'],
@@ -135,27 +135,27 @@ exports.loaded = function(args) {
                 case 0:
                     pageData.SubCategoryList.push(
                         {
-                            "CategoryID" : categories[countCategories]['Id'], 
-                            "SubCategoryName" : 'Plano de Saúde', 
-                            "SubCategoryBudget" : 0, 
+                            "CategoryID" : categories[countCategories]['Id'],
+                            "SubCategoryName" : 'Plano de Saúde',
+                            "SubCategoryBudget" : 0,
                             "CategoryName" : categories[countCategories]['CategoryName']
                         },
                         {
-                            "CategoryID" : categories[countCategories]['Id'], 
-                            "SubCategoryName" : 'Seguros', 
-                            "SubCategoryBudget" : 0, 
+                            "CategoryID" : categories[countCategories]['Id'],
+                            "SubCategoryName" : 'Seguros',
+                            "SubCategoryBudget" : 0,
                             "CategoryName" : categories[countCategories]['CategoryName']
                         },
                         {
-                            "CategoryID" : categories[countCategories]['Id'], 
-                            "SubCategoryName" : 'Previdência', 
-                            "SubCategoryBudget" : 0, 
+                            "CategoryID" : categories[countCategories]['Id'],
+                            "SubCategoryName" : 'Previdência',
+                            "SubCategoryBudget" : 0,
                             "CategoryName" : categories[countCategories]['CategoryName']
                         },
                         {
-                            "CategoryID" : categories[countCategories]['Id'], 
-                            "SubCategoryName" : 'Renda Fixa', 
-                            "SubCategoryBudget" : 0, 
+                            "CategoryID" : categories[countCategories]['Id'],
+                            "SubCategoryName" : 'Renda Fixa',
+                            "SubCategoryBudget" : 0,
                             "CategoryName" : categories[countCategories]['CategoryName']
                         }
                     );
@@ -163,27 +163,27 @@ exports.loaded = function(args) {
                 case 1:
                     pageData.SubCategoryList.push(
                         {
-                            "CategoryID" : categories[countCategories]['Id'], 
-                            "SubCategoryName" : 'Alimentação', 
-                            "SubCategoryBudget" : 0, 
+                            "CategoryID" : categories[countCategories]['Id'],
+                            "SubCategoryName" : 'Alimentação',
+                            "SubCategoryBudget" : 0,
                             "CategoryName" : categories[countCategories]['CategoryName']
                         },
                         {
-                            "CategoryID" : categories[countCategories]['Id'], 
-                            "SubCategoryName" : 'Transporte', 
-                            "SubCategoryBudget" : 0, 
+                            "CategoryID" : categories[countCategories]['Id'],
+                            "SubCategoryName" : 'Transporte',
+                            "SubCategoryBudget" : 0,
                             "CategoryName" : categories[countCategories]['CategoryName']
                         },
                         {
-                            "CategoryID" : categories[countCategories]['Id'], 
-                            "SubCategoryName" : 'Lazer', 
-                            "SubCategoryBudget" : 0, 
+                            "CategoryID" : categories[countCategories]['Id'],
+                            "SubCategoryName" : 'Lazer',
+                            "SubCategoryBudget" : 0,
                             "CategoryName" : categories[countCategories]['CategoryName']
                         },
                         {
-                            "CategoryID" : categories[countCategories]['Id'], 
-                            "SubCategoryName" : 'Roupas', 
-                            "SubCategoryBudget" : 0, 
+                            "CategoryID" : categories[countCategories]['Id'],
+                            "SubCategoryName" : 'Roupas',
+                            "SubCategoryBudget" : 0,
                             "CategoryName" : categories[countCategories]['CategoryName']
                         }
                     );
@@ -191,33 +191,33 @@ exports.loaded = function(args) {
                 case 2:
                     pageData.SubCategoryList.push(
                         {
-                            "CategoryID" : categories[countCategories]['Id'], 
-                            "SubCategoryName" : 'Casa', 
-                            "SubCategoryBudget" : 0, 
+                            "CategoryID" : categories[countCategories]['Id'],
+                            "SubCategoryName" : 'Casa',
+                            "SubCategoryBudget" : 0,
                             "CategoryName" : categories[countCategories]['CategoryName']
                         },
                         {
-                            "CategoryID" : categories[countCategories]['Id'], 
-                            "SubCategoryName" : 'Contas', 
-                            "SubCategoryBudget" : 0, 
+                            "CategoryID" : categories[countCategories]['Id'],
+                            "SubCategoryName" : 'Contas',
+                            "SubCategoryBudget" : 0,
                             "CategoryName" : categories[countCategories]['CategoryName']
                         },
                         {
-                            "CategoryID" : categories[countCategories]['Id'], 
-                            "SubCategoryName" : 'Educação', 
-                            "SubCategoryBudget" : 0, 
+                            "CategoryID" : categories[countCategories]['Id'],
+                            "SubCategoryName" : 'Educação',
+                            "SubCategoryBudget" : 0,
                             "CategoryName" : categories[countCategories]['CategoryName']
                         },
                         {
-                            "CategoryID" : categories[countCategories]['Id'], 
-                            "SubCategoryName" : 'Prestações', 
-                            "SubCategoryBudget" : 0, 
+                            "CategoryID" : categories[countCategories]['Id'],
+                            "SubCategoryName" : 'Prestações',
+                            "SubCategoryBudget" : 0,
                             "CategoryName" : categories[countCategories]['CategoryName']
                         },
                         {
-                            "CategoryID" : categories[countCategories]['Id'], 
-                            "SubCategoryName" : 'Saúde', 
-                            "SubCategoryBudget" : 0, 
+                            "CategoryID" : categories[countCategories]['Id'],
+                            "SubCategoryName" : 'Saúde',
+                            "SubCategoryBudget" : 0,
                             "CategoryName" : categories[countCategories]['CategoryName']
                         }
                     );
@@ -225,12 +225,12 @@ exports.loaded = function(args) {
             };
             subCategories = pageData.get('SubCategoryList')._array;
         };
-    }, 
+    },
     function(error) {
         dialogsModule.alert({
             message: JSON.stringify(error),
             okButtonText: "OK"
-        });             
+        });
     });
 };
 
@@ -254,7 +254,7 @@ exports.addSubCat = function(){
             dialogsModule.alert({
                 message: "Informe um valor de orçamento maior que 0,00.",
                 okButtonText: "OK"
-            });            
+            });
         };
     }else{
         dialogsModule.alert({
@@ -264,7 +264,7 @@ exports.addSubCat = function(){
     };
 };
 
-exports.delSubCat = function(args) { 
+exports.delSubCat = function(args) {
     var item = args.view.bindingContext;
     var index = pageData.SubCategoryList.indexOf(item);
     pageData.SubCategoryList.splice(index,1);
@@ -277,10 +277,10 @@ exports.save = function() {
 
     pageData.set('isLoading', true);
 
-    var check = true; 
+    var check = true;
     subCategories.forEach(function(data) {
         if (data['SubCategoryBudget'] <= 0){
-            check = false;		    
+            check = false;
         };
     });
     if (check){
@@ -293,28 +293,28 @@ exports.save = function() {
                     "SubCategoryBudget" : 0,
                     "CategoryName" : categories[countCategories]['CategoryName']
                 });
-                subCategories = pageData.get('SubCategoryList')._array;                
+                subCategories = pageData.get('SubCategoryList')._array;
             };
             budget.addAll(subCategories)
             .then(function(data){
                 expenses.resume_yearmonth(new Date())
                 .then(function(data) {
                     objBudget = {
-                        idCategory: categories[countCategories]['Id'], 
+                        idCategory: categories[countCategories]['Id'],
                         categoryName: categories[countCategories]['CategoryName'],
-                        totalBudget: sumTotalBudget(), 
-                        totalExpense: searchArray('CategoryID', categories[countCategories]['Id'], data.result, 'TotalExpense'), 
+                        totalBudget: sumTotalBudget(),
+                        totalExpense: searchArray('CategoryID', categories[countCategories]['Id'], data.result, 'TotalExpense'),
                         weeklyBudget: {
-                            1: 0, 
-                            2: 0, 
-                            3: 0, 
+                            1: 0,
+                            2: 0,
+                            3: 0,
                             4: 0
-                        }, 
+                        },
                         subCategories: subCategories
                     };
                     if (sumTotalBudget() !== 0){
                         frameModule.topmost().navigate({
-                            moduleName: "views/apportionment/apportionment", 
+                            moduleName: "views/apportionment/apportionment",
                             context: {
                                 count_category: countCategories,
                                 budget: objBudget,
@@ -330,7 +330,7 @@ exports.save = function() {
                                 break;
                             case 1:
                                 appsettings.extraCategoryBudget = JSON.stringify(objBudget);
-                                break; 
+                                break;
                             case 2:
                                 appsettings.basicCategoryBudget = JSON.stringify(objBudget);
                                 break;
@@ -339,9 +339,9 @@ exports.save = function() {
                             if (page.navigationContext.origin == 'quickadd'){
                                 appsettings.countcategory = categories.length;
                                 frameModule.topmost().navigate({
-                                    moduleName: "views/cockpit/cockpit", 
+                                    moduleName: "views/cockpit/cockpit",
                                     clearHistory: true
-                                });                                                                                              
+                                });
                             }else{
                                 appsettings.countcategory = countCategories;
                                 frameModule.topmost().navigate({
@@ -352,7 +352,7 @@ exports.save = function() {
                                 });
                             };
                         }else{
-                            appsettings.countcategory = categories.length;                  
+                            appsettings.countcategory = categories.length;
 
                             if (appsettings.registered === false){
                                 dialogsModule.confirm({
@@ -363,54 +363,54 @@ exports.save = function() {
                                 }).then(function (result) {
                                     if (result){
                                         frameModule.topmost().navigate({
-                                            moduleName: "views/register/register", 
+                                            moduleName: "views/register/register",
                                             clearHistory: true
-                                        });                                        
+                                        });
                                     }else{
                                         frameModule.topmost().navigate({
-                                            moduleName: "views/cockpit/cockpit", 
+                                            moduleName: "views/cockpit/cockpit",
                                             clearHistory: true
-                                        });                                                              
+                                        });
                                     };
-                                });                           
+                                });
                             }else{
                                 frameModule.topmost().navigate({
-                                    moduleName: "views/cockpit/cockpit", 
+                                    moduleName: "views/cockpit/cockpit",
                                     clearHistory: true
-                                });                            
+                                });
                             };
-                         };                    
+                         };
                     };
-                }, 
+                },
                 function(error) {
                     pageData.set('isLoading', false);
                     dialogsModule.alert({
                         message: JSON.stringify(error),
                         okButtonText: "OK"
-                    });             
+                    });
                 });
-            }, 
+            },
             function(error){
                 pageData.set('isLoading', false);
                 dialogsModule.alert({
                     message: JSON.stringify(error),
                     okButtonText: "OK"
-                });             
+                });
             });
-        }, 
+        },
         function(error){
             pageData.set('isLoading', false);
             dialogsModule.alert({
                 message: JSON.stringify(error),
                 okButtonText: "OK"
-            });             
+            });
         });
     }else{
         pageData.set('isLoading', false);
         dialogsModule.alert({
             message: 'Existe categoria com valor de orçamento menor ou igual a 0,00. Por favor, adicione um valor superior a R$ 0,00 ou exclua a categoria.',
             okButtonText: "OK"
-        });			            
+        });
     };
 };
 
@@ -418,7 +418,7 @@ exports.changeSubCatValue = function(args){
     var item = args.view.bindingContext;
     var index = pageData.SubCategoryList.indexOf(item);
     //alert(circularRef(pageData.SubCategoryList));
-    dialogsModule.prompt({
+    /*dialogsModule.prompt({
           title: "Alterar",
           message: "Informe o valor",
           okButtonText: "OK",
@@ -431,7 +431,12 @@ exports.changeSubCatValue = function(args){
         subCategories = pageData.get('SubCategoryList')._array;
         sumTotalBudget();
         resetApportionment = true;
-    });
+    });*/
+
+     page.showModal("views/budget/update-budget", "", function closeCallback(newBudget){
+         alert(newBudget);
+     }, false);
+
 };
 
 function searchArray(searchkey, data, myArray, resultkey){
@@ -458,9 +463,3 @@ function circularRef(obj){
     });
     cache = null; // Enable garbage collection
 };
-
-
-
-
-
-
