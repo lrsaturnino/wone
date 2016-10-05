@@ -1,1 +1,21 @@
 @import url("~/app-common.css");
+
+.drawerContent{
+    width: 200;
+}
+
+.minititle-left{
+    margin-top: 10;
+    margin-bottom: -7;
+    font-size: 13;
+    color: #4d4d4d ;
+    horizontal-align: left;
+}
+
+.minititle-right{
+    margin-top: 10;
+    margin-bottom: -7;
+    font-size: 12;
+    color: #4d4d4d ;
+    horizontal-align: right;
+}

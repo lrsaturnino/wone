@@ -9,7 +9,7 @@
             </ActionBar.actionItems>
         </ActionBar>
     </Page.actionBar>
-  	<GridLayout rows="auto, *" columns="*">
+  	<GridLayout rows="auto, auto, *" columns="*">
         <StackLayout row="0">
             <Label text="{{ expenseSubCategory }}" className="subtitle-left" />
             <Label text="Qual foi o gasto?" className="minititle-left" />
@@ -28,15 +28,14 @@
                 </SegmentedBar.items>
             </SegmentedBar>
         </StackLayout>
-        <GridLayout row="1" rows="auto, auto, *" columns="auto,auto,auto">
+        <GridLayout row="1" rows="auto, auto" columns="auto,auto,auto">
             <Label id="expenseCreditCardLabel" text="Cartão de Crédito" className="field-left" visibility="collapsed" row="0" col="0"/>
             <Label id="expenseCreditCard" text="{{ expenseCreditCard }}" className="field-left" visibility="collapsed" row="0" col="1"  tap="goCreditCard" />
             <Image id="editCreditCard" src="res://ic_edit" className="image-icon-mini" tap="goCreditCard" visibility="collapsed" row="0" col="2" />
             <Label id="expenseInstallmentLabel" text="Parcelas" className="field-left" visibility="collapsed" row="1" col="0"/>
             <Label id="expenseInstallment" text="{{ expenseInstallment }}" className="field-left" visibility="collapsed" row="1" col="1" tap="goInstallment"/>
             <Image id="editInstallment" src="res://ic_edit" tap="goInstallment" className="image-icon-mini" visibility="collapsed" row="1" col="2" />
-            <TextView id="expenseLgDesc" className="input-field" text="{{ expenseLgDesc }}" hint="Notas complementares (opcional)" row="2" colspan="2" />
         </GridLayout>
+        <TextView id="expenseLgDesc" className="input-field" text="{{ expenseLgDesc }}" hint="Notas complementares (opcional)" row="2" />
  	</GridLayout>
 </Page>
-

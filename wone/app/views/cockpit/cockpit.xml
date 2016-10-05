@@ -10,7 +10,7 @@
             </android>
             <ActionBar.actionItems>
             	<ios>
-                	<ActionItem icon="~/images/icons/menu.png" ios.position="left" tap="toggleSideDrawer" className="image-icon" />
+                	<ActionItem text="Menu" ios.position="left" tap="toggleSideDrawer" />
             	</ios>
                 <ActionItem text="Histórico" ios.position="right" tap="goToHistory" />
             </ActionBar.actionItems>
@@ -67,7 +67,7 @@
         </drawer:RadSideDrawer.mainContent>
         <drawer:RadSideDrawer.drawerContent>
             <StackLayout className="drawerContent">
-                <StackLayout className="headerContent">
+                <StackLayout className="drawerHeaderContent">
                     <Label text="W1 Expense Manager"/>
                 </StackLayout>
                 <StackLayout className="drawerMenuContent">

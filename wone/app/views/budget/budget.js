@@ -75,10 +75,9 @@ exports.loaded = function(args) {
     pageData.set('CategoryName', categories[countCategories]['CategoryName']);
     pageData.set('HintText', categories[countCategories]['HintText']);
 
-    /*if (appsettings.messagetoken === 1){
+    /*if (appsettings.messagetoken === false){
          switch (countCategories){
             case 0:
-                appsettings.messagetoken = 0;
                 dialogsModule.alert({
                   title: "Investimentos",
                   message: "Quanto mais melhor :) \n\nOs investimentos é onde o dinheiro começa a trabalhar por você!",
@@ -433,8 +432,12 @@ exports.changeSubCatValue = function(args){
         resetApportionment = true;
     });*/
 
-     page.showModal("views/budget/update-budget", "", function closeCallback(newBudget){
-         alert(newBudget);
+     page.showModal("views/budget/update-budget", pageData.SubCategoryList._array[index].SubCategoryBudget, function closeCallback(newBudget){
+         pageData.SubCategoryList._array[index].SubCategoryBudget = newBudget;
+         viewModule.getViewById(page, 'SubCategoryList').refresh();
+         subCategories = pageData.get('SubCategoryList')._array;
+         sumTotalBudget();
+         resetApportionment = true;
      }, false);
 
 };

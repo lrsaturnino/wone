@@ -1,0 +1,11 @@
+<Page xmlns="http://www.nativescript.org/tns.xsd" loaded="loaded" actionBarHidden="true">
+    <StackLayout>
+        <Image src="~/images/helpers/helper_add_expense.png" className="helper-img" />
+        <!--<Image src="~/images/helpers/helper_budget_bar.png" className="helper-img" />
+        <Image src="~/images/helpers/helper_energy_bar.png" className="helper-img" />
+        <Image src="~/images/helpers/helper_favorite.png" className="helper-img" />
+        <Image src="~/images/helpers/helper_history.png" className="helper-img" />
+        <Image src="~/images/helpers/helper_login.png" className="helper-img" />-->
+        <Button id="nextbn" text="{{ nexttxt }}" tap="next" className="primary-button" />
+    </StackLayout>
+</Page>

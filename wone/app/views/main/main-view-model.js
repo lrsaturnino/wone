@@ -35,9 +35,9 @@ var UserViewModel = function(data){
         newPasswordHint: "",
         confirmNewPasswordHint: "",
         message: ""
-	});	
+	});
 
-	viewModel.register = function(){     
+	viewModel.register = function(){
         var _this = this;
         return new Promise(function (resolve, reject) {
             _this.set('username', (parseInt(Math.random() * 1000) + "" + new Date().getTime()).toString());
@@ -53,9 +53,9 @@ var UserViewModel = function(data){
             function(error){
                 reject(error);
             });
-        }); 
+        });
    };
-    
+
    viewModel.login = function(){
         var _this = this;
    		return new Promise(function (resolve, reject) {
@@ -63,17 +63,15 @@ var UserViewModel = function(data){
             .then(function (data) {
                     appsettings.username = _this.get("previousUsername") !== "" ? _this.get("previousUsername") : _this.get("username");
                     appsettings.password = _this.get('previousPassword') !== "" ? _this.get('previousPassword') : _this.get("password");
-                    var i = appsettings.accesscounter;
-                    i++;
-                    appsettings.accesscounter = i;
+                    appsettings.accesscounter = appsettings.accesscounter + 1;
                     resolve(data);
             },
-            function(error) { 
+            function(error) {
                 reject(error);
             });
         });
    };
-    
+
    viewModel.current = function(){
         var _this = this;
    		return new Promise(function (resolve, reject) {
@@ -81,7 +79,7 @@ var UserViewModel = function(data){
             .then(function (data) {
                 resolve(data);
             },
-            function(error) { 
+            function(error) {
                 reject(error);
             });
         });
@@ -95,12 +93,12 @@ var UserViewModel = function(data){
             .then(function (data) {
                 resolve(data);
             },
-            function(error) { 
+            function(error) {
                 reject(error);
             });
         });
    };
-    
+
    viewModel.update = function(){
         var _this = this;
         var _email = _this.get('email').toLowerCase();
@@ -118,18 +116,18 @@ var UserViewModel = function(data){
                     reject(error);
                 });
             },
-            function(error) { 
+            function(error) {
                 reject(error);
             });
         });
-   };    
-    
+   };
+
    return viewModel;
 };
 
 var CategoryViewModel = function(){
-	var viewModel = new observableArrayModule.ObservableArray();	    
-    
+	var viewModel = new observableArrayModule.ObservableArray();
+
     viewModel.fetch = function() {
         var model = EVERLIVE.data('category');
         return new Promise(function (resolve, reject) {
@@ -142,7 +140,7 @@ var CategoryViewModel = function(){
             });
         });
     };
-    
+
    return viewModel;
 };
 
@@ -154,7 +152,7 @@ var ExpenseListViewModel = function(){
         return new Promise(function (resolve, reject) {
             model.create(expense,
             function(data) {
-                appsettings.expenses = "";    
+                appsettings.expenses = "";
                 resolve(data);
             },
             function(error) {
@@ -162,7 +160,7 @@ var ExpenseListViewModel = function(){
             });
         });
     };
-    
+
     viewModel.all = function() {
         var model = EVERLIVE.data('expenses')
         return new Promise(function (resolve, reject) {
@@ -175,7 +173,7 @@ var ExpenseListViewModel = function(){
             });
         });
     };
-    
+
     viewModel.all_by_yearmonth_category = function(yearmonth, category_id) {
         viewModel.empty();
         var filter = {
@@ -193,13 +191,13 @@ var ExpenseListViewModel = function(){
             });
         });
     };
-    
+
     viewModel.resume_all = function() {
         var model = EVERLIVE.data('expenses')
         var query = new Everlive.AggregateQuery();
         query.groupBy(['YearMonth', 'CategoryName', 'CategoryID']);
         query.sum('ExpenseValue', 'TotalExpense');
-        
+
         return new Promise(function (resolve, reject) {
             model.aggregate(query)
             .then(function(data) {
@@ -210,14 +208,14 @@ var ExpenseListViewModel = function(){
             });
         });
     };
-    
+
     viewModel.yearmonths = function() {
         var model = EVERLIVE.data('expenses')
         var query = new Everlive.AggregateQuery();
         query.groupBy(['YearMonth']);
         query.sum('ExpenseValue', 'TotalExpense');
         query.where().lte('YearMonth', new Date(new Date().getFullYear(), new Date().getMonth(), 1));
-        
+
         return new Promise(function (resolve, reject) {
             model.aggregate(query)
             .then(function(data) {
@@ -228,14 +226,14 @@ var ExpenseListViewModel = function(){
             });
         });
     };
-    
+
     viewModel.resume_yearmonth = function(yearmonth) {
         var model = EVERLIVE.data('expenses')
         var query = new Everlive.AggregateQuery();
         query.groupBy(['YearMonth', 'CategoryName', 'CategoryID']);
         query.sum('ExpenseValue', 'TotalExpense');
         query.where().eq('YearMonth', new Date(yearmonth.getFullYear(), yearmonth.getMonth(), 1));
-        
+
         return new Promise(function (resolve, reject) {
             model.aggregate(query)
             .then(function(data) {
@@ -243,15 +241,15 @@ var ExpenseListViewModel = function(){
                     var objBasicBudget = JSON.parse(appsettings.basicCategoryBudget);
                     var objExtraBudget = JSON.parse(appsettings.extraCategoryBudget);
                     var objInvestimentBudget = JSON.parse(appsettings.investimentCategoryBudget);
-    
+
                     var basicExpenseValue = searchArray('CategoryID', objBasicBudget.idCategory, data.result, 'TotalExpense');
                     var extraExpenseValue = searchArray('CategoryID', objExtraBudget.idCategory, data.result, 'TotalExpense');
                     var investimentExpenseValue = searchArray('CategoryID', objInvestimentBudget.idCategory, data.result, 'TotalExpense');
-                    
+
                     objBasicBudget.totalExpense = basicExpenseValue;
                     objExtraBudget.totalExpense = extraExpenseValue;
                     objInvestimentBudget.totalExpense = investimentExpenseValue;
-                    
+
                     appsettings.basicCategoryBudget = JSON.stringify(objBasicBudget);
                     appsettings.extraCategoryBudget = JSON.stringify(objExtraBudget);
                     appsettings.investimentCategoryBudget = JSON.stringify(objInvestimentBudget);
@@ -263,7 +261,7 @@ var ExpenseListViewModel = function(){
             });
         });
     };
-    
+
     viewModel.resume_each_yearmonth = function() {
         viewModel.empty();
         var model = EVERLIVE.data('expenses')
@@ -271,7 +269,7 @@ var ExpenseListViewModel = function(){
         query.groupBy(['YearMonth', 'CategoryName', 'CategoryID']);
         query.sum('ExpenseValue', 'TotalExpense');
         query.where().lt('YearMonth', new Date(new Date().getFullYear(), new Date().getMonth(), 1));
-        
+
         return new Promise(function (resolve, reject) {
             model.aggregate(query)
             .then(function(data) {
@@ -282,10 +280,10 @@ var ExpenseListViewModel = function(){
             });
         });
     };
-    
+
     viewModel.delete_expense = function(expense_id) {
         var model = EVERLIVE.data('expenses')
-        
+
         return new Promise(function (resolve, reject) {
             model.destroySingle ({Id : expense_id})
             .then(function(data) {
@@ -296,15 +294,15 @@ var ExpenseListViewModel = function(){
             });
         });
     };
-    
+
 	viewModel.empty = function() {
 		while (viewModel.length) {
 			viewModel.pop();
 		}
-	};    
-    
+	};
+
     viewModel.empty();
- 
+
     return viewModel;
 };
 

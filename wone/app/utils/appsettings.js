@@ -58,10 +58,10 @@ Object.defineProperty(appSettings, "accesscounter", {
 
 Object.defineProperty(appSettings, "messagetoken", {
 	get: function() {
-		return appSettingsModule.getNumber("messagetoken");
+		return appSettingsModule.getBoolean("messagetoken");
 	},
 	set: function(data) {
-		return appSettingsModule.setNumber("messagetoken", data);
+		return appSettingsModule.setBoolean("messagetoken", data);
 	}
 });
 

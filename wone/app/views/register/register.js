@@ -27,7 +27,7 @@ exports.loaded = function(args) {
         user.set('confirmNewPasswordHint', 'Confirmar senha');
         user.set('regBtnText', 'Registrar');
     };
-    user.set('loginBtnText', 'Acessar uma conta diferente');
+    user.set('loginBtnText', 'Conta diferente');
 
 };
 
@@ -40,8 +40,8 @@ exports.updateUser = function(){
         break;
         default:
             user.set('message', '');
-            if (user.get('email').trim() !== "" && user.get('newPassword').trim() !== "" && (appsettings.registered ? user.get("oldPassword").trim() !== "" : true)) {    
-                if (user.get("newPassword") === user.get("confirmNewPassword")) {   
+            if (user.get('email').trim() !== "" && user.get('newPassword').trim() !== "" && (appsettings.registered ? user.get("oldPassword").trim() !== "" : true)) {
+                if (user.get("newPassword") === user.get("confirmNewPassword")) {
                     user.update()
                     .then(function(data){
                         dialogsModule.alert({
@@ -52,7 +52,7 @@ exports.updateUser = function(){
                         user.set('newPassword', "");
                         user.set('confirmNewPassword', "");
                         frameModule.topmost().navigate({
-                            moduleName: "views/cockpit/cockpit", 
+                            moduleName: "views/cockpit/cockpit",
                             clearHistory: true
                         });
                     },
@@ -67,14 +67,14 @@ exports.updateUser = function(){
                     dialogsModule.alert({
                         message: "As senhas não são iguais.",
                         okButtonText: "OK"
-                    });            
+                    });
                 }
             }else{
                 dialogsModule.alert({
                     message: "Existem informações não preenchidas.",
                     okButtonText: "OK"
-                });    
-            };        
+                });
+            };
     };
 };
 

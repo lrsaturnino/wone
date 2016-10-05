@@ -1,0 +1,6 @@
+<Page xmlns="http://www.nativescript.org/tns.xsd" loaded="loaded" actionBarHidden="true">
+    <GridLayout columns="*" rows="*,50" width="100%" height="100%">
+        <Image src="{{ helperPath }}" row="0" col="0" className="helper-img" />
+        <Button id="nextbn" text="{{ nextTxt }}" tap="next" row="1" col="0" className="primary-button" horizontalAlignment="right"/>
+    </GridLayout>
+</Page>

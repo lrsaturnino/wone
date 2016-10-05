@@ -13,7 +13,7 @@ var pageData = new observable({
 
 exports.onShowingModally = function(args) {
     context = args.context;
-    pageData.set('newBudgetValue' , context)
+    //pageData.set('newBudgetValue' , context)
     closeCallback = args.closeCallback;
     page = args.object;
     page.bindingContext = pageData;
@@ -22,8 +22,10 @@ exports.onShowingModally = function(args) {
 
 exports.updateBudget = function() {
     closeCallback(pageData.get('newBudgetValue'));
+    pageData.set('newBudgetValue' , '');
 };
 
 exports.cancelUpdate = function() {
     closeCallback(context);
+    pageData.set('newBudgetValue' , '');
 };

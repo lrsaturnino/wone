@@ -7,3 +7,23 @@
     margin-left: 10;
     margin-right: 10;
 }
+
+.drawerContent{
+    width: 280;
+}
+
+.minititle-left{
+    margin-top: 10;
+    margin-bottom: 0;
+    font-size: 13;
+    color: #4d4d4d ;
+    horizontal-align: left;
+}
+
+.minititle-right{
+    margin-top: 10;
+    margin-bottom: 0;
+    font-size: 12;
+    color: #4d4d4d ;
+    horizontal-align: right;
+}
