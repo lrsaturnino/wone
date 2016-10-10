@@ -268,7 +268,7 @@ var ExpenseListViewModel = function(){
         var query = new Everlive.AggregateQuery();
         query.groupBy(['YearMonth', 'CategoryName', 'CategoryID']);
         query.sum('ExpenseValue', 'TotalExpense');
-        query.where().lt('YearMonth', new Date(new Date().getFullYear(), new Date().getMonth(), 1));
+        query.where().lte('YearMonth', new Date(new Date().getFullYear(), new Date().getMonth(), 1));
 
         return new Promise(function (resolve, reject) {
             model.aggregate(query)

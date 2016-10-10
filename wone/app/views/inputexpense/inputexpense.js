@@ -40,9 +40,9 @@ var firstPaymentDate = function(){
 var dateConverter = {
     toView: function (value, format) {
         var result = format;
+        var month = value.getMonth() + 1;
         var day = value.getDate();
         result = result.replace("DD", day < 10 ? "0" + day : day);
-        var month = value.getMonth() + 1;
         result = result.replace("MM", month < 10 ? "0" + month : month);
         result = result.replace("YYYY", value.getFullYear());
         return result;
@@ -62,7 +62,7 @@ var dateConverter = {
 var valueConverter = {
     toView: function (value) {
         var n = value, c = 2, d = ",", t = ".", s = n < 0 ? "-" : "", i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "", j = (j = i.length) > 3 ? j % 3 : 0;
-        return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");        
+        return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
     },
     toModel: function (value) {
         var n = value;
@@ -76,16 +76,16 @@ var valueConverter = {
 };
 
 exports.loaded = function(args) {
-    appModule.resources["dateConverter"] = dateConverter;     
-    appModule.resources["valueConverter"] = valueConverter;     
+    appModule.resources["dateConverter"] = dateConverter;
+    appModule.resources["valueConverter"] = valueConverter;
 
     page = args.object;
     page.bindingContext = pageData;
-    
+
     objBasicBudget = JSON.parse(appsettings.basicCategoryBudget);
     objExtraBudget = JSON.parse(appsettings.extraCategoryBudget);
     objInvestimentBudget = JSON.parse(appsettings.investimentCategoryBudget);
-    
+
     if (page.navigationContext.new){
         page.navigationContext.new = false;
         pageData.set('expenseSubCategory', 'Subcategoria: ' +  page.navigationContext.subCategoryName);
@@ -98,7 +98,7 @@ exports.loaded = function(args) {
         paymentType = viewModule.getViewById(page, 'expenseOrigin');
         expenseField = viewModule.getViewById(page, 'expenseValue');
     };
-    
+
     paymentType.on(Observable.propertyChangeEvent, function(data){
         if (paymentType.selectedIndex){
             viewModule.getViewById(page, 'expenseCreditCardLabel').visibility = "visible";
@@ -119,7 +119,7 @@ exports.loaded = function(args) {
             pageData.set('expenseCreditCard', "");
         }
     });
-    
+
 //    expenseField.on(Observable.propertyChangeEvent, function(data){
 //
 //    });
@@ -130,10 +130,10 @@ exports.add = function() {
         viewModule.getViewById(page, "expenseValue").dismissSoftInput();
         expense = appsettings.expenses;
         expense ? expense = JSON.parse(expense) : expense = [];
-        
-        for (var i = 1; i <= pageData.get("expenseInstallment"); i++){ 
+
+        for (var i = 1; i <= pageData.get("expenseInstallment"); i++){
             expensePayDay = new Date(firstPaymentDate().getFullYear(), firstPaymentDate().getMonth() - 1 + i, firstPaymentDate().getDate(),0,0,0,0);
-            
+
             expense.push({
                 'CategoryID' : page.navigationContext.categoryID,
                 'SubCategoryID' : page.navigationContext.subCategoryID,
@@ -151,7 +151,7 @@ exports.add = function() {
             if (expensePayDay <= new Date() && expensePayDay.getFullYear() >= new Date().getFullYear() && expensePayDay.getMonth() >= new Date().getMonth()){
                 switch(page.navigationContext.categoryID) {
                     case objBasicBudget.idCategory:
-                        objBasicBudget.totalExpense += pageData.get("expenseValue") / pageData.get("expenseInstallment");       
+                        objBasicBudget.totalExpense += pageData.get("expenseValue") / pageData.get("expenseInstallment");
                         appsettings.basicCategoryBudget = JSON.stringify(objBasicBudget);
                         break;
                     case objExtraBudget.idCategory:
@@ -160,22 +160,20 @@ exports.add = function() {
                         break;
                     case objInvestimentBudget.idCategory:
                         objInvestimentBudget.totalExpense += pageData.get("expenseValue") / pageData.get("expenseInstallment");
-                        appsettings.investimentCategoryBudget = JSON.stringify(objInvestimentBudget);    
+                        appsettings.investimentCategoryBudget = JSON.stringify(objInvestimentBudget);
                 };
             };
         };
         appsettings.expenses = JSON.stringify(expense);
-        
-        var x = appsettings.expensecounter;
-        x += pageData.get("expenseInstallment");
-        appsettings.expensecounter = x;
+        appsettings.expensecounter = appsettings.expensecounter + pageData.get("expenseInstallment");
         dialogsModule.alert({
             message: "Gasto incluído com sucesso. Obrigado :)",
             okButtonText: "OK"
-        });        
-        frameModule.topmost().navigate({
-            moduleName: "views/cockpit/cockpit",
-            clearHistory: true
+        }).then(function () {
+          frameModule.topmost().navigate({
+              moduleName: "views/cockpit/cockpit",
+              clearHistory: true
+          });
         });
     }else{
         dialogsModule.alert({
@@ -187,7 +185,7 @@ exports.add = function() {
 
 exports.goBack = function(){
     frameModule.topmost().navigate({
-        moduleName: "views/cockpit/cockpit", 
+        moduleName: "views/cockpit/cockpit",
         clearHistory: true
     });
 };
@@ -223,9 +221,9 @@ function goCreditCard(){
         }).then(function (result) {
             if (result){
                 frameModule.topmost().navigate({
-                moduleName: "views/creditcards/creditcards", 
+                moduleName: "views/creditcards/creditcards",
                 clearHistory: true
-                });                                        
+                });
             }else{
                 viewModule.getViewById(page, 'expenseCreditCardLabel').visibility = "collapsed";
                 viewModule.getViewById(page, 'expenseCreditCard').visibility = "collapsed";
@@ -235,7 +233,7 @@ function goCreditCard(){
                 pageData.set('expenseCreditCard', "");
                 paymentType.selectedIndex = 0;
             };
-        });     
+        });
     };
 };
 
@@ -263,7 +261,7 @@ function DatePickerViewModel(data, callback){
 
 DatePickerViewModel.prototype.done = function () {
     this._callback(new Date(this.year, this.month - 1, this.day, 0, 0, 0, 0));
-    paymentType.off(Observable.propertyChangeEvent);            
+    paymentType.off(Observable.propertyChangeEvent);
     frameModule.topmost().goBack();
 };
 
@@ -280,7 +278,7 @@ function CreditCardViewModel(data, callback){
 
 CreditCardViewModel.prototype.done = function (data) {
     this._callback(data);
-    paymentType.off(Observable.propertyChangeEvent);            
+    paymentType.off(Observable.propertyChangeEvent);
     frameModule.topmost().goBack();
 };
 
@@ -291,7 +289,7 @@ function InstallmentViewModel(data, callback){
 
 InstallmentViewModel.prototype.done = function (data) {
     this._callback(data);
-    paymentType.off(Observable.propertyChangeEvent);            
+    paymentType.off(Observable.propertyChangeEvent);
     frameModule.topmost().goBack();
 };
 
