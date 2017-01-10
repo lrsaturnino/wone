@@ -38,7 +38,6 @@ exports.loaded = function(args) {
 
 exports.goBack = function(){
     frameModule.topmost().goBack();
-    alert('teste');
 };
 
 exports.confirmConsultant = function(){
